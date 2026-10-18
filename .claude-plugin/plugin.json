@@ -1,0 +1,8 @@
+{
+  "name": "ptah",
+  "description": "An agentic workflow from spec to PR",
+  "version": "0.1.0",
+  "author": {
+    "name": "Angel Marquez"
+  }
+}
