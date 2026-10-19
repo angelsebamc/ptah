@@ -4,7 +4,7 @@ Every command appends an entry to `LOGS.md` when it completes, pauses, or fails,
 
 Entries are written with **`ptah log`** and nothing else. The CLI validates the input against this schema, generates the heading's timestamp, and emits the fields in the canonical order, so a malformed entry cannot reach the file.
 
-This guide defines the schema and the `ptah log` flags. The discipline (when to log, when not to) lives in `.ptah/RULES.md` under "Logging discipline". Every fixed value — statuses, change types, triggers, verdicts — is defined in [`vocabulary.md`](./vocabulary.md).
+This guide defines the schema. The discipline (when to log, when not to) lives in [`RULES.md`](../RULES.md) under "Logging discipline". Every fixed value — statuses, change types, triggers, verdicts — is defined in [`vocabulary.md`](./vocabulary.md).
 
 ---
 

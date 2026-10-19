@@ -48,7 +48,7 @@ The dispatcher never guesses or patches a malformed result. It treats it exactly
 | Subagent | `complete` fields | `needs-input` fields | Artifact block | Dispatcher adds |
 |---|---|---|---|---|
 | `architect` | Approach, Key decisions, Open questions | Blocked on, Progress, Files touched | `===PLAN.md===` | Next step |
-| `implementer` | Summary, Files created, Files modified, Deviations from design, Known issues | Blocked on, Progress, Files touched | `===IMPLEMENTATION.md===` | Next step |
+| `implementer` | Summary, Files created, Files modified, Deviations from plan, Known issues | Blocked on, Progress, Files touched | `===IMPLEMENTATION-SUMMARY.md===` | Next step |
 | `reviewer` | Blockers, Major, Minor, Suggestions, Acceptance criteria, Verdict | — | `===REVIEW.md===` | Next step |
 
 `error` always carries exactly one field: `Reason: <one line>`.
@@ -68,3 +68,12 @@ Field formats are defined in [`logs-format.md`](./logs-format.md) under each com
 - [decision] Should archived accounts still count toward net worth? — the design hides them from the list but doesn't say whether the total excludes them.
 ===END===
 ````
+## Hand-off
+
+Every command's final message to the user:
+
+```
+<icon> /<command> <n> <status>
+Artifact: `<path to the artifact the user should review>`
+<one to three lines of key facts>
+Next: <`/<next-command> <n>`, or what the user needs to do>

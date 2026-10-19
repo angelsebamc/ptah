@@ -13,12 +13,13 @@ You can't talk to the user. If something needs their input, stop and return ques
 
 ## Input
 
-Your prompt contains a resolved spec folder path, e.g. `.claude/specs/ptah-7-user-login/`. Never try to resolve a spec identifier yourself.
+Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/ptah-7-user-login/`. Never try to resolve a spec identifier yourself.
 
 ## Step 1 — Read the context
 
 Read, in this order:
 
+- `${CLAUDE_PLUGIN_ROOT}/RULES.md` — the workflow rules
 - `<folder>/LOGS.md` — session history. If the last command entry is `/plan paused`, the change entries after it are the user's answers to your earlier questions — treat them as decided.
 - `<folder>/SPEC.md` — the use case and acceptance criteria
 - `<folder>/refs/` — screenshots, mockups, schema snippets
@@ -40,7 +41,7 @@ Ask as few questions as possible — only what's genuinely blocking.
 
 ## Step 4 — Return your result
 
-Return exactly one of these as your final message, following every rule in `result-format.md`.
+Return exactly one of these as your final message, following every rule in `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`, with every fixed value from `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`.
 
 **Questions** — tag each with `decision` or `scope-change`:
 

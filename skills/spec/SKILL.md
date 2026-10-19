@@ -1,29 +1,29 @@
 ---
 name: spec
-description: 'Starts a new Ptah feature spec: creates the numbered spec folder (ptah-<n>-<slug>) and fills SPEC.md through a one-question-at-a-time conversation, optionally pre-filled from a JIRA/Linear/GitHub ticket'
+description: 'Starts a new Ptah feature spec: creates the numbered spec folder (ptah-<n>-<slug>) and fills SPEC.md through a one-question-at-a-time conversation, optionally pre-filled from a third party provider ticket via MCP'
 argument-hint: 'name=<feature-name> | <source>=<ticket-id>'
 disable-model-invocation: true
 ---
 
-If the current project has a Ptah config at `../../ptah.yml` (project root, not the plugin folder) with external context sources configured (e.g. JIRA, Linear, GitHub), pre-fill parts of the spec from a linked ticket.
+If the current project has a Ptah config at `.ptah/ptah.yml` (relative to the project root, not the plugin folder) with external context sources configured (e.g. JIRA, Linear, GitHub), pre-fill parts of the spec from a linked ticket.
 
 ## Step 1 — Parse command arguments
 
 Raw arguments: `$ARGUMENTS`
 
-Split the raw arguments on the **first** `=`:
-- `key` = text before the `=`, trimmed
-- `value` = everything after the `=`, trimmed (may contain spaces)
-
-If there is no `=` or `value` is empty, show the examples below and stop.
-
-- If `key` is `name`: plain spec, no ticket. `feature-name` = `value`.
-- Otherwise: `key` is the context source and `value` is the ticket ID.
+- **Empty** → show the examples below and stop.
+- **No `=`** → the argument is a spec identifier: continue an unfinished spec (Step 3, *Continuing an unfinished spec*).
+- **Otherwise** split on the **first** `=`:
+  - `key` = text before the `=`, trimmed
+  - `value` = everything after the `=`, trimmed (may contain spaces). If empty, show the examples and stop.
+  - If `key` is `name`: plain spec, no ticket. `feature-name` = `value`.
+  - Otherwise: `key` is the context source and `value` is the ticket ID.
 
 Examples:
 - `/ptah:spec name=user-login`: plain feature, no external ticket
 - `/ptah:spec name=user login`: plain feature, no external ticket. If space-separated, turn it into kebab-case
 - `/ptah:spec jira=PROJ-1234`: pulls context from JIRA ticket PROJ-1234
+- `/ptah:spec 7`: continues spec 7, whose SPEC.md was never written
 
 The feature name is **not** used as the folder name directly. It's kebab-cased into a slug, and the folder itself is numbered automatically from `ptah.yml`
 
@@ -33,8 +33,8 @@ The feature name is **not** used as the folder name directly. It's kebab-cased i
 
 If `key` is a context source:
 
-- If `../../ptah.yml` does not exist in the current project, tell the user:
-  > "No Ptah config found. Add `context_sources` to `../../ptah.yml` to use tickets, or run `/ptah:spec name=<feature-name>` instead."
+- If `.ptah/ptah.yml` does not exist in the current project, tell the user:
+  > "No Ptah config found. Add `context_sources` to `.ptah/ptah.yml` to use tickets, or run `/ptah:spec name=<feature-name>` instead."
   Then stop.
 - If `key` is not listed under `context_sources`, tell the user which sources are configured and stop.
 - This plugin does not bundle MCP servers for ticket sources. If the source is configured but its MCP tools are not available in this session, tell the user to install or enable that MCP server and stop. Do not guess or fall back.
@@ -58,7 +58,20 @@ Report back to the user what was pulled in:
 
 ## Step 3 — Create the folder structure
 
-Read `specs.next_id` from `../../ptah.yml` in the current project.
+### Continuing an unfinished spec
+
+When Step 1 got a spec identifier:
+
+1. Resolve it per **Spec identifiers** in `RULES.md`. If nothing matches, stop:
+   > "No spec found for `<spec-id>`."
+2. If that folder's `SPEC.md` exists and isn't empty, stop:
+   > "Spec `<n>` already has a SPEC.md. Run `/ptah:resume <n>`."
+3. Otherwise use that folder as `<slug>` and skip 3a–3d — no new folder, no change to `specs.next_id`. Tell the user:
+   > "Continuing spec **`<n>`** at `.ptah/specs/<slug>/`."
+
+Then go to Step 4. Ticket context isn't re-fetched, so ask every question normally.
+
+Read `specs.next_id` from `.ptah/ptah.yml` in the current project.
 
 ### 3a. Get the id
 - If the file doesn't exist, or the `specs` section or `next_id` key is missing, treat the next id as `1`.
@@ -68,20 +81,20 @@ Read `specs.next_id` from `../../ptah.yml` in the current project.
 `slug` = `ptah-<n>-<kebab>`, where `<kebab>` is `value` in kebab-case (lowercase, spaces and underscores → `-`, other punctuation removed)
 
 ### 3c. Create the folder
-Create the following structure at `../../specs/<slug>/`:
+Create the following structure at `.ptah/specs/<slug>/`:
 
 ```
-.claude/specs/<slug>/
+.ptah/specs/<slug>/
   LOGS.md
   SPEC.md
   PLAN.md
-  IMPLEMENTATION.md
+  IMPLEMENTATION-SUMMARY.md
   CODE-REVIEW.md
   refs/
 ```
 
 ### 3d. Update the counter
-Write `specs.next_id: <n + 1>` back to `../../ptah.yml` in the current project:
+Write `specs.next_id: <n + 1>` back to `.ptah/ptah.yml` in the current project:
 
 - If `ptah.yml` didn't exist yet, create it containing just:
 ```yaml
@@ -92,7 +105,7 @@ Write `specs.next_id: <n + 1>` back to `../../ptah.yml` in the current project:
 
 Confirm to the user that the folder was created, showing both the number and the full folder name:
 
-> "Created spec **`<n>`** at `../../specs/<slug>/`"
+> "Created spec **`<n>`** at `.ptah/specs/<slug>/`"
 
 ---
 
@@ -175,10 +188,10 @@ If external context was loaded and `backlink_header: true` is set in `ptah.yml`,
 
 ## Step 6 — Append to LOGS.md
 
-After writing SPEC.md, append an entry to `LOGS.md` using the schema in [../../guides/logs-format.md](../../guides/logs-format.md)
+After writing SPEC.md, append a `/spec completed` entry to `.ptah/specs/<slug>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`
 
 ---
 
 ## Step 7 — Hand off to user
 
-After writing both files, hand off to the user using the format in [../../guides/result-format.md](../../guides/result-format.md)
+After writing both files, hand off to the user per `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`

@@ -11,7 +11,7 @@ Read review findings and fix all blocker and major issues. Record what was chang
 
 `/fix` works from:
 
-- **A spec** — `/fix <spec-id>` — fixes findings from `specs/<feature-name>/REVIEW.md`. This is the feature track.
+- **A spec** — `/fix <spec-id>` — fixes findings from `.ptah/specs/<feature-name>/REVIEW.md`. This is the feature track.
 
 Every finding carries a code assigned by the reviewer — `B1`, `B2` for blockers, `M1` for major, `N1` for minor, `S1` for suggestions.
 
@@ -29,7 +29,7 @@ Every finding carries a code assigned by the reviewer — `B1`, `B2` for blocker
 
 Mode is resolved with precedence **flag > config > default (`plan`)**.
 
-### Config (`ptah/ptah.yml`)
+### Config (`.ptah/ptah.yml`)
 
 ```yaml
 commands:
@@ -40,8 +40,9 @@ commands:
 
 Both keys are optional. Missing keys fall back to defaults.
 
-## Step 1 — Read rules if not already in context
-- Read [`RULES.md`](../../ptah/RULES.md)
+## Step 1 — Rules
+
+`RULES.md` is injected at session start. If it isn't in your context, read `${CLAUDE_PLUGIN_ROOT}/RULES.md`.
 
 ### The stop-and-ask rule always applies
 
@@ -78,6 +79,8 @@ Determine the effective mode and scope for this run. Precedence is **flag > conf
 
 ### Load Ptah config
 
+Read `.ptah/ptah.yml`.
+
 - If the file doesn't exist, or `commands.fix` is missing → use defaults (`mode: plan`)
 - If `commands.fix.mode` is set, validate it's a fix mode from `vocabulary.md`. Anything else → stop:
   > "Invalid `commands.fix.mode` value `<value>` in `ptah.yml`. Must be one of: `auto`, `plan`, `interactive`."
@@ -95,10 +98,10 @@ Resolve the spec identifier to a folder per **Spec identifiers** in `RULES.md`. 
 
 Read:
 
-- `specs/<feature-name>/REVIEW.md` — the findings to fix
-- `specs/<feature-name>/DESIGN.md` — original technical design
-- `specs/<feature-name>/IMPLEMENTATION.md` — what was built
-- `specs/<feature-name>/LOGS.md` — session history, to understand current state
+- `.ptah/specs/<feature-name>/REVIEW.md` — the findings to fix
+- `.ptah/specs/<feature-name>/DESIGN.md` — original technical design
+- `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md` — what was built
+- `.ptah/specs/<feature-name>/LOGS.md` — session history, to understand current state
 
 If `REVIEW.md` is empty or missing, stop:
 
@@ -217,19 +220,19 @@ The Fix Summary is structurally identical across all three modes and both source
 
 ### 7b. LOGS.md entry
 
-**Spec source** — append to `specs/<feature-name>/LOGS.md`
+Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`.
 
 ---
 
 ## Step 8 — Hand off to user
 
-Use the hand-off format in [`guides/result-format.md`](../../ptah/guides/result-format.md).
+Hand off per `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`.
 
 **Spec source:**
 
 ```
 /fix <n> completed
-Artifact: `specs/<feature-name>/REVIEW.md` (fix summary appended)
+Artifact: `.ptah/specs/<feature-name>/REVIEW.md` (fix summary appended)
 Mode: <mode> — fixed: <codes> · skipped: <codes, or "none"> · deferred: <codes, or "none">
 New issues found: <"no", or "yes — <note>">
 Next: /document <n>

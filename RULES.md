@@ -46,7 +46,7 @@ While working on any spec, append **change entries** to the corresponding `LOGS.
 
 ### When to log
 
-Log automatically, without asking, on these events (the values are defined in [`guides/vocabulary.md`](./guides/vocabulary.md))
+Log automatically, without asking, on these events (the values are defined in [`guides/vocabulary.md`](${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md))
 
 ### When NOT to log
 
@@ -61,9 +61,9 @@ Routine work creates noise — do not log it:
 
 ## Reports and vocabulary
 
-Every fixed value in Ptah — command statuses, result statuses, spec states, change types and triggers, severities, verdicts, fix modes — is defined once, in [`guides/vocabulary.md`](./guides/vocabulary.md). Commands and subagents use those values exactly; a value that isn't on its list is an error, never something to coerce.
+Every fixed value in Ptah — command statuses, result statuses, spec states, change types and triggers, severities, verdicts, fix modes — is defined once, in [`guides/vocabulary.md`](${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md). Commands and subagents use those values exactly; a value that isn't on its list is an error, never something to coerce.
 
-Every final report follows [`guides/result-format.md`](./guides/result-format.md), in markdown:
+Every final report follows [`guides/result-format.md`](${CLAUDE_PLUGIN_ROOT}/guides/result-format.md), in markdown:
 
 - **Subagent → dispatcher:** a `===RESULT===` block whose bullets are the `LOGS.md` fields for the entry it produces, then artifact blocks named after their files, then `===END===`. A result that breaks the format is malformed — the dispatcher logs `failed` and never guesses at or patches it.
 - **Command → user:** one hand-off shape for every command — status icon and line, artifact path, one to three key facts, and the next command.
@@ -81,17 +81,15 @@ Every spec folder created by `/ptah-spec` is named `ptah-<n>-<slug>`, e.g. `ptah
 
 ### Assigning a number (`/ptah-spec` only)
 
-The next number lives in `.claude/ptah/ptah.yml` under `specs.next_id` — this is a plain config value, not something the agent works out by scanning `.claude/specs/`.
+The next number lives in `.ptah/ptah.yml` under `specs.next_id` — this is a plain config value, not something the agent works out by scanning `.ptah/specs/`.
 
 When `/ptah-spec` creates a new folder:
 
-1. Read `specs.next_id` from `.claude/ptah/ptah.yml`. If the file, or the `specs` section, or the key is missing, treat the next id as `1`.
+1. Read `specs.next_id` from `.ptah/ptah.yml`. If the file, or the `specs` section, or the key is missing, treat the next id as `1`.
 2. Use that value as `<n>` for the new folder.
 3. Immediately after creating the folder, write `specs.next_id: <n + 1>` back to `ptah.yml` — creating the file or the `specs:` section if it didn't exist yet, and leaving any other config (`commands:`, `context_sources:`, etc.) untouched.
 
 The agent never infers the next number from existing folder names. Numbers are never reused, even if a folder is later deleted — the counter only moves forward. If a gap needs reclaiming, that's a manual edit to `specs.next_id`, not something any command does automatically.
-
-(The knowledge base's entry ids follow a related but distinct rule — see "Knowledge discipline" above and `guides/knowledge-format.md`: SQLite's own `AUTOINCREMENT` owns that counter, since there's a real database to keep it in.)
 
 ### Resolving an identifier (every other command)
 
@@ -103,9 +101,9 @@ Every command that takes a spec argument — `/ptah-design`, `/ptah-implement`, 
 
 Resolve the argument in this order:
 
-1. If it matches an existing folder name in `.claude/specs/` exactly, use it.
-2. Otherwise, strip a leading `ptah-` if present, take the leading number, and glob `.claude/specs/ptah-<n>-*`. If exactly one folder matches, use it.
-3. Otherwise, treat the argument as a literal legacy folder name — `.claude/specs/<argument>/` — for specs that predate this convention.
+1. If it matches an existing folder name in `.ptah/specs/` exactly, use it.
+2. Otherwise, strip a leading `ptah-` if present, take the leading number, and glob `.ptah/specs/ptah-<n>-*`. If exactly one folder matches, use it.
+3. Otherwise, treat the argument as a literal legacy folder name — `.ptah/specs/<argument>/` — for specs that predate this convention.
 4. If nothing matches any of the above, stop and tell the user no spec was found for `<argument>`, and suggest running `/ptah-status`.
 
 This is a single lookup for one already-existing folder, not a scan across all of them — it's unrelated to how `/ptah-spec` assigns new numbers above.
@@ -116,25 +114,34 @@ Whenever a command refers to a spec in output shown to the user — `/ptah-resum
 
 Two exceptions:
 - **`/ptah-status` rows** show the full spec name (`ptah-3-user-login`), since the report is a scannable overview meant to be read, not typed. Its `next:` line still uses the bare number, since that's the part you'd actually run.
-- **File paths** the user is meant to open and review (e.g. "Review it at `.claude/specs/ptah-3-user-login/SPEC.md`") need the real, full path.
+- **File paths** the user is meant to open and review (e.g. "Review it at `.ptah/specs/ptah-3-user-login/SPEC.md`") need the real, full path.
 
 ---
 
 ## Path conventions
 
+Two roots, never mixed.
+
+**Plugin files** ship with Ptah and are read-only. They're addressed through `${CLAUDE_PLUGIN_ROOT}`, which Claude Code expands to the plugin's absolute path in skill and agent content (and the SessionStart hook expands in this file):
+
 | Location | Purpose |
 |----------|---------|
-| `.claude/skills/ptah-<command>/` | One skill per command, invoked as `/ptah-<command>`. Skills can't nest in a subfolder, so they're namespaced by the `ptah-` prefix instead |
-| `.claude/agents/ptah/` | Ptah's subagent definitions — the designer and implementer used by `/ptah-design` and `/ptah-implement`, and the isolated reviewers used by `/ptah-code-review` and `/ptah-review`. See **Delegated work** and **Why the review is isolated** above |
-| `.claude/ptah/` | Ptah's config (`ptah.yml`) and reference docs (`RULES.md`, and `guides/`: `vocabulary.md`, `result-format.md`, `logs-format.md`, `knowledge-format.md`) |
-| `.claude/ptah/knowledge/` | Ptah's persistent knowledge base — `knowledge.db` (SQLite, sole interface `ptah_knowledge.py`) + `INDEX.md` (auto-regenerated human-readable mirror). Project-wide, not per-spec. See **Knowledge discipline** above |
-| `.claude/specs/ptah-<n>-<slug>/` | Per-feature work product (created by `/ptah-spec`) — see **Spec identifiers** above |
-| `.claude/reviews/<review-name>/` | Per-review work product (created by `/ptah-review`), separate from the spec pipeline |
+| `${CLAUDE_PLUGIN_ROOT}/RULES.md` | This file. Injected into every session by `hooks/session-start.sh` |
+| `${CLAUDE_PLUGIN_ROOT}/guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md` |
+| `${CLAUDE_PLUGIN_ROOT}/skills/<command>/` | One skill per command, invoked as `/ptah:<command>` |
+| `${CLAUDE_PLUGIN_ROOT}/agents/` | Subagents, dispatched as `ptah:architect`, `ptah:implementer`, `ptah:reviewer`. See **Delegated work** |
 
-Skills link to `RULES.md` and `guides/` in `.claude/ptah/` rather than bundling their own copies — those files are shared by every skill and subagent, so there's one copy to keep current.
+**Project files** are the work product, relative to the project root (the session's working directory):
+
+| Location | Purpose |
+|----------|---------|
+| `.ptah/ptah.yml` | Project config: `specs.next_id`, `commands.fix`, `context_sources` |
+| `.ptah/specs/ptah-<n>-<slug>/` | Per-feature work product (created by `/ptah:spec`). See **Spec identifiers** |
+| `.ptah/reviews/<review-name>/` | Per-review work product, separate from the spec pipeline |
+
 
 ---
 
 ## Wait for user confirmation
 
-Each command produces an artifact (`SPEC.md`, `DESIGN.md`, `IMPLEMENTATION.md`, etc.) and hands off to the user. Never auto-advance to the next command in the workflow — always wait for the user to review the artifact and explicitly run the next slash command. Every Ptah skill sets `disable-model-invocation: true`, so none of them can be started by the agent on its own — only by the user typing it.
+Each command produces an artifact (`SPEC.md`, `DESIGN.md`, `IMPLEMENTATION-SUMMARY.md`, etc.) and hands off to the user. Never auto-advance to the next command in the workflow — always wait for the user to review the artifact and explicitly run the next slash command. Every Ptah skill sets `disable-model-invocation: true`, so none of them can be started by the agent on its own — only by the user typing it.

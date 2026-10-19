@@ -11,25 +11,25 @@ You are reviewing one Ptah feature's implementation against its own spec and pla
 
 ## Input
 
-Your prompt will contain a resolved spec folder path, e.g. `.claude/specs/7-user-login/`. Never try to resolve a spec identifier (a bare number, `<n>`, etc.) yourself — you will always be handed the exact folder path already resolved.
+Your prompt will contain a resolved spec folder path, e.g. `.ptah/specs/ptah-7-user-login/`. Never try to resolve a spec identifier (a bare number, `<n>`, etc.) yourself — you will always be handed the exact folder path already resolved.
 
 ## Step 1 — Read the context
 
 Read, in this order:
 
-- Read the `rules` in [`RULES.md`](../../ptah/RULES.md)
+- `${CLAUDE_PLUGIN_ROOT}/RULES.md` — the workflow rules
 - `<folder>/SPEC.md` — acceptance criteria to verify against
 - `<folder>/PLAN.md` — intended technical plan
-- `<folder>/IMPLEMENTATION.md` — what the implementer says was built
+- `<folder>/IMPLEMENTATION-SUMMARY.md` — what the implementer says was built
 - `<folder>/LOGS.md` — session history
 
-**Treat `IMPLEMENTATION.md` and `LOGS.md` as claims, not facts.** They're the implementer's own account of what happened, written by an agent that may have been anchored to its own reasoning in the moment. Your job is to verify those claims against the actual code and against `SPEC.md` / `PLAN.md` — not to restate what the implementer said. If `IMPLEMENTATION.md` explains a deviation "because X," check whether the code actually reflects X, and whether the result still satisfies `PLAN.md`'s intent. If an acceptance criterion is marked as addressed, verify it against the code, not the claim.
+**Treat `IMPLEMENTATION-SUMMARY.md` and `LOGS.md` as claims, not facts.** They're the implementer's own account of what happened, written by an agent that may have been anchored to its own reasoning in the moment. Your job is to verify those claims against the actual code and against `SPEC.md` / `PLAN.md` — not to restate what the implementer said. If `IMPLEMENTATION-SUMMARY.md` explains a deviation "because X," check whether the code actually reflects X, and whether the result still satisfies `PLAN.md`'s intent. If an acceptance criterion is marked as addressed, verify it against the code, not the claim.
 
 > Review no more than 400 lines of code at a time. If the implementation is larger, work through it in logical chunks and note which chunk each finding belongs to.
 
 ## Step 2 — Review
 
-Review in this order of priority (severities and finding codes are defined in `vocabulary.md`).
+Review in this order of priority (severities and finding codes are defined in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`).
 
 **What to focus on:**
 - Logic: Does it work correctly? Are edge cases handled? What happens when inputs are null/empty/unexpected?
@@ -50,7 +50,7 @@ Review in this order of priority (severities and finding codes are defined in `v
 
 ## Step 3 — Return your findings
 
-Return your complete result as your final message, following every rule in `result-format.md`.
+Return your complete result as your final message, following every rule in `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`.
 
 ````
 ===RESULT===
@@ -99,7 +99,7 @@ Number each severity's findings from 1, in the order they appear (`B1`, `B2`, �
 
 `Verdict` is `fix-needed` if there's at least one blocker or major finding, `ready-to-document` otherwise. The counts must match the findings in `REVIEW.md` exactly.
 
-If you can't review at all — `SPEC.md`, `PLAN.md`, or `IMPLEMENTATION.md` missing or empty, or a listed file that doesn't exist — return:
+If you can't review at all — `SPEC.md`, `PLAN.md`, or `IMPLEMENTATION-SUMMARY.md` missing or empty, or a listed file that doesn't exist — return:
 
 ````
 ===RESULT===

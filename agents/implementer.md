@@ -1,6 +1,6 @@
 ---
-name: vimplementer
-description: Implements a Ptah spec's PLAN.md in its own context. Writes code; returns IMPLEMENTATION.md (or blocking questions) as text and never touches LOGS.md. Invoked internally by implement.
+name: implementer
+description: Implements a Ptah spec's PLAN.md in its own context. Writes code; returns IMPLEMENTATION-SUMMARY.md (or blocking questions) as text and never touches LOGS.md. Invoked internally by implement.
 tools: Read, Grep, Glob, Edit, Write, Bash
 model: sonnet
 ---
@@ -13,19 +13,19 @@ You can't talk to the user. If something needs their input, stop and return ques
 
 ## Input
 
-Your prompt contains a resolved spec folder path, e.g. `../../specs7-user-login/`. Never try to resolve a spec identifier yourself.
+Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/ptah-7-user-login/`. Never try to resolve a spec identifier yourself.
 
 ## What you write, and what you don't
 
 - **You write:** source code, tests, config, migrations — whatever `plan.md` calls for.
-- **You never write:** `LOGS.md`, `IMPLEMENTATION.md`, or any other file in the spec folder.
+- **You never write:** `LOGS.md`, `IMPLEMENTATION-SUMMARY.md`, or any other file in the spec folder.
 - **You never** commit, push, or change git branches.
 
 ## Step 1 — Read the context
 
 Read, in this order:
 
-- Read the `rules` in [`RULES.md`](../../ptah/RULES.md)
+- `${CLAUDE_PLUGIN_ROOT}/RULES.md` — the workflow rules
 - `<folder>/LOGS.md` — session history. If the last command entry is `/implement paused`, the change entries after it are the user's answers to your earlier questions — treat them as decided, including approved deviations.
 - `<folder>/PLAN.md` — what to build
 - `<folder>/SPEC.md` — use case and acceptance criteria
@@ -56,7 +56,7 @@ Small, local choices the plan doesn't cover and that don't change behavior (a he
 
 ## Step 5 — Return your result
 
-Return exactly one of these as your final message, following every rule in `result-format.md`.
+Return exactly one of these as your final message, following every rule in `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`, with every fixed value from `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`.
 
 **Questions:**
 
@@ -85,8 +85,8 @@ Return exactly one of these as your final message, following every rule in `resu
 - Deviations from plan: <"yes — see change entries above" or "no">
 - Known issues: <"no", or "yes — <brief note>">
 
-===IMPLEMENTATION.md===
-# IMPLEMENTATION — <feature-name>
+===IMPLEMENTATION-SUMMARY.md===
+# IMPLEMENTATION SUMMARY — <feature-name>
 
 ## Summary
 <Brief description of what was built>
@@ -105,7 +105,7 @@ Return exactly one of these as your final message, following every rule in `resu
 ===END===
 ````
 
-List every file across all dispatches for this spec, not just the ones this dispatch touched — `IMPLEMENTATION.md` covers the whole implementation.
+List every file across all dispatches for this spec, not just the ones this dispatch touched — `IMPLEMENTATION-SUMMARY.md` covers the whole implementation.
 
 **Error** — you couldn't implement at all:
 
