@@ -97,8 +97,8 @@ Written when a subagent returns `error` or a malformed result. No artifact is wr
 - Minor (count)
 - Suggestions (count)
 - Acceptance criteria (`X of Y met`)
-- Verdict (`fix-needed` or `ready-to-document`)
-- Next step (`/fix`)
+- Verdict (`fix-needed` or `approved`)
+- Next step (`/fix`, or `none — review clean`)
 
 ### `/fix completed`
 - Mode (`auto`, `plan`, or `interactive`)

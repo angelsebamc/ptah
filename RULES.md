@@ -127,4 +127,3 @@ Two roots, never mixed.
 |----------|---------|
 | `.ptah/ptah.yml` | Project config: `specs.next_id`, `commands.fix`, `context_sources` |
 | `.ptah/specs/ptah-<n>-<slug>/` | Per-feature work product (created by `/ptah:spec`) |
-| `.ptah/reviews/<review-name>/` | Per-review work product, separate from the spec pipeline |

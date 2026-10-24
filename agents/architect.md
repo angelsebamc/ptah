@@ -55,8 +55,6 @@ Return exactly one of these as your final message, following every rule in `${CL
 ### Questions
 - [<decision | scope-change>] <question> — <why it matters: what it changes in the plan>
 
-### Learn candidates
-- <category> | <title> | <note>
 ===END===
 ````
 
@@ -69,8 +67,6 @@ Return exactly one of these as your final message, following every rule in `${CL
 - Key decisions: <one line — notable choices or tradeoffs>
 - Open questions: <count, or "none">
 
-### Learn candidates
-- <category> | <title> | <note>
 ===PLAN.md===
 # PLAN — <feature-name>
 

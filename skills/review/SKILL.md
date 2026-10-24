@@ -40,6 +40,6 @@ Per **Handling the result** in `RULES.md`. The reviewer never returns `needs-inp
   | Verdict | `Next step:` |
   |---|---|
   | `fix-needed` | `/ptah:fix <n>` |
-  | `ready-to-document` | `/document` |
+  | `approved` | `none — review clean` |
 
 - **`error` / malformed** — as in the rule.

@@ -33,10 +33,10 @@ What `status` shows for a spec, derived from its **last command entry** — chan
 | Value | Last command entry |
 |---|---|
 | `just-started` | none yet |
-| `active` | any `completed`, other than `document completed` |
+| `active` | any `completed`, other than an `approved` review |
 | `paused` | any `paused` |
 | `failed` | any `failed` |
-| `completed` | `document completed` |
+| `completed` | `review completed` with `Verdict: approved` |
 
 ## Change type
 
@@ -74,17 +74,14 @@ Used by `review` and `fix`.
 
 ### Finding codes
 
-Every finding carries a code: the severity's letter plus a number, e.g. `B1`, `M2`, `S1`. Numbering restarts at 1 for each severity, in the order findings appear in the review (per pass, for `review`). Codes are how `fix` and the user refer to findings — to steer a fix, skip one, or pull in an out-of-scope minor or suggestion.
+Every finding carries a code: the severity's letter plus a number, e.g. `B1`, `M2`, `S1`. Numbering restarts at 1 for each severity, in the order findings appear in the review. Codes are how `fix` and the user refer to findings — to steer a fix, skip one, or pull in an out-of-scope minor or suggestion.
 
 ## Review Verdict
 
-| Type | Value | Meaning | Next step |
-|---|---|---|---|
-| `self` | `fix-needed` | At least one blocker or major finding | `fix` |
-| `self` | `ready-to-document` | No blockers or major findings | `document` |
-| `external` | `request-changes` | At least one blocker or major finding | share with the author, or `fix --review` |
-| `external` | `approve-with-minors` | Only minor findings or suggestions | merge at the author's discretion |
-| `external` | `approve` | Clean | merge |
+| Value | Meaning | Next step |
+|---|---|---|
+| `fix-needed` | At least one blocker or major finding | `fix` |
+| `approved` | No blockers or major findings | none — review clean |
 
 ## Fix mode
 

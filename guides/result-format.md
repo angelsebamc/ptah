@@ -73,7 +73,8 @@ Field formats are defined in [`logs-format.md`](./logs-format.md) under each com
 Every command's final message to the user:
 
 ```
-<icon> /<command> <n> <status>
+/<command> <n> <status>
 Artifact: `<path to the artifact the user should review>`
 <one to three lines of key facts>
 Next: <`/<next-command> <n>`, or what the user needs to do>
+```

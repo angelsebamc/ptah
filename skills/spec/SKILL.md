@@ -98,10 +98,13 @@ Write `specs.next_id: <n + 1>` back to `.ptah/ptah.yml` in the current project:
 
 - If `ptah.yml` didn't exist yet, create it containing just:
 ```yaml
-    specs:
-        next_id: <n + 1>
+specs:
+  next_id: <n + 1>
 ```
 - If it existed but had no `specs:` section, add one.
+- Leave every other key in `ptah.yml` untouched.
+
+Never infer the next number from existing folder names. Numbers are never reused, even if a folder is deleted — the counter only moves forward.
 
 Confirm to the user that the folder was created, showing both the number and the full folder name:
 

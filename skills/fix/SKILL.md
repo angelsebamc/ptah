@@ -47,12 +47,12 @@ The command takes exactly one source — a positional spec identifier (see **Spe
 Examples:
 - `/fix 3` — uses mode from `ptah.yml`, or `plan` if no config
 - `/fix 3 -a` — applies all fixes silently this run
-- `/fix 3 -i` — asks per finding, includes minors
+- `/fix 3 -i` — asks per finding before applying it
 
 **Source errors** stop the command:
 
 - No spec identifier:
-  > "`/fix` needs exactly one source: a spec number (`/fix 3`)
+  > "`/fix` needs exactly one source: a spec number (`/fix 3`)."
 
 **Mutually-exclusive flag pairs** produce an error and stop:
 - `-a`, `-p`, `-i` (pick one)
@@ -81,6 +81,9 @@ The config file is never modified by `/fix`. Flags only affect the current run.
 
 ### Compute in-scope findings
 - Always in scope: blocker (`B`) and major (`M`) findings
+- Minor (`N`) findings: in scope only when `commands.fix.include_minor` is `true`
+- Any minor or suggestion (`S`) the user names by code in a directive: pulled into scope for this run
+- Everything else is deferred and listed under **Not in this run**
 
 ---
 
