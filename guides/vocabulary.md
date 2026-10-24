@@ -13,7 +13,7 @@ The `<status>` in a `LOGS.md` command entry heading: `## <timestamp> — /<comma
 | Value | Meaning | Written when |
 |---|---|---|
 | `completed` | The command produced its artifact | The command finishes normally |
-| `paused` | The command stopped to wait for the user | A subagent returned `needs-input` (`design`, `implement`) |
+| `paused` | The command stopped to wait for the user | A subagent returned `needs-input` (`plan`, `implement`) |
 | `failed` | The command stopped without producing its artifact | A subagent returned `error`, or a malformed result |
 
 ## Result status
@@ -45,7 +45,7 @@ The `Type:` field of a `LOGS.md` change entry.
 | Value | Use for |
 |---|---|
 | `decision` | A choice that affects the work — library, pattern, structure, naming, or a user's answer to a question |
-| `deviation` | The implementation diverged from the spec or design |
+| `deviation` | The implementation diverged from the spec or plan |
 | `scope-change` | Something was added to, removed from, or moved out of scope mid-flow |
 | `blocker` | Hit something that needs resolving, outside a subagent question loop (those are `paused` command entries) |
 | `correction` | The user pointed out something was wrong, and it's being redone |

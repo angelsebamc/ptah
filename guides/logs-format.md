@@ -2,8 +2,6 @@
 
 Every command appends an entry to `LOGS.md` when it completes, pauses, or fails, and **change entries** are appended in between as work happens. All entries follow the same strict schema.
 
-Entries are written with **`ptah log`** and nothing else. The CLI validates the input against this schema, generates the heading's timestamp, and emits the fields in the canonical order, so a malformed entry cannot reach the file.
-
 This guide defines the schema. The discipline (when to log, when not to) lives in [`RULES.md`](../RULES.md) under "Logging discipline". Every fixed value — statuses, change types, triggers, verdicts — is defined in [`vocabulary.md`](./vocabulary.md).
 
 ---
@@ -22,6 +20,7 @@ This guide defines the schema. The discipline (when to log, when not to) lives i
 
 1. **Heading** — `H2` (`##`), exact format: `<YYYY-MM-DD HH:MM:SS> — /<command> <status>`
    - Date and time use 24-hour local time, e.g. `2026-05-08 14:32:07`
+   - Get the timestamp from the shell with `date '+%Y-%m-%d %H:%M:%S'` right before appending. Never write one from memory or copy it from an earlier entry
    - `<status>` is a **command status** from `vocabulary.md`
 2. **Body** — unordered list (`-`), one field per line, in the order defined below
 3. **One line per value** — no value spans lines, is empty, or has leading or trailing whitespace; lists inside a value are comma-separated
@@ -43,7 +42,6 @@ This guide defines the schema. The discipline (when to log, when not to) lives i
 | `Known issues`, `New issues found` | `no`, or `yes — <note>` |
 | `Files touched` | comma-separated paths, or `none` |
 | `Source` | a ticket id, or `none` |
-| `Base` | `<branch> @ <short-sha>` |
 | `Mode` | a fix mode from `vocabulary.md` |
 | `Verdict` | a verdict from `vocabulary.md` that is valid for the command |
 | `Minor fixed` | a count, or `skipped — not in scope` |
@@ -100,7 +98,7 @@ Written when a subagent returns `error` or a malformed result. No artifact is wr
 - Suggestions (count)
 - Acceptance criteria (`X of Y met`)
 - Verdict (`fix-needed` or `ready-to-document`)
-- Next step (`/fix` or `/document`)
+- Next step (`/fix`)
 
 ### `/fix completed`
 - Mode (`auto`, `plan`, or `interactive`)
@@ -110,31 +108,7 @@ Written when a subagent returns `error` or a malformed result. No artifact is wr
 - Suggestions fixed (count, or `none`)
 - Skipped by user (count, or `none` — includes findings marked already fixed)
 - New issues found (`yes — <note>` or `no`)
-- Next step (`/document`)
-
-### `/fix completed (pass <N>)`
-
-`/fix --review <name>`, written to `.ptah/reviews/<review-name>/LOGS.md`. Same fields as `/fix completed`, except:
-
-- Next step (`/review <target> --name <review-name>`)
-
-### `/document completed`
-- Summary file written (`FINAL.md`)
-- Next step (`none — workflow complete`)
-
-### `/review completed (pass <N>)`
-
-Written to `.ptah/reviews/<review-name>/LOGS.md`, never to a spec's `LOGS.md`. A failed review carries only the `failed` fields.
-
-- Target
-- Base (`<branch> @ <short-sha>`)
-- Source (ticket ID or `none`)
-- Blockers (count)
-- Major (count)
-- Minor (count)
-- Suggestions (count)
-- Verdict (`request-changes`, `approve-with-minors`, or `approve`)
-- Next step
+- Next step (`/review`)
 
 ---
 
@@ -183,7 +157,7 @@ All five fields are required, in the order shown. `Next step:` is **not** includ
 - Type: scope-change
 - What: archived accounts are excluded from net worth and hidden by default
 - Why: resolves "should archived accounts still count toward net worth?"
-- Impact: plan.md updated, the schema needs an `archived` column
+- Impact: PLAN.md updated, the schema needs an `archived` column
 
 ## 2026-04-23 16:05:33 — /implement completed
 - Summary: account creation form with excluded-from-net-worth toggle
@@ -191,5 +165,5 @@ All five fields are required, in the order shown. `Next step:` is **not** includ
 - Files modified: 4
 - Deviations from plan: yes — see change entries above
 - Known issues: no
-- Next step: /code-review
+- Next step: /review
 ```

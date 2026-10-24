@@ -11,11 +11,7 @@ Orient the agent on a spec's current state at the start of a new session. Run th
 
 `<spec-id>` = `$ARGUMENTS[0]`
 
-When the user runs `/ptah:resume <spec-id>`, resolve `<spec-id>` to a spec folder per **Spec identifiers** — it may be a bare number, `<n>`, or a full folder name.
-
-If no matching folder exists, stop and tell the user:
-
-> "No spec found for `<spec-id>`."
+When the user runs `/ptah:resume <spec-id>`, resolve `<spec-id>` per **Spec identifiers** in `RULES.md`.
 
 ---
 

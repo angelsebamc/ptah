@@ -34,7 +34,7 @@ Returned as the subagent's final message
 4. **One line per value.** No value spans lines. Lists inside a value are comma-separated.
 5. **Every fixed value comes from `vocabulary.md`**, exactly as written there.
 6. **`###` sections appear only when they apply** — never written empty. `### Questions` appears only with `needs-input`.
-7. **Artifact blocks are named after the file they become** (`===DESIGN.md===`) and appear only with `complete`. Their content is raw markdown, written verbatim.
+7. **Artifact blocks are named after the file they become** (`===PLAN.md===`) and appear only with `complete`. Their content is raw markdown, written verbatim.
 8. **`===END===` closes every result.**
 
 ### Malformed results

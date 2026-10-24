@@ -12,7 +12,7 @@ If the current project has a Ptah config at `.ptah/ptah.yml` (relative to the pr
 Raw arguments: `$ARGUMENTS`
 
 - **Empty** → show the examples below and stop.
-- **No `=`** → the argument is a spec identifier: continue an unfinished spec (Step 3, *Continuing an unfinished spec*).
+- **No `=`** → the argument is a spec identifier: continue an unfinished spec (Step 3).
 - **Otherwise** split on the **first** `=`:
   - `key` = text before the `=`, trimmed
   - `value` = everything after the `=`, trimmed (may contain spaces). If empty, show the examples and stop.
@@ -58,18 +58,18 @@ Report back to the user what was pulled in:
 
 ## Step 3 — Create the folder structure
 
-### Continuing an unfinished spec
-
-When Step 1 got a spec identifier:
+If Step 1 got a spec identifier:
 
 1. Resolve it per **Spec identifiers** in `RULES.md`. If nothing matches, stop:
-   > "No spec found for `<spec-id>`."
+    > "No spec found for `<spec-id>`."
 2. If that folder's `SPEC.md` exists and isn't empty, stop:
-   > "Spec `<n>` already has a SPEC.md. Run `/ptah:resume <n>`."
+    > "Spec `<n>` already has a SPEC.md. Run `/ptah:resume <n>`."
 3. Otherwise use that folder as `<slug>` and skip 3a–3d — no new folder, no change to `specs.next_id`. Tell the user:
-   > "Continuing spec **`<n>`** at `.ptah/specs/<slug>/`."
+    > "Continuing spec **`<n>`** at `.ptah/specs/<slug>/`."
 
 Then go to Step 4. Ticket context isn't re-fetched, so ask every question normally.
+
+Otherwise:
 
 Read `specs.next_id` from `.ptah/ptah.yml` in the current project.
 
@@ -89,7 +89,7 @@ Create the following structure at `.ptah/specs/<slug>/`:
   SPEC.md
   PLAN.md
   IMPLEMENTATION-SUMMARY.md
-  CODE-REVIEW.md
+  REVIEW.md
   refs/
 ```
 
