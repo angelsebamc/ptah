@@ -138,19 +138,19 @@ All five fields are required, in the order shown. `Next step:` is **not** includ
 - Feature: account creation with excluded from net worth toggle
 - Source: PROJ-42
 - Key decisions: toggle defaults to false
-- Next step: /plan
+- Next step: /ptah:plan 7
 
 ## 2026-04-23 11:47:03 — /plan completed
 - Approach: new boolean field on accounts table + UI toggle in form
 - Key decisions: reuse existing form component
 - Open questions: none
-- Next step: /implement
+- Next step: /ptah:implement 7
 
 ## 2026-04-23 14:22:18 — /implement paused
 - Blocked on: whether archived accounts count toward net worth
 - Progress: form component and schema change written
 - Files touched: src/accounts/AccountForm.tsx, db/schema/0042_archived.sql
-- Next step: answer the open questions, then re-run /implement
+- Next step: answer the open questions, then re-run /ptah:implement 7
 
 ## 2026-04-23 14:25:40 — change during /implement
 - Trigger: user-request
@@ -165,5 +165,5 @@ All five fields are required, in the order shown. `Next step:` is **not** includ
 - Files modified: 4
 - Deviations from plan: yes — see change entries above
 - Known issues: no
-- Next step: /review
+- Next step: /ptah:review 7
 ```

@@ -50,7 +50,15 @@ The `Type:` field of a `LOGS.md` change entry.
 | `blocker` | Hit something that needs resolving, outside a subagent question loop (those are `paused` command entries) |
 | `correction` | The user pointed out something was wrong, and it's being redone |
 
-A subagent tags each question it returns with the change type its answer will be logged as — only `decision`, `deviation`, or `scope-change`.
+## Question tag
+
+The `[<tag>]` on each question a subagent returns with `needs-input`: the change type its answer will be logged as.
+
+| Value | Use for |
+|---|---|
+| `decision` | The answer is a choice the subagent can't make alone |
+| `deviation` | The answer approves or rejects diverging from the spec or plan |
+| `scope-change` | The answer adds to, removes from, or moves something out of scope |
 
 ## Change trigger
 

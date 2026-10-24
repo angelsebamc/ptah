@@ -1,6 +1,6 @@
 ---
 name: resume
-description: 'Orients on one Ptah spec by reading its LOGS.md and reporting the last command, changes since, artifacts produced, and the next step.'
+description: 'Orients on one Ptah spec by reading its LOGS.md and showing the last entry and where the work stands.'
 argument-hint: '<spec-id>'
 disable-model-invocation: true
 ---
@@ -26,25 +26,8 @@ If `LOGS.md` is empty or missing, the spec conversation was never finished. Tell
 Then stop.
 
 Otherwise, identify:
-- **The last command entry** (`/<command> completed | paused | failed`).
-- **All change entries since that last command entry** — decisions, deviations, and corrections from the most recent step
-- **Counts** of command entries and change entries in the whole file
-
----
-
-## Step 3 — Inventory artifacts and refs
-
-Derive which artifacts have been produced from the command entries in `LOGS.md` — not by opening the files:
-
-| Command logged as completed | Artifact produced |
-|---|---|
-| `/spec` | `SPEC.md` |
-| `/plan` | `PLAN.md` |
-| `/implement` | `IMPLEMENTATION-SUMMARY.md` |
-| `/review` | `REVIEW.md` |
-| `/fix` | `REVIEW.md` (fix summary appended) |
-
-List the filenames in the spec folder's `refs/` with `Glob`. Filenames only — do not open them.
+- **The last entry** in the file, command or change.
+- **The last command entry** (`/<command> completed | paused | failed`) and the change entries after it. The `Where you are:` line is built from these, even when the last entry is a change entry.
 
 ### Do not
 
@@ -55,32 +38,30 @@ List the filenames in the spec folder's `refs/` with `Glob`. Filenames only — 
 
 ---
 
-## Step 4 — Print the summary
+## Step 3 — Print the summary
 
-Use this exact format — the header shows the spec's **number only**, never the slug or full folder name:
+Print exactly two lines, with a blank line between them:
 
 ```
-Resumed <n>
+Last entry: <HH:MM> <type> — <what>
 
-History: LOGS.md (<count> command entries, <count> change entries)
-Artifacts: <comma-separated artifact filenames from Step 3>
-Refs: <comma-separated refs/ filenames, or "none">
-
-Last command:
-## <heading line, verbatim>
-- <fields, verbatim>
-
-Changes since then:
-- <HH:MM> <type> — <the entry's "What:" value>
-
-(One line per change entry since the last command. If none: "None.")
-
-Where you are: <one-line synthesis based on the last command's "Next step:" field>
+Where you are: <one-line synthesis>
 ```
+
+`<HH:MM>` is the time from the last entry's heading. `<type>` and `<what>` depend on the entry:
+
+| Last entry | `<type>` | `<what>` |
+|---|---|---|
+| change entry | its `Type:` | its `What:` |
+| `completed` command entry | `/<command> completed` | its `Next step:` |
+| `paused` command entry | `/<command> paused` | its `Blocked on:` |
+| `failed` command entry | `/<command> failed` | its `Reason:` |
+
+Show nothing else from `LOGS.md` — no other entries, counts, artifacts, or refs.
 
 ### Rules for the synthesis line
 
-The `Where you are:` line is the only piece of original prose in the response. Keep it to one sentence, and reference the next command by number. Examples:
+The `Where you are:` line is the only piece of original prose in the response. Base it on the last command entry's `Next step:`. Keep it to one sentence, and reference the next command by number. Examples:
 
 - `"Implementation finished. Next step: /ptah:review 7."`
 - `"Code review done with 2 blockers, 1 major. Next step: /ptah:fix 7."`
