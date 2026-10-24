@@ -4,6 +4,8 @@ Every fixed value Ptah uses — in `LOGS.md`, in subagent results, in hand-offs,
 
 Values are **kebab-case**, lowercase, and exact. A value that isn't on its list is an error, never something to coerce to the nearest match — same "hard failures over silent fallbacks" principle as the rest of Ptah.
 
+The Ptah script reads these tables: each `## ` section's values are the backticked first column of its table. Keep that shape when editing.
+
 ---
 
 ## Command status
@@ -50,7 +52,15 @@ The `Type:` field of a `LOGS.md` change entry.
 | `blocker` | Hit something that needs resolving, outside a subagent question loop (those are `paused` command entries) |
 | `correction` | The user pointed out something was wrong, and it's being redone |
 
-A subagent tags each question it returns with the change type its answer will be logged as — only `decision`, `deviation`, or `scope-change`.
+## Question tag
+
+The `[<tag>]` on each question a subagent returns with `needs-input`: the change type its answer will be logged as.
+
+| Value | Use for |
+|---|---|
+| `decision` | The answer is a choice the subagent can't make alone |
+| `deviation` | The answer approves or rejects diverging from the spec or plan |
+| `scope-change` | The answer adds to, removes from, or moves something out of scope |
 
 ## Change trigger
 

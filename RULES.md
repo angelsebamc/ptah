@@ -37,7 +37,7 @@ Subagents can't talk to the user, so **Stop and ask** becomes a loop:
 
 1. The subagent hits something it would normally ask about. It stops and returns its questions, each tagged with the change-entry type the answer would be (`decision`, `deviation`, `scope-change`) — result status `needs-input`.
 2. The dispatcher logs a `/<command> paused` command entry, then asks the questions one at a time.
-3. After each answer, the dispatcher appends a change entry recording it (`Trigger: user-request`, the tagged type, `What:` the answer as a one-line decision).
+3. After each answer, the dispatcher logs a change entry recording it with `log change` (`Trigger: user-request`, the tagged type, `What:` the answer as a one-line decision).
 4. The dispatcher re-dispatches with the same prompt — just the folder path. The subagent finds the answers in `LOGS.md`, where they belong anyway.
 
 Answers go through `LOGS.md` and never through the prompt, so a re-dispatch in a later session — after the main session ended mid-loop — works exactly the same way. And because the pause is a real command entry, `/ptah:resume` shows the spec as paused, with what it's blocked on.
@@ -46,11 +46,14 @@ Subagents can't spawn subagents, so they're always dispatched from the main sess
 
 ### Handling the result
 
-Dispatching commands (`/plan`, `/implement`, `/review`) handle the subagent's result the same way. First check it against every rule in [`the result format`](${CLAUDE_PLUGIN_ROOT}/guides/result-format.md).
+Dispatching commands (`/plan`, `/implement`, `/review`) handle the subagent's result the same way:
 
-- **`complete`** — write the artifact block verbatim to the spec folder, then append `/<command> completed` per [`the logs format`](${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md), copying the result's fields and adding `Next step:`.
-- **`needs-input`** — run the loop above: append `/<command> paused` copying the result's fields verbatim, ask the `### Questions` one at a time in the order returned (reword if it reads better, but never answer, soften, or drop one), log each answer, then re-dispatch.
-- **`error`, or a malformed result** — write no artifact, append `/<command> failed`, and hand off as failed. If the result was malformed, offer to show the raw response.
+1. Write the subagent's final message, exactly as returned, to `.ptah/specs/<feature-name>/.result.md`, replacing any earlier one. Don't fix, trim, or reformat it.
+2. Run `apply-result <command> <n>`. It checks the result against [`the result format`](${CLAUDE_PLUGIN_ROOT}/guides/result-format.md), writes the artifact, and appends the `LOGS.md` entry, `Next step:` included. Never write either yourself.
+3. Act on the `Status:` it prints:
+   - **`completed`** — hand off with the printed `Artifact:` and `Next step:`.
+   - **`paused`** — run the loop above with the printed `Questions:`: ask them one at a time in that order (reword if it reads better, but never answer, soften, or drop one), log each answer, then re-dispatch.
+   - **`failed`** — hand off as failed with the logged `Reason:`. If it printed `Malformed: yes`, offer to show the raw response from `.result.md`.
 
 Then hand off per the result format.
 
@@ -58,7 +61,7 @@ Then hand off per the result format.
 
 ## Logging discipline
 
-While working on any spec, append **change entries** to the corresponding `LOGS.md` whenever a meaningful event happens mid-session — not just when a command completes.
+While working on any spec, append **change entries** to the corresponding `LOGS.md` with `log change` whenever a meaningful event happens mid-session — not just when a command completes.
 
 ### When to log
 
@@ -84,17 +87,35 @@ Every spec folder created by `/ptah:spec` is named `ptah-<n>-<slug>`, e.g. `ptah
 
 ### Resolving an identifier
 
-Every command that takes a `<spec-id>` accepts a bare number (`3`), a prefixed number (`ptah-3`), or the full folder name (`ptah-3-user-login`). Resolve it in this order:
-
-1. If it matches a folder name in `.ptah/specs/` exactly, use it.
-2. Otherwise, strip a leading `ptah-`, take the leading number, and glob `.ptah/specs/ptah-<n>-*`. If exactly one folder matches, use it.
-3. Otherwise, stop: "No spec found for `<spec-id>`."
+Every command that takes a `<spec-id>` accepts a bare number (`3`), a prefixed number (`ptah-3`), or the full folder name (`ptah-3-user-login`). Resolve it with `resolve <spec-id>`, which prints the folder name: an exact folder name match first, then the one folder matching `ptah-<n>-*`. If it prints `No spec found for <spec-id>.`, stop with that message.
 
 Commands refer to the resolved folder as `<feature-name>`.
 
 ### Displaying an identifier
 
 In output shown to the user — hand-offs, `Next:` lines, `/ptah:resume`'s header — show **only the number**, e.g. `/ptah:plan 3`. File paths the user is meant to open are the exception: they use the full folder name.
+
+---
+
+## Ptah script
+
+Deterministic steps — spec numbers, spec resolution, result checking, `LOGS.md` entries — are done by the Ptah script, never by hand. Run it from the project root with the Bash tool:
+
+```
+bash "${CLAUDE_PLUGIN_ROOT}/scripts/ptah" <subcommand> ...
+```
+
+| Subcommand | Does |
+|---|---|
+| `new-spec <feature-name>` | Takes the next number from `specs.next_id`, creates `.ptah/specs/ptah-<n>-<slug>/`, bumps the counter. Prints `<n> <folder>` |
+| `resolve <spec-id>` | Prints the spec's folder name |
+| `apply-result <command> <n>` | Checks `.result.md`, writes the artifact, appends the command entry. See **Handling the result** |
+| `log command <n> <command> <status> '<Field>: <value>'...` | Appends a command entry. Fields in the order `logs-format.md` lists them, `Next step:` last |
+| `log change <n> <command> '<Field>: <value>'...` | Appends a change entry |
+| `resume <spec-id>` | Prints the last `LOGS.md` entry as one line |
+
+- Pass each field as its own single-quoted argument. Inside it, write a `'` as `'\''`.
+- A non-zero exit means nothing was written. Relay the message and stop — never work around the script or write what it refused.
 
 ---
 
@@ -120,6 +141,7 @@ Two roots, never mixed.
 | `${CLAUDE_PLUGIN_ROOT}/guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md` |
 | `${CLAUDE_PLUGIN_ROOT}/skills/<command>/` | One skill per command, invoked as `/ptah:<command>` |
 | `${CLAUDE_PLUGIN_ROOT}/agents/` | Subagents, dispatched as `ptah:architect`, `ptah:implementer`, `ptah:reviewer`. See **Delegated work** |
+| `${CLAUDE_PLUGIN_ROOT}/scripts/ptah` | The Ptah script. See **Ptah script** |
 
 **Project files** are the work product, relative to the project root (the session's working directory):
 
@@ -127,3 +149,4 @@ Two roots, never mixed.
 |----------|---------|
 | `.ptah/ptah.yml` | Project config: `specs.next_id`, `commands.fix`, `context_sources` |
 | `.ptah/specs/ptah-<n>-<slug>/` | Per-feature work product (created by `/ptah:spec`) |
+| `.ptah/specs/ptah-<n>-<slug>/.result.md` | The last subagent result, raw. Read by `apply-result` |

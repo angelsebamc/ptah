@@ -33,8 +33,7 @@ Implement the Ptah spec at .ptah/specs/<feature-name>/
 
 ## Step 3 — Handle the result
 
-Per **Handling the result** in `RULES.md`:
+Per **Handling the result** in `RULES.md`, with `apply-result implement <n>`:
 
-- **`complete`** — write the `===IMPLEMENTATION-SUMMARY.md===` block to `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md`. `Next step: /ptah:review <n>`.
-- **`needs-input`** — work the subagent already finished is on disk. If an answer changes the plan itself, update `PLAN.md` to match before re-dispatching, and say so in the change entry's `Impact:`.
-- **`error` / malformed** — as in the rule. When handing off, add that code may have changed on disk.
+- **`paused`** — work the subagent already finished is on disk. If an answer changes the plan itself, update `PLAN.md` to match before re-dispatching, and say so in the change entry's `Impact:`.
+- **`failed`** — when handing off, add that code may have changed on disk.

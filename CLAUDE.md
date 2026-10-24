@@ -4,13 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, from spec to PR. Ptah is the methodology; the agent harness and the LLM are underneath it. The repo has no application code and no build, lint, or test tooling — it's Markdown prompts plus one SessionStart hook. Editing Ptah means editing the instructions an agent follows. This repo does not use Ptah on itself.
+Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, from spec to PR. Ptah is the methodology; the agent harness and the LLM are underneath it. The repo has no application code and no build, lint, or test tooling — it's Markdown prompts, one SessionStart hook, and one bash script for the deterministic steps. Editing Ptah means editing the instructions an agent follows. This repo does not use Ptah on itself.
 
 ### Testing a change
 
 - Load the plugin into a scratch project and run the commands: `claude --plugin-dir /path/to/ptah`.
 - Check the hook on its own: `CLAUDE_PLUGIN_ROOT=$PWD bash hooks/session-start.sh` — every `${CLAUDE_PLUGIN_ROOT}` in the output should be an absolute path.
 - The hook runs only at session start, so a change to `RULES.md` or the hook needs a new session to show up.
+- Run the script from a scratch project root: `bash /path/to/ptah/scripts/ptah new-spec demo`, then `resolve`, `log`, `apply-result` (write a `.result.md` by hand first), and `resume`. After editing a table in `vocabulary.md` or `logs-format.md`, run `log` and `apply-result` against it once.
 
 ## Layout
 
@@ -23,6 +24,14 @@ Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, f
   - `logs-format.md` — the `LOGS.md` entry schema, per-command fields in order, change entries.
 - `skills/<command>/SKILL.md` — one user-invoked command each: `init`, `spec`, `plan`, `implement`, `review`, `fix`, `resume`.
 - `agents/` — `architect` (plans), `implementer` (writes code), `reviewer` (read-only: `Read, Grep, Glob`).
+- `scripts/ptah` — bash + POSIX awk. Does the deterministic steps skills would otherwise do by hand: `new-spec`, `resolve`, `apply-result`, `log`, `resume`. It's the only entry point: it parses the subcommand and sources `scripts/lib/`, one file per concern:
+  - `schema.sh` — reads fixed values from `vocabulary.md` and entry fields from the tables in `logs-format.md`, so the script has no schema of its own. The only file that knows those guides' layout.
+  - `specs.sh` — `resolve`, `new-spec`, the `specs.next_id` counter in `ptah.yml`.
+  - `logs.sh` — the `LOGS.md` layout: appending entries, reading them back (`read_entries`), `log`.
+  - `result.sh` — `apply-result`, including workflow routing (artifact name per command, `Next step:`).
+  - `resume.sh` — `resume`, formatting only.
+
+  Each data format is read and written by exactly one lib file; others call its functions. The lib files share the globals and `die` defined in `scripts/ptah`, so none runs on its own.
 
 ## Workflow
 
@@ -32,7 +41,7 @@ Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, f
 
 - `init` writes `commands.fix` to `.ptah/ptah.yml` in the target project.
 - `spec` creates `.ptah/specs/ptah-<n>-<slug>/`, numbered from `specs.next_id`, and fills `SPEC.md` one question at a time — optionally pre-filled from a ticket via an MCP source in `context_sources`.
-- `plan`, `implement`, `review` are **thin dispatchers**. Each resolves the spec, dispatches its subagent with *only the folder path* as the prompt, validates the result, writes the artifact block verbatim (`PLAN.md`, `IMPLEMENTATION-SUMMARY.md`, `REVIEW.md`), and appends the `LOGS.md` entry. Shared handling lives in **Handling the result** in `RULES.md`; each skill states only its differences.
+- `plan`, `implement`, `review` are **thin dispatchers**. Each resolves the spec, dispatches its subagent with *only the folder path* as the prompt, saves the raw result to `.result.md`, and runs `apply-result`, which validates it, writes the artifact block verbatim (`PLAN.md`, `IMPLEMENTATION-SUMMARY.md`, `REVIEW.md`), and appends the `LOGS.md` entry. Shared handling lives in **Handling the result** in `RULES.md`; each skill states only its differences.
 - On `needs-input`, the dispatcher logs `paused`, asks the questions one at a time, logs each answer as a change entry, and re-dispatches with the same path. Answers travel through `LOGS.md`, never the prompt — so a re-dispatch in a later session works the same way.
 - `fix` applies `REVIEW.md` findings by code (`B1`, `M2`, …) in `auto`, `plan` (default), or `interactive` mode, then routes back to `review`. An `approved` review ends the pipeline.
 - `resume` reads only `LOGS.md` and reports where a spec stands. It writes nothing.
@@ -44,7 +53,7 @@ These are why the files look the way they do. Keep them when editing.
 - **One job per command.** `implement` doesn't review or open PRs; `review` never touches code. A new responsibility is a new command.
 - **Never auto-advance.** Every skill sets `disable-model-invocation: true` and ends with a hand-off naming the next command. The user runs it.
 - **Isolated review.** The reviewer gets a fresh context and the folder path only. An agent reviewing work from its own conversation keeps rationalizations that never reached the artifacts. Never pass a subagent conversation context, summaries, or explanations on anyone's behalf.
-- **Judgment for the agent, determinism for tooling.** No scripts ship today, so deterministic steps are pinned down in the prompts instead: spec numbers come from `specs.next_id`, never from scanning folders, and are never reused; `LOGS.md` timestamps come from `date '+%Y-%m-%d %H:%M:%S'`, never from memory.
+- **Judgment for the agent, determinism for tooling.** Anything with one correct answer goes in `scripts/ptah`: spec numbers (from `specs.next_id`, never from scanning folders, never reused), spec resolution, result validation, `LOGS.md` timestamps and entry format. Prompts decide *what* to log and ask; the script decides whether it's well-formed. Agents never hand-write what the script owns.
 - **Hard failures over silent fallbacks.** A missing artifact, missing ticket, missing MCP server, malformed result, or value outside `vocabulary.md` stops the command. The dispatcher never patches or guesses at a malformed result — it logs `failed`.
 - **Artifact preconditions.** Each command checks the previous phase's artifact exists and isn't empty before doing anything.
 - **`LOGS.md` is the resume mechanism and the audit trail.** Strict schema so agents can parse it, bullets in plain language so a developer can trace the agent's reasoning.
@@ -59,6 +68,7 @@ These are why the files look the way they do. Keep them when editing.
 ## Editing conventions
 
 - **Change a field, status, or value everywhere at once.** Field names are shared by subagent results, `LOGS.md` entries, and hand-offs so data moves by copying. Update `vocabulary.md` first, then `logs-format.md` (per-command fields), `result-format.md` (per-command table), the agent's result template, and the dispatching skill.
+- **The script parses two guides.** In `vocabulary.md`, each `## ` section's values are the backticked first column of its table, and section names are referenced from `logs-format.md`. In `logs-format.md`, each `### \`<heading>\`` has a `| Field | Value |` table in the shape grammar that guide defines. Keep notes out of the tables.
 - **Define once, reference by name.** A fixed value lives only in `vocabulary.md`; a cross-cutting rule lives only in `RULES.md`. Skills point to sections by name ("per **Spec identifiers** in `RULES.md`") instead of restating them. Renaming a `RULES.md` section means grepping `skills/` and `agents/` for it.
 - **Naming.** User-facing text (hand-offs, `Next:` lines, errors) uses `/ptah:<command> <n>` with the bare spec number. `LOGS.md` headings use the unprefixed `/<command>`. File paths the user opens use the full folder name.
 - **Two roots, never mixed.** Plugin files via `${CLAUDE_PLUGIN_ROOT}/...`; work product relative to the target project root (`.ptah/...`).
@@ -67,13 +77,13 @@ These are why the files look the way they do. Keep them when editing.
 
 ## Not built yet
 
-- `/ptah:ship` — commit and open the PR, as its own command. When it lands, `approved`'s next step becomes `/ptah:ship <n>` in `vocabulary.md`, `logs-format.md`, and `skills/review/SKILL.md`.
+- `/ptah:ship` — commit and open the PR, as its own command. When it lands, `approved`'s next step becomes `/ptah:ship <n>` in `vocabulary.md`, `logs-format.md`, `skills/review/SKILL.md`, and `apply-result` in `scripts/lib/result.sh`.
 - `/ptah:status` — overview of every spec's state (states are already defined in `vocabulary.md`).
 - A second harness adapter (Devin). Keep Claude Code specifics confined to frontmatter, `${CLAUDE_PLUGIN_ROOT}`, `$ARGUMENTS`, and the hook, so the prompt bodies stay portable.
 
 ## Line endings
 
-Commit with LF. Windows checkouts may show every file as modified — use `git diff --ignore-cr-at-eol`. `hooks/session-start.sh` must stay LF-only: bash fails on CRLF.
+Commit with LF. Windows checkouts may show every file as modified — use `git diff --ignore-cr-at-eol`. `hooks/session-start.sh` and `scripts/ptah` must stay LF-only: bash fails on CRLF. `.gitattributes` pins both.
 
 ## Working on this repo
 

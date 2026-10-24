@@ -33,13 +33,4 @@ Review the Ptah spec at .ptah/specs/<feature-name>/
 
 ## Step 3 — Handle the result
 
-Per **Handling the result** in `RULES.md`. The reviewer never returns `needs-input`.
-
-- **`complete`** — write the `===REVIEW.md===` block to `.ptah/specs/<feature-name>/REVIEW.md`. Take `Next step:` from the verdict:
-
-  | Verdict | `Next step:` |
-  |---|---|
-  | `fix-needed` | `/ptah:fix <n>` |
-  | `approved` | `none — review clean` |
-
-- **`error` / malformed** — as in the rule.
+Per **Handling the result** in `RULES.md`, with `apply-result review <n>`. The reviewer never returns `needs-input`, so a `needs-input` result is logged as malformed. `Next step:` follows the verdict: `/ptah:fix <n>` for `fix-needed`, `none — review clean` for `approved`.

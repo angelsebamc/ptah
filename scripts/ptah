@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Ptah's deterministic steps. Skills run it from the target project root:
+#   bash "${CLAUDE_PLUGIN_ROOT}/scripts/ptah" <subcommand> ...
+# Fixed values come from guides/vocabulary.md and entry fields from the tables
+# in guides/logs-format.md. Plain bash and POSIX awk only. This file parses the
+# subcommand; the work is in lib/, one file per concern.
+set -euo pipefail
+
+ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+VOCAB="$ROOT/guides/vocabulary.md"
+LOGFMT="$ROOT/guides/logs-format.md"
+SPECS=.ptah/specs
+CONFIG=.ptah/ptah.yml
+
+die() { printf '%s\n' "$*" >&2; exit 1; }
+
+usage() {
+  cat >&2 <<'EOF'
+usage: ptah <subcommand> ...
+  new-spec <feature-name>                  create the next numbered spec folder
+  resolve <spec-id>                        print the spec's folder name
+  apply-result <command> <spec-id>         validate .result.md, write the artifact, log the entry
+  log command <spec-id> <command> <status> '<Field>: <value>'...
+  log change <spec-id> <command> '<Field>: <value>'...
+  resume <spec-id>                         print the last LOGS.md entries
+EOF
+  exit 1
+}
+
+LIB="$ROOT/scripts/lib"
+. "$LIB/schema.sh"
+. "$LIB/specs.sh"
+. "$LIB/logs.sh"
+. "$LIB/result.sh"
+. "$LIB/resume.sh"
+
+case ${1:-} in
+  new-spec) shift; cmd_new_spec "$@" ;;
+  resolve) shift; resolve "$@" ;;
+  apply-result) shift; cmd_apply_result "$@" ;;
+  log) shift; cmd_log "$@" ;;
+  resume) shift; cmd_resume "$@" ;;
+  *) usage ;;
+esac

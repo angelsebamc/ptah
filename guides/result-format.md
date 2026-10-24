@@ -30,7 +30,7 @@ Returned as the subagent's final message
 
 1. **Nothing outside the blocks.** No preamble before `===RESULT===`, nothing after `===END===`.
 2. **`Status:` is always the first bullet.**
-3. **The fields after it are the `LOGS.md` fields for the entry that status produces** — `completed`, `paused`, or `failed` (see the mapping in `vocabulary.md` and the per-command fields below). Same names, same order. The dispatcher adds the fields it owns (always `Next step:`, plus a few per command) and copies the rest verbatim.
+3. **The fields after it are the `LOGS.md` fields for the entry that status produces** — `completed`, `paused`, or `failed` (see the mapping in `vocabulary.md` and the per-command fields below). Same names, same order, minus `Next step:`, which `apply-result` adds. Everything else is copied verbatim.
 4. **One line per value.** No value spans lines. Lists inside a value are comma-separated.
 5. **Every fixed value comes from `vocabulary.md`**, exactly as written there.
 6. **`###` sections appear only when they apply** — never written empty. `### Questions` appears only with `needs-input`.
@@ -39,17 +39,17 @@ Returned as the subagent's final message
 
 ### Malformed results
 
-A result is malformed if any rule above is broken: text outside the blocks, `Status:` missing or not first, a required field missing, a value outside its vocabulary, a missing artifact block on `complete`, or no `===END===`.
+A result is malformed if any rule above is broken: text outside the blocks, `Status:` missing or not first, a required field missing, a value outside its vocabulary, a missing artifact block on `complete`, a question without a question tag, or no `===END===`. Blank lines before `===RESULT===` and after `===END===` are allowed.
 
-The dispatcher never guesses or patches a malformed result. It treats it exactly like `Status: error` — logs a `failed` entry with `Reason: malformed result — <what was wrong>`, writes no artifact.
+`apply-result` does this check (see **Ptah script** in `RULES.md`). A malformed result is never guessed at or patched. It's treated exactly like `Status: error` — a `failed` entry with `Reason: malformed result — <what was wrong>`, and no artifact.
 
 ### Per-command fields
 
-| Subagent | `complete` fields | `needs-input` fields | Artifact block | Dispatcher adds |
-|---|---|---|---|---|
-| `architect` | Approach, Key decisions, Open questions | Blocked on, Progress, Files touched | `===PLAN.md===` | Next step |
-| `implementer` | Summary, Files created, Files modified, Deviations from plan, Known issues | Blocked on, Progress, Files touched | `===IMPLEMENTATION-SUMMARY.md===` | Next step |
-| `reviewer` | Blockers, Major, Minor, Suggestions, Acceptance criteria, Verdict | — | `===REVIEW.md===` | Next step |
+| Subagent | `complete` fields | `needs-input` fields | Artifact block |
+|---|---|---|---|
+| `architect` | Approach, Key decisions, Open questions | Blocked on, Progress, Files touched | `===PLAN.md===` |
+| `implementer` | Summary, Files created, Files modified, Deviations from plan, Known issues | Blocked on, Progress, Files touched | `===IMPLEMENTATION-SUMMARY.md===` |
+| `reviewer` | Blockers, Major, Minor, Suggestions, Acceptance criteria, Verdict | — | `===REVIEW.md===` |
 
 `error` always carries exactly one field: `Reason: <one line>`.
 

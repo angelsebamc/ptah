@@ -4,6 +4,8 @@ Every command appends an entry to `LOGS.md` when it completes, pauses, or fails,
 
 This guide defines the schema. The discipline (when to log, when not to) lives in [`RULES.md`](../RULES.md) under "Logging discipline". Every fixed value — statuses, change types, triggers, verdicts — is defined in [`vocabulary.md`](./vocabulary.md).
 
+Entries are appended only through the Ptah script (see **Ptah script** in `RULES.md`), which reads the field tables below and refuses an entry that doesn't match them.
+
 ---
 
 ## Required structure
@@ -19,10 +21,9 @@ This guide defines the schema. The discipline (when to log, when not to) lives i
 ## Rules
 
 1. **Heading** — `H2` (`##`), exact format: `<YYYY-MM-DD HH:MM:SS> — /<command> <status>`
-   - Date and time use 24-hour local time, e.g. `2026-05-08 14:32:07`
-   - Get the timestamp from the shell with `date '+%Y-%m-%d %H:%M:%S'` right before appending. Never write one from memory or copy it from an earlier entry
+   - Date and time use 24-hour local time, e.g. `2026-05-08 14:32:07`, taken from the clock by the script when the entry is appended
    - `<status>` is a **command status** from `vocabulary.md`
-2. **Body** — unordered list (`-`), one field per line, in the order defined below
+2. **Body** — unordered list (`-`), one field per line, in the order of the command's table below
 3. **One line per value** — no value spans lines, is empty, or has leading or trailing whitespace; lists inside a value are comma-separated
 4. **Last field** — must always be `Next step:` for command entries (change entries are exempt — see below)
 5. **Separator** — one blank line between entries, no horizontal rules
@@ -31,21 +32,16 @@ This guide defines the schema. The discipline (when to log, when not to) lives i
 
 ---
 
-### Value shapes
+## Field tables
 
-| Field | Shape |
-|---|---|
-| Counts | digits only, e.g. `3` |
-| `Open questions` | a count, or `none` |
-| `Acceptance criteria` | `<X> of <Y> met` |
-| `Deviations from plan` | `no`, or `yes — see change entries above` |
-| `Known issues`, `New issues found` | `no`, or `yes — <note>` |
-| `Files touched` | comma-separated paths, or `none` |
-| `Source` | a ticket id, or `none` |
-| `Mode` | a fix mode from `vocabulary.md` |
-| `Verdict` | a verdict from `vocabulary.md` that is valid for the command |
-| `Minor fixed` | a count, or `skipped — not in scope` |
-| `Suggestions fixed`, `Skipped by user` | a count, or `none` |
+Each `### ` heading below has a `| Field | Value |` table, which the script parses. The **Value** column lists the accepted values, separated by `,` or `or`. Each one is:
+
+- `text` — any one-line value
+- `count` — digits only, e.g. `3`
+- a section name from `vocabulary.md` (e.g. `fix mode`) — one of that section's values
+- a value in backticks — exactly that text, where `<count>` stands for digits and any other `<...>` for any text
+
+Keep the tables in this shape: field names and values only, notes go in the text under the table.
 
 ---
 
@@ -54,61 +50,90 @@ This guide defines the schema. The discipline (when to log, when not to) lives i
 These two have the same fields whichever command wrote them.
 
 ### `/<command> paused`
-- Blocked on (one line — what needs the user's input)
-- Progress (one line — what's finished so far, or `none`)
-- Files touched (comma-separated paths, or `none`)
-- Next step (`answer the open questions, then re-run /<command>`)
+
+| Field | Value |
+|---|---|
+| Blocked on | text |
+| Progress | text |
+| Files touched | text |
+| Next step | text |
+
+`Blocked on` is what needs the user's input. `Progress` is what's finished so far, or `none`. `Files touched` is comma-separated paths, or `none`. `Next step` is `answer the open questions, then re-run /ptah:<command> <n>`.
 
 Written by `/plan` and `/implement` when their subagent returns `needs-input`. The user's answers follow as `decision` / `deviation` / `scope-change` change entries, and a re-run picks up from there.
 
 ### `/<command> failed`
-- Reason (one line)
-- Next step (`re-run /<command>`, or what to fix first)
 
-Written when a subagent returns `error` or a malformed result. No artifact is written for a failed run.
+| Field | Value |
+|---|---|
+| Reason | text |
+| Next step | text |
+
+`Next step` is `re-run /ptah:<command> <n>`, or what to fix first. Written when a subagent returns `error` or a malformed result. No artifact is written for a failed run.
 
 ---
 
-## `completed` — per-command fields (required, in order)
+## `completed` — per command
 
 ### `/spec completed`
-- Feature
-- Source (ticket ID or `none`)
-- Key decisions
-- Next step
+
+| Field | Value |
+|---|---|
+| Feature | text |
+| Source | text |
+| Key decisions | text |
+| Next step | text |
+
+`Source` is the ticket ID, or `none`.
 
 ### `/plan completed`
-- Approach
-- Key decisions
-- Open questions (count or `none`)
-- Next step
+
+| Field | Value |
+|---|---|
+| Approach | text |
+| Key decisions | text |
+| Open questions | count, or `none` |
+| Next step | text |
 
 ### `/implement completed`
-- Summary
-- Files created (count)
-- Files modified (count)
-- Deviations from plan (`yes — see change entries above` or `no`)
-- Known issues (`yes — <note>` or `no`)
-- Next step
+
+| Field | Value |
+|---|---|
+| Summary | text |
+| Files created | count |
+| Files modified | count |
+| Deviations from plan | `no`, or `yes — see change entries above` |
+| Known issues | `no`, or `yes — <note>` |
+| Next step | text |
 
 ### `/review completed`
-- Blockers (count)
-- Major (count)
-- Minor (count)
-- Suggestions (count)
-- Acceptance criteria (`X of Y met`)
-- Verdict (`fix-needed` or `approved`)
-- Next step (`/fix`, or `none — review clean`)
+
+| Field | Value |
+|---|---|
+| Blockers | count |
+| Major | count |
+| Minor | count |
+| Suggestions | count |
+| Acceptance criteria | `<count> of <count> met` |
+| Verdict | review verdict |
+| Next step | text |
+
+`Next step` is `/ptah:fix <n>` for `fix-needed`, `none — review clean` for `approved`.
 
 ### `/fix completed`
-- Mode (`auto`, `plan`, or `interactive`)
-- Blockers fixed (count)
-- Major issues fixed (count)
-- Minor fixed (count, or `skipped — not in scope`)
-- Suggestions fixed (count, or `none`)
-- Skipped by user (count, or `none` — includes findings marked already fixed)
-- New issues found (`yes — <note>` or `no`)
-- Next step (`/review`)
+
+| Field | Value |
+|---|---|
+| Mode | fix mode |
+| Blockers fixed | count |
+| Major issues fixed | count |
+| Minor fixed | count, or `skipped — not in scope` |
+| Suggestions fixed | count, or `none` |
+| Skipped by user | count, or `none` |
+| New issues found | `no`, or `yes — <note>` |
+| Next step | text |
+
+`Skipped by user` includes findings marked already fixed. `Next step` is `/ptah:review <n>`.
 
 ---
 
@@ -127,6 +152,16 @@ Heading uses `change during /<command>` instead of `<command> <status>`:
 - Impact: <files, decisions, or downstream steps affected; or "none">
 ```
 
+### `change during /<command>`
+
+| Field | Value |
+|---|---|
+| Trigger | change trigger |
+| Type | change type |
+| What | text |
+| Why | text |
+| Impact | text |
+
 All five fields are required, in the order shown. `Next step:` is **not** included — change entries record what happened, they don't move the workflow forward.
 
 ---
@@ -138,19 +173,19 @@ All five fields are required, in the order shown. `Next step:` is **not** includ
 - Feature: account creation with excluded from net worth toggle
 - Source: PROJ-42
 - Key decisions: toggle defaults to false
-- Next step: /plan
+- Next step: /ptah:plan 7
 
 ## 2026-04-23 11:47:03 — /plan completed
 - Approach: new boolean field on accounts table + UI toggle in form
 - Key decisions: reuse existing form component
 - Open questions: none
-- Next step: /implement
+- Next step: /ptah:implement 7
 
 ## 2026-04-23 14:22:18 — /implement paused
 - Blocked on: whether archived accounts count toward net worth
 - Progress: form component and schema change written
 - Files touched: src/accounts/AccountForm.tsx, db/schema/0042_archived.sql
-- Next step: answer the open questions, then re-run /implement
+- Next step: answer the open questions, then re-run /ptah:implement 7
 
 ## 2026-04-23 14:25:40 — change during /implement
 - Trigger: user-request
@@ -165,5 +200,5 @@ All five fields are required, in the order shown. `Next step:` is **not** includ
 - Files modified: 4
 - Deviations from plan: yes — see change entries above
 - Known issues: no
-- Next step: /review
+- Next step: /ptah:review 7
 ```

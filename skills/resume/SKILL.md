@@ -1,50 +1,24 @@
 ---
 name: resume
-description: 'Orients on one Ptah spec by reading its LOGS.md and reporting the last command, changes since, artifacts produced, and the next step.'
+description: 'Orients on one Ptah spec by showing its last LOGS.md entries and where the work stands.'
 argument-hint: '<spec-id>'
 disable-model-invocation: true
 ---
 
 Orient the agent on a spec's current state at the start of a new session. Run this before continuing any in-flight work.
 
-## Step 1 — Locate the spec
+## Step 1 — Read the spec's state
 
 `<spec-id>` = `$ARGUMENTS[0]`
 
-When the user runs `/ptah:resume <spec-id>`, resolve `<spec-id>` per **Spec identifiers** in `RULES.md`.
+Run `resume <spec-id>` (per **Ptah script** in `RULES.md`). It reads the spec's `LOGS.md` — this is how `/resume` applies **Always read LOGS.md first** — and prints the last entry as `Last entry: <line>`, where `<line>` is:
 
----
+- for a change entry: `<HH:MM> <type> — <What:>`
+- for a command entry: `<HH:MM> /<command> <status> — <Next step:>`, or `<Blocked on:>` when paused, `<Reason:>` when failed
 
-## Step 2 — Read the session history
+If the last entry is a change entry, it has no next step. Read the last command entry in `LOGS.md` yourself to write the `Where you are:` line, but don't print that entry.
 
-Apply the **Always read LOGS.md first** rule from `RULES.md`: read the full `LOGS.md` for the resolved spec folder.
-
-If `LOGS.md` is empty or missing, the spec conversation was never finished. Tell the user:
-
-> "Spec `<n>` was started but its SPEC.md was never written. Next step: `/ptah:spec <n>` to continue it."
-
-Then stop.
-
-Otherwise, identify:
-- **The last command entry** (`/<command> completed | paused | failed`).
-- **All change entries since that last command entry** — decisions, deviations, and corrections from the most recent step
-- **Counts** of command entries and change entries in the whole file
-
----
-
-## Step 3 — Inventory artifacts and refs
-
-Derive which artifacts have been produced from the command entries in `LOGS.md` — not by opening the files:
-
-| Command logged as completed | Artifact produced |
-|---|---|
-| `/spec` | `SPEC.md` |
-| `/plan` | `PLAN.md` |
-| `/implement` | `IMPLEMENTATION-SUMMARY.md` |
-| `/review` | `REVIEW.md` |
-| `/fix` | `REVIEW.md` (fix summary appended) |
-
-List the filenames in the spec folder's `refs/` with `Glob`. Filenames only — do not open them.
+If it prints that the spec's SPEC.md was never written, relay that message and stop.
 
 ### Do not
 
@@ -55,27 +29,14 @@ List the filenames in the spec folder's `refs/` with `Glob`. Filenames only — 
 
 ---
 
-## Step 4 — Print the summary
+## Step 2 — Print the summary
 
-Use this exact format — the header shows the spec's **number only**, never the slug or full folder name:
+Print the script's output unchanged, then a blank line and the `Where you are:` line:
 
 ```
-Resumed <n>
+<the script's lines, verbatim>
 
-History: LOGS.md (<count> command entries, <count> change entries)
-Artifacts: <comma-separated artifact filenames from Step 3>
-Refs: <comma-separated refs/ filenames, or "none">
-
-Last command:
-## <heading line, verbatim>
-- <fields, verbatim>
-
-Changes since then:
-- <HH:MM> <type> — <the entry's "What:" value>
-
-(One line per change entry since the last command. If none: "None.")
-
-Where you are: <one-line synthesis based on the last command's "Next step:" field>
+Where you are: <one-line synthesis based on the last command entry's "Next step:" field>
 ```
 
 ### Rules for the synthesis line

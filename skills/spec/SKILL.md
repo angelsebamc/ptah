@@ -64,47 +64,18 @@ If Step 1 got a spec identifier:
     > "No spec found for `<spec-id>`."
 2. If that folder's `SPEC.md` exists and isn't empty, stop:
     > "Spec `<n>` already has a SPEC.md. Run `/ptah:resume <n>`."
-3. Otherwise use that folder as `<slug>` and skip 3a–3d — no new folder, no change to `specs.next_id`. Tell the user:
+3. Otherwise use that folder as `<slug>` and skip `new-spec` — no new folder, no change to `specs.next_id`. Tell the user:
     > "Continuing spec **`<n>`** at `.ptah/specs/<slug>/`."
 
 Then go to Step 4. Ticket context isn't re-fetched, so ask every question normally.
 
-Otherwise:
+Otherwise, run `new-spec <value>` (per **Ptah script** in `RULES.md`). It prints `<n> <slug>` after:
 
-Read `specs.next_id` from `.ptah/ptah.yml` in the current project.
+- taking `<n>` from `specs.next_id` in `.ptah/ptah.yml` (`1` if unset) and moving the counter to `<n + 1>`, leaving every other key untouched
+- building `<slug>` as `ptah-<n>-<kebab>`, where `<kebab>` is `value` in kebab-case
+- creating `.ptah/specs/<slug>/` with `LOGS.md`, `SPEC.md`, `PLAN.md`, `IMPLEMENTATION-SUMMARY.md`, `REVIEW.md`, and `refs/`
 
-### 3a. Get the id
-- If the file doesn't exist, or the `specs` section or `next_id` key is missing, treat the next id as `1`.
-- Otherwise, use `specs.next_id` as `<n>`.
-
-### 3b. Build the slug
-`slug` = `ptah-<n>-<kebab>`, where `<kebab>` is `value` in kebab-case (lowercase, spaces and underscores → `-`, other punctuation removed)
-
-### 3c. Create the folder
-Create the following structure at `.ptah/specs/<slug>/`:
-
-```
-.ptah/specs/<slug>/
-  LOGS.md
-  SPEC.md
-  PLAN.md
-  IMPLEMENTATION-SUMMARY.md
-  REVIEW.md
-  refs/
-```
-
-### 3d. Update the counter
-Write `specs.next_id: <n + 1>` back to `.ptah/ptah.yml` in the current project:
-
-- If `ptah.yml` didn't exist yet, create it containing just:
-```yaml
-specs:
-  next_id: <n + 1>
-```
-- If it existed but had no `specs:` section, add one.
-- Leave every other key in `ptah.yml` untouched.
-
-Never infer the next number from existing folder names. Numbers are never reused, even if a folder is deleted — the counter only moves forward.
+Numbers come only from the counter, never from existing folder names, and are never reused.
 
 Confirm to the user that the folder was created, showing both the number and the full folder name:
 
@@ -191,7 +162,7 @@ If external context was loaded and `backlink_header: true` is set in `ptah.yml`,
 
 ## Step 6 — Append to LOGS.md
 
-After writing SPEC.md, append a `/spec completed` entry to `.ptah/specs/<slug>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`
+After writing SPEC.md, log `/spec completed` with `log command <n> spec completed`, with the fields from `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md` and `Next step: /ptah:plan <n>`.
 
 ---
 

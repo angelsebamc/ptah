@@ -216,7 +216,7 @@ The Fix Summary is structurally identical across all three modes. Every finding 
 
 ### 6b. LOGS.md entry
 
-Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`, with `Next step: /ptah:review <n>`.
+Log `/fix completed` with `log command <n> fix completed`, with the fields from `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md` and `Next step: /ptah:review <n>`.
 
 ---
 
