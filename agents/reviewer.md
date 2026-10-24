@@ -60,7 +60,7 @@ Return your complete result as your final message, following every rule in `${CL
 - Minor: <count>
 - Suggestions: <count>
 - Acceptance criteria: <x> of <y> met
-- Verdict: <fix-needed | ready-to-document>
+- Verdict: <fix-needed | approved>
 ===REVIEW.md===
 # REVIEW — <feature-name>
 
@@ -91,13 +91,13 @@ Suggestion: <alternative approach>
 <Acknowledge good decisions, clean code, or solid patterns found during review>
 
 ## Verdict
-<`fix-needed` — X blockers, Y major issues | `ready-to-document` — no blockers or major issues>
+<`fix-needed` — X blockers, Y major issues | `approved` — no blockers or major issues>
 ===END===
 ````
 
 Number each severity's findings from 1, in the order they appear (`B1`, `B2`, … `M1`, …). `/fix` and the user refer to findings by these codes, so every finding gets exactly one, and a code is never reused within a review.
 
-`Verdict` is `fix-needed` if there's at least one blocker or major finding, `ready-to-document` otherwise. The counts must match the findings in `REVIEW.md` exactly.
+`Verdict` is `fix-needed` if there's at least one blocker or major finding, `approved` otherwise. The counts must match the findings in `REVIEW.md` exactly.
 
 If you can't review at all — `SPEC.md`, `PLAN.md`, or `IMPLEMENTATION-SUMMARY.md` missing or empty, or a listed file that doesn't exist — return:
 

@@ -40,27 +40,19 @@ commands:
 
 Both keys are optional. Missing keys fall back to defaults.
 
-## Step 1 — Rules
+## Step 1 — Parse command arguments
 
-`RULES.md` is injected at session start. If it isn't in your context, read `${CLAUDE_PLUGIN_ROOT}/RULES.md`.
-
-### The stop-and-ask rule always applies
-
-Regardless of mode, the **Stop and ask** rule from `RULES.md` applies — if a fix is ambiguous, could have side effects beyond scope, requires a design change, or introduces a new dependency, the agent stops and asks.
-
-## Step 2 — Parse command arguments
-
-The command takes exactly one source — a positional spec identifier (see **Spec identifiers** in `RULES.md`: bare number, `<n>`, or full folder name) plus optional flags
+The command takes exactly one source — a positional spec identifier (see **Spec identifiers** in `RULES.md`) plus optional flags.
 
 Examples:
 - `/fix 3` — uses mode from `ptah.yml`, or `plan` if no config
 - `/fix 3 -a` — applies all fixes silently this run
-- `/fix 3 -i` — asks per finding, includes minors
+- `/fix 3 -i` — asks per finding before applying it
 
 **Source errors** stop the command:
 
 - No spec identifier:
-  > "`/fix` needs exactly one source: a spec number (`/fix 3`)
+  > "`/fix` needs exactly one source: a spec number (`/fix 3`)."
 
 **Mutually-exclusive flag pairs** produce an error and stop:
 - `-a`, `-p`, `-i` (pick one)
@@ -89,23 +81,26 @@ The config file is never modified by `/fix`. Flags only affect the current run.
 
 ### Compute in-scope findings
 - Always in scope: blocker (`B`) and major (`M`) findings
+- Minor (`N`) findings: in scope only when `commands.fix.include_minor` is `true`
+- Any minor or suggestion (`S`) the user names by code in a directive: pulled into scope for this run
+- Everything else is deferred and listed under **Not in this run**
 
 ---
 
-## Step 3 — Resolve the source and read context
+## Step 3 — Resolve the spec and read context
 
-Resolve the spec identifier to a folder per **Spec identifiers** in `RULES.md`. The rest of this file uses `<feature-name>` for that resolved folder.
+Resolve `<spec-id>` per **Spec identifiers** in `RULES.md`.
 
 Read:
 
 - `.ptah/specs/<feature-name>/REVIEW.md` — the findings to fix
-- `.ptah/specs/<feature-name>/DESIGN.md` — original technical design
+- `.ptah/specs/<feature-name>/PLAN.md` — the technical plan
 - `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md` — what was built
 - `.ptah/specs/<feature-name>/LOGS.md` — session history, to understand current state
 
 If `REVIEW.md` is empty or missing, stop:
 
-> "No review found for `<spec-id>`. Run `/review <n>` first."
+> "No review found for `<spec-id>`. Run `/ptah:review <n>` first."
 
 ---
 
@@ -132,10 +127,10 @@ In `plan` and `interactive` modes, the user can steer individual findings by cod
 Apply every in-scope fix without asking. Do not narrate each fix as it happens — produce the Fix Summary at the end. The only interruption is the stop-and-ask rule for genuinely ambiguous fixes.
 
 ### `plan` mode (default)
-Before touching any code, present a fix plan. `<source>` is `<n>` for a spec, or `review <review-name>` for a review:
+Before touching any code, present a fix plan:
 
 ```
-Fix plan — <source>
+Fix plan — <n>
 
 B1 — <title>
    Change: <one-line summary of intended change>
@@ -175,19 +170,20 @@ The user can pause the loop or change direction at any point.
 
 ---
 
-## Step 6 — Rules while fixing
+## Step 5 — Rules while fixing
 
-These apply regardless of mode:
+These apply regardless of mode. Any of them hitting is a **Stop and ask** from `RULES.md`, even in `auto`:
 
 - Fix only what is documented in the findings being fixed — do not refactor unrelated code
 - If a fix requires a design change, stop and ask the user before proceeding
 - If a fix introduces a new dependency not in the original design, ask first
 - Keep fixes minimal and focused — don't improve things that aren't broken
+
 ---
 
-## Step 7 — Record the fixes
+## Step 6 — Record the fixes
 
-### 7a. Fix Summary
+### 6a. Fix Summary
 Append a **Fix Summary** to the findings file `REVIEW.md`.
 
 ```markdown
@@ -216,24 +212,22 @@ Append a **Fix Summary** to the findings file `REVIEW.md`.
 <Any new issues discovered while fixing. "None" if clean.>
 ```
 
-The Fix Summary is structurally identical across all three modes and both sources. Every finding of the fixed pass appears exactly once — under Fixed, Skipped, or Deferred.
+The Fix Summary is structurally identical across all three modes. Every finding of the fixed pass appears exactly once — under Fixed, Skipped, or Deferred.
 
-### 7b. LOGS.md entry
+### 6b. LOGS.md entry
 
-Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`.
+Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`, with `Next step: /ptah:review <n>`.
 
 ---
 
-## Step 8 — Hand off to user
+## Step 7 — Hand off to user
 
 Hand off per `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`.
-
-**Spec source:**
 
 ```
 /fix <n> completed
 Artifact: `.ptah/specs/<feature-name>/REVIEW.md` (fix summary appended)
 Mode: <mode> — fixed: <codes> · skipped: <codes, or "none"> · deferred: <codes, or "none">
 New issues found: <"no", or "yes — <note>">
-Next: /document <n>
+Next: /ptah:review <n>
 ```

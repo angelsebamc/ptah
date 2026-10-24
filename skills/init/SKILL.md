@@ -9,11 +9,7 @@ model: haiku
 
 Configure Ptah's command defaults for this project.
 
-## Step 1 — Rules
-
-`RULES.md` is injected at session start. If it isn't in your context, read `${CLAUDE_PLUGIN_ROOT}/RULES.md`.
-
-## Step 2 — Read the current config
+## Step 1 — Read the current config
 
 Read `.ptah/ptah.yml` (relative to the project root, not the plugin folder).
 
@@ -24,7 +20,7 @@ Read `.ptah/ptah.yml` (relative to the project root, not the plugin folder).
 
   Never overwrite a file you couldn't parse.
 
-## Step 3 — Ask, one question at a time
+## Step 2 — Ask, one question at a time
 
 For each question, show the current value (or the default when unset). An empty reply keeps it.
 
@@ -37,7 +33,7 @@ For each question, show the current value (or the default when unset). An empty 
 2. **Include minor**
    > "Should `/ptah:fix` also fix minor findings by default? (yes / no — default no)"
 
-## Step 4 — Write the config
+## Step 3 — Write the config
 
 Write `.ptah/ptah.yml`, creating `.ptah/` if it doesn't exist:
 
@@ -50,7 +46,7 @@ commands:
 
 - Change only `commands.fix.mode` and `commands.fix.include_minor`. Anything else — stays exactly as it was.
 
-## Step 5 — Hand off to user
+## Step 4 — Hand off to user
 
 ```
 /init completed

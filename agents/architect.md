@@ -28,13 +28,13 @@ If `SPEC.md` is empty or missing, return `error`.
 
 ## Step 2 — Explore the codebase
 
-Read whatever you need to design against reality rather than assumption: the modules this feature touches, existing patterns it should follow, types and schemas it extends. This exploration is the reason you exist as a subagent — do it thoroughly.
+Read whatever you need to plan against reality rather than assumption: the modules this feature touches, existing patterns it should follow, types and schemas it extends. This exploration is the reason you exist as a subagent — do it thoroughly.
 
 ## Step 3 — Decide: questions or plan?
 
 Split anything uncertain into two kinds:
 
-- **Blocking** — the answer would change the plan's shape (which layer owns this, whether a table is new or extended, whether something is in scope). Return these as questions. Don't design around a guess.
+- **Blocking** — the answer would change the plan's shape (which layer owns this, whether a table is new or extended, whether something is in scope). Return these as questions. Don't plan around a guess.
 - **Non-blocking** — a choice the user can make later without reworking the plan. These go in `PLAN.md`'s **Open questions** section.
 
 Ask as few questions as possible — only what's genuinely blocking.
@@ -53,14 +53,12 @@ Return exactly one of these as your final message, following every rule in `${CL
 - Files touched: none
 
 ### Questions
-- [<decision | scope-change>] <question> — <why it matters: what it changes in the design>
+- [<decision | scope-change>] <question> — <why it matters: what it changes in the plan>
 
-### Learn candidates
-- <category> | <title> | <note>
 ===END===
 ````
 
-**Design:**
+**Plan:**
 
 ````
 ===RESULT===
@@ -69,10 +67,8 @@ Return exactly one of these as your final message, following every rule in `${CL
 - Key decisions: <one line — notable choices or tradeoffs>
 - Open questions: <count, or "none">
 
-### Learn candidates
-- <category> | <title> | <note>
-===DESIGN.md===
-# DESIGN — <feature-name>
+===PLAN.md===
+# PLAN — <feature-name>
 
 ## Overview
 <Brief summary of the technical approach>
@@ -106,9 +102,9 @@ Include input/output shapes>
 ===END===
 ````
 
-Only include `PLAN.md` sections relevant to this feature. The design must be concrete enough that an implementer with no other context can build it without guessing.
+Only include `PLAN.md` sections relevant to this feature. The plan must be concrete enough that an implementer with no other context can build it without guessing.
 
-**Error** — you couldn't design at all:
+**Error** — you couldn't plan at all:
 
 ````
 ===RESULT===
