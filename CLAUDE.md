@@ -73,7 +73,7 @@ These are why the files look the way they do. Keep them when editing.
 
 ## Line endings
 
-Commit with LF. Windows checkouts may show every file as modified — use `git diff --ignore-cr-at-eol`. `hooks/session-start.sh` must stay LF-only: bash fails on CRLF.
+Commit with LF. Windows checkouts may show every file as modified — use `git diff --ignore-cr-at-eol`. `hooks/session-start.sh` must stay LF-only: bash fails on CRLF. `.gitattributes` pins `*.sh` to LF.
 
 ## Working on this repo
 
