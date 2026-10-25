@@ -74,7 +74,7 @@ Determine the effective mode and scope for this run. Precedence is **flag > conf
 Read `.ptah/ptah.yml`.
 
 - If the file doesn't exist, or `commands.fix` is missing → use defaults (`mode: plan`)
-- If `commands.fix.mode` is set, validate it's a fix mode from `vocabulary.md`. Anything else → stop:
+- If `commands.fix.mode` is set, validate it's a fix mode from `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`. Anything else → stop:
   > "Invalid `commands.fix.mode` value `<value>` in `ptah.yml`. Must be one of: `auto`, `plan`, `interactive`."
 
 The config file is never modified by `/fix`. Flags only affect the current run.
