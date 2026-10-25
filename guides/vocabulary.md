@@ -102,7 +102,7 @@ Every finding carries a code: the severity's letter plus a number, e.g. `B1`, `M
 
 | Value | Meaning | Next step |
 |---|---|---|
-| `fix-needed` | At least one blocker or major finding | `fix` |
+| `fix-needed` | At least one blocker or major finding | `/ptah:fix <n>` |
 | `approved` | No blockers or major findings | none — review clean |
 
 ### Fix mode
