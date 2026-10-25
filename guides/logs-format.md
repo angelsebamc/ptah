@@ -58,13 +58,13 @@ These two have the same fields whichever command wrote them.
 - Blocked on (one line — what needs the user's input)
 - Progress (one line — what's finished so far, or `none`)
 - Files touched (comma-separated paths, or `none`)
-- Next step (`answer the open questions, then re-run /<command>`)
+- Next step (`answer the open questions, then re-run /ptah:<command> <n>`)
 
 Written by `/plan` and `/implement` when their subagent returns `needs-input`. The user's answers follow as `decision` / `deviation` / `scope-change` change entries, and a re-run picks up from there.
 
 ### `/<command> failed`
 - Reason (one line)
-- Next step (`re-run /<command>`, or what to fix first)
+- Next step (`re-run /ptah:<command> <n>`, or what to fix first)
 
 Written when a subagent returns `error` or a malformed result. No artifact is written for a failed run.
 
@@ -99,7 +99,7 @@ Written when a subagent returns `error` or a malformed result. No artifact is wr
 - Suggestions (count)
 - Acceptance criteria (`X of Y met`)
 - Verdict (`fix-needed` or `approved`)
-- Next step (`/fix`, or `none — review clean`)
+- Next step (`/ptah:fix <n>`, or `none — review clean`)
 
 ### `/fix completed`
 - Mode (`auto`, `plan`, or `interactive`)
@@ -109,7 +109,7 @@ Written when a subagent returns `error` or a malformed result. No artifact is wr
 - Suggestions fixed (count, or `none`)
 - Skipped by user (count, or `none` — includes findings marked already fixed)
 - New issues found (`yes — <note>` or `no`)
-- Next step (`/review`)
+- Next step (`/ptah:review <n>`)
 
 ---
 
