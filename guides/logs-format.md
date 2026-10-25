@@ -27,7 +27,8 @@ This guide defines the schema. The discipline (when to log, when not to) lives i
 4. **Last field** — must always be `Next step:` for command entries (change entries are exempt — see below)
 5. **Separator** — one blank line between entries, no horizontal rules
 6. **Order** — newest entries appended to the bottom (chronological), not the top
-7. **No prose** — entries are bullets only, no paragraphs
+7. **Append-only** — past entries are never edited, reordered, or deleted, even when a later step makes one look wrong. To revert or restore something an earlier entry recorded, append a `correction` change entry
+8. **No prose** — entries are bullets only, no paragraphs
 
 ---
 

@@ -30,7 +30,7 @@ The `Type:` field of a `LOGS.md` change entry.
 | `deviation` | The implementation diverged from the spec or plan |
 | `scope-change` | Something was added to, removed from, or moved out of scope mid-flow |
 | `blocker` | Hit something that needs resolving, outside a subagent question loop (those are `paused` command entries) |
-| `correction` | The user pointed out something was wrong, and it's being redone |
+| `correction` | Something already done or logged was wrong, and it's being redone, reverted, or restored |
 
 ### Change trigger
 
