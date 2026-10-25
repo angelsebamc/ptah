@@ -1,8 +1,17 @@
 {
   "name": "ptah",
-  "description": "An agentic workflow from spec to PR",
   "version": "0.1.0",
+  "description": "A spec-driven workflow for AI coding agents, from spec to PR: spec, plan, implement, review and fix, with every step logged.",
   "author": {
     "name": "Angel Marquez"
-  }
+  },
+  "homepage": "https://github.com/angelsebamc/ptah",
+  "repository": "https://github.com/angelsebamc/ptah",
+  "keywords": [
+    "workflow",
+    "spec-driven",
+    "planning",
+    "code-review",
+    "agents"
+  ]
 }
