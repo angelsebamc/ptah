@@ -17,7 +17,7 @@ Resolve `<spec-id>` per **Spec identifiers** in `RULES.md`.
 
 If `.ptah/specs/<feature-name>/PLAN.md` is empty or missing, stop and tell the user:
 
-> "No plan found for `<spec-id>`. Run `/ptah:plan <n>` first."
+> "No plan found for `<spec-id>`. Run `/ptah:plan <id>` first."
 
 ---
 
@@ -35,6 +35,6 @@ Implement the Ptah spec at .ptah/specs/<feature-name>/
 
 Per **Handling the result** in `RULES.md`:
 
-- **`complete`** — write the `===IMPLEMENTATION-SUMMARY.md===` block to `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md`. `Next step: /ptah:review <n>`.
+- **`complete`** — write the `===IMPLEMENTATION-SUMMARY.md===` block to `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md`. `Next step: /ptah:review <id>`.
 - **`needs-input`** — work the subagent already finished is on disk. If an answer changes the plan itself, update `PLAN.md` to match before re-dispatching, and say so in the change entry's `Impact:`.
 - **`error` / malformed** — as in the rule. When handing off, add that code may have changed on disk.

@@ -17,7 +17,7 @@ Resolve `<spec-id>` per **Spec identifiers** in `RULES.md`.
 
 If `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md` is empty or missing, stop and tell the user:
 
-> "No implementation found for `<spec-id>`. Run `/ptah:implement <n>` first."
+> "No implementation found for `<spec-id>`. Run `/ptah:implement <id>` first."
 
 ---
 
@@ -39,7 +39,7 @@ Per **Handling the result** in `RULES.md`. The reviewer never returns `needs-inp
 
   | Verdict | `Next step:` |
   |---|---|
-  | `fix-needed` | `/ptah:fix <n>` |
+  | `fix-needed` | `/ptah:fix <id>` |
   | `approved` | `none — review clean` |
 
 - **`error` / malformed** — as in the rule.

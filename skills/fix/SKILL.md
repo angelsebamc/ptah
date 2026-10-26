@@ -100,7 +100,7 @@ Read:
 
 If `REVIEW.md` is empty or missing, stop:
 
-> "No review found for `<spec-id>`. Run `/ptah:review <n>` first."
+> "No review found for `<spec-id>`. Run `/ptah:review <id>` first."
 
 ---
 
@@ -130,7 +130,7 @@ Apply every in-scope fix without asking. Do not narrate each fix as it happens �
 Before touching any code, present a fix plan:
 
 ```
-Fix plan — <n>
+Fix plan — <id>
 
 B1 — <title>
    Change: <one-line summary of intended change>
@@ -216,7 +216,7 @@ The Fix Summary is structurally identical across all three modes. Every finding 
 
 ### 6b. LOGS.md entry
 
-Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`, with `Next step: /ptah:review <n>`.
+Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`, with `Next step: /ptah:review <id>`.
 
 ---
 
@@ -225,9 +225,9 @@ Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `${CLAUDE_PL
 Hand off per `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`.
 
 ```
-/fix <n> completed
+/fix <id> completed
 Artifact: `.ptah/specs/<feature-name>/REVIEW.md` (fix summary appended)
 Mode: <mode> — fixed: <codes> · skipped: <codes, or "none"> · deferred: <codes, or "none">
 New issues found: <"no", or "yes — <note>">
-Next: /ptah:review <n>
+Next: /ptah:review <id>
 ```

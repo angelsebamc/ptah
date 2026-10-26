@@ -35,6 +35,6 @@ Plan the Ptah spec at .ptah/specs/<feature-name>/
 
 Per **Handling the result** in `RULES.md`:
 
-- **`complete`** — write the `===PLAN.md===` block to `.ptah/specs/<feature-name>/PLAN.md`. `Next step: /ptah:implement <n>`.
+- **`complete`** — write the `===PLAN.md===` block to `.ptah/specs/<feature-name>/PLAN.md`. `Next step: /ptah:implement <id>`.
 - **`needs-input`** — a re-dispatch picks up from the answered questions, in this session or a later one.
 - **`error` / malformed** — as in the rule.

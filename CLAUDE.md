@@ -31,7 +31,7 @@ Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, f
 ```
 
 - `init` writes `commands.fix` to `.ptah/ptah.yml` in the target project.
-- `spec` creates `.ptah/specs/ptah-<n>-<slug>/`, numbered from `specs.next_id`, and fills `SPEC.md` one question at a time — optionally pre-filled from a ticket via an MCP source in `context_sources`.
+- `spec` creates `.ptah/specs/<TICKET-ID>-<slug>/` for a ticket, or `.ptah/specs/ptah-<n>-<slug>/` numbered from `specs.next_id` otherwise, and fills `SPEC.md` one question at a time — optionally pre-filled from a ticket via an MCP source in `context_sources`.
 - `plan`, `implement`, `review` are **thin dispatchers**. Each resolves the spec, dispatches its subagent with *only the folder path* as the prompt, validates the result, writes the artifact block verbatim (`PLAN.md`, `IMPLEMENTATION-SUMMARY.md`, `REVIEW.md`), and appends the `LOGS.md` entry. Shared handling lives in **Handling the result** in `RULES.md`; each skill states only its differences.
 - On `needs-input`, the dispatcher logs `paused`, asks the questions one at a time, logs each answer as a change entry, and re-dispatches with the same path. Answers travel through `LOGS.md`, never the prompt — so a re-dispatch in a later session works the same way.
 - `fix` applies `REVIEW.md` findings by code (`B1`, `M2`, …) in `auto`, `plan` (default), or `interactive` mode, then routes back to `review`. An `approved` review ends the pipeline.
@@ -60,14 +60,14 @@ These are why the files look the way they do. Keep them when editing.
 
 - **Change a field, status, or value everywhere at once.** Field names are shared by subagent results, `LOGS.md` entries, and hand-offs so data moves by copying. Update `vocabulary.md` first, then `logs-format.md` (per-command fields), `result-format.md` (per-command table), the agent's result template, and the dispatching skill.
 - **Define once, reference by name.** A fixed value lives only in `vocabulary.md`; a cross-cutting rule lives only in `RULES.md`. Skills point to sections by name ("per **Spec identifiers** in `RULES.md`") instead of restating them. Renaming a `RULES.md` section means grepping `skills/` and `agents/` for it.
-- **Naming.** User-facing text (hand-offs, `Next:` lines, errors) uses `/ptah:<command> <n>` with the bare spec number. `LOGS.md` headings use the unprefixed `/<command>`. File paths the user opens use the full folder name.
+- **Naming.** User-facing text (hand-offs, `Next:` lines, errors) uses `/ptah:<command> <id>` with the spec's display id: the ticket id, or the bare spec number. `LOGS.md` headings use the unprefixed `/<command>`. File paths the user opens use the full folder name.
 - **Two roots, never mixed.** Plugin files via `${CLAUDE_PLUGIN_ROOT}/...`; work product relative to the target project root (`.ptah/...`).
 - **State current facts only.** Prompts and guides describe how Ptah works now — no "previously", "renamed from", or design history.
 - **Keep skills thin.** If two skills need the same paragraph, it belongs in `RULES.md` or a guide.
 
 ## Not built yet
 
-- `/ptah:ship` — commit and open the PR, as its own command. When it lands, `approved`'s next step becomes `/ptah:ship <n>` in `vocabulary.md`, `logs-format.md`, and `skills/review/SKILL.md`.
+- `/ptah:ship` — commit and open the PR, as its own command. When it lands, `approved`'s next step becomes `/ptah:ship <id>` in `vocabulary.md`, `logs-format.md`, and `skills/review/SKILL.md`.
 - `/ptah:status` — overview of every spec's state (states are already defined in `vocabulary.md`).
 - A second harness adapter (Devin). Keep Claude Code specifics confined to frontmatter, `${CLAUDE_PLUGIN_ROOT}`, `$ARGUMENTS`, and the hook, so the prompt bodies stay portable.
 
