@@ -21,7 +21,7 @@ Apply the **Always read LOGS.md first** rule from `RULES.md`: read the full `LOG
 
 If `LOGS.md` is empty or missing, the spec conversation was never finished. Tell the user:
 
-> "Spec `<n>` was started but its SPEC.md was never written. Next step: `/ptah:spec <n>` to continue it."
+> "Spec `<id>` was started but its SPEC.md was never written. Next step: `/ptah:spec <id>` to continue it."
 
 Then stop.
 
@@ -61,7 +61,7 @@ Show nothing else from `LOGS.md` — no other entries, counts, artifacts, or ref
 
 ### Rules for the synthesis line
 
-The `Where you are:` line is the only piece of original prose in the response. Base it on the last command entry's `Next step:`. Keep it to one sentence, and reference the next command by number. Examples:
+The `Where you are:` line is the only piece of original prose in the response. Base it on the last command entry's `Next step:`. Keep it to one sentence, and reference the next command by the spec's display id. Examples:
 
 - `"Implementation finished. Next step: /ptah:review 7."`
 - `"Code review done with 2 blockers, 1 major. Next step: /ptah:fix 7."`
@@ -85,5 +85,5 @@ Command statuses and spec states are defined in `${CLAUDE_PLUGIN_ROOT}/guides/vo
 
 Use `/resume` when:
 - Starting a new session and continuing work from a previous one
-- Switching between two in-flight specs (run `/ptah:resume <other-n>` to swap)
+- Switching between two in-flight specs (run `/ptah:resume <other-id>` to swap)
 - Briefing a fresh agent (or a teammate) on the current state of a feature

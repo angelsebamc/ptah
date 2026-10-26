@@ -77,24 +77,30 @@ Routine work creates noise — do not log it:
 
 ## Spec identifiers
 
-Every spec folder created by `/ptah:spec` is named `ptah-<n>-<slug>`, e.g. `ptah-3-user-login`.
+Every spec folder created by `/ptah:spec` is named one of two ways:
 
-- `<n>` — a sequential integer, unique per project
-- `<slug>` — a kebab-case version of the feature name given to `/ptah:spec`
+- **From a ticket** — `<TICKET-ID>-<slug>`, e.g. `PROJ-45-add-csv-export`. The ticket id keeps its original casing; `<slug>` is built from the ticket title. A ticket id that is only digits is prefixed with its source, e.g. `github-123-fix-login-redirect`, so it can't collide with a spec number. Ticket specs take no number.
+- **Without a ticket** — `ptah-<n>-<slug>`, e.g. `ptah-3-user-login`. `<n>` is a sequential integer from `specs.next_id`, unique per project; `<slug>` is built from the feature name given to `/ptah:spec`.
 
 ### Resolving an identifier
 
-Every command that takes a `<spec-id>` accepts a bare number (`3`), a prefixed number (`ptah-3`), or the full folder name (`ptah-3-user-login`). Resolve it in this order:
+Every command that takes a `<spec-id>` accepts a bare number (`3`), a prefixed number (`ptah-3`), a ticket id (`PROJ-45`, `github-123`), or the full folder name. Matching is case-insensitive: `PROJ-45` and `proj-45` are the same spec. Resolve it in this order:
 
-1. If it matches a folder name in `.ptah/specs/` exactly, use it.
-2. Otherwise, strip a leading `ptah-`, take the leading number, and glob `.ptah/specs/ptah-<n>-*`. If exactly one folder matches, use it.
-3. Otherwise, stop: "No spec found for `<spec-id>`."
+1. If it matches a folder name in `.ptah/specs/`, use it.
+2. Otherwise, if it is a number or `ptah-<number>`, glob `.ptah/specs/ptah-<number>-*`.
+3. Otherwise, treat it as a ticket id and glob `.ptah/specs/<spec-id>-*`.
+4. If exactly one folder matches, use it. If more than one matches, stop, list them, and ask for the full folder name. If none matches, stop: "No spec found for `<spec-id>`."
 
 Commands refer to the resolved folder as `<feature-name>`.
 
 ### Displaying an identifier
 
-In output shown to the user — hand-offs, `Next:` lines, `/ptah:resume`'s header — show **only the number**, e.g. `/ptah:plan 3`. File paths the user is meant to open are the exception: they use the full folder name.
+In output shown to the user — hand-offs, `Next:` lines, `/ptah:resume`'s header — show only the spec's **display id**, written `<id>`:
+
+- A ticket spec shows its ticket id as written in the folder name — everything up to and including the first run of digits, e.g. `/ptah:plan PROJ-45`, `/ptah:plan github-123`.
+- Any other spec shows only its number, e.g. `/ptah:plan 3`.
+
+File paths the user is meant to open are the exception: they use the full folder name.
 
 ---
 
@@ -126,4 +132,4 @@ Two roots, never mixed.
 | Location | Purpose |
 |----------|---------|
 | `.ptah/ptah.yml` | Project config: `specs.next_id`, `commands.fix`, `context_sources` |
-| `.ptah/specs/ptah-<n>-<slug>/` | Per-feature work product (created by `/ptah:spec`) |
+| `.ptah/specs/<TICKET-ID>-<slug>/`, `.ptah/specs/ptah-<n>-<slug>/` | Per-feature work product (created by `/ptah:spec`) |

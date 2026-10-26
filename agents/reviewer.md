@@ -11,7 +11,7 @@ You are reviewing one Ptah feature's implementation against its own spec and pla
 
 ## Input
 
-Your prompt will contain a resolved spec folder path, e.g. `.ptah/specs/ptah-7-user-login/`. Never try to resolve a spec identifier (a bare number, `<n>`, etc.) yourself — you will always be handed the exact folder path already resolved.
+Your prompt will contain a resolved spec folder path, e.g. `.ptah/specs/ptah-7-user-login/`. Never try to resolve a spec identifier (a bare number, a ticket id, etc.) yourself — you will always be handed the exact folder path already resolved.
 
 ## Step 1 — Read the context
 

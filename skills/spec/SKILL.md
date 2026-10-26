@@ -1,6 +1,6 @@
 ---
 name: spec
-description: 'Starts a new Ptah feature spec: creates the numbered spec folder (ptah-<n>-<slug>) and fills SPEC.md through a one-question-at-a-time conversation, optionally pre-filled from a third party provider ticket via MCP'
+description: 'Starts a new Ptah feature spec: creates the spec folder (<TICKET-ID>-<slug> from a ticket, ptah-<n>-<slug> otherwise) and fills SPEC.md through a one-question-at-a-time conversation, optionally pre-filled from a third party provider ticket via MCP'
 argument-hint: 'name=<feature-name> | <source>=<ticket-id>'
 disable-model-invocation: true
 ---
@@ -24,8 +24,9 @@ Examples:
 - `/ptah:spec name=user login`: plain feature, no external ticket. If space-separated, turn it into kebab-case
 - `/ptah:spec jira=PROJ-1234`: pulls context from JIRA ticket PROJ-1234
 - `/ptah:spec 7`: continues spec 7, whose SPEC.md was never written
+- `/ptah:spec PROJ-1234`: continues the spec for ticket PROJ-1234, whose SPEC.md was never written
 
-The feature name is **not** used as the folder name directly. It's kebab-cased into a slug, and the folder itself is numbered automatically from `ptah.yml`
+Neither the feature name nor the ticket title is used as the folder name directly. Each is kebab-cased into a slug. A ticket spec's folder starts with the ticket id; any other spec's folder is numbered automatically from `ptah.yml`.
 
 ---
 
@@ -38,6 +39,8 @@ If `key` is a context source:
   Then stop.
 - If `key` is not listed under `context_sources`, tell the user which sources are configured and stop.
 - This plugin does not bundle MCP servers for ticket sources. If the source is configured but its MCP tools are not available in this session, tell the user to install or enable that MCP server and stop. Do not guess or fall back.
+- Set `<ticket-id>` = `value`, keeping its casing. If `value` is only digits, set it to `<key>-<value>` instead, e.g. `github-123`. If a folder matching `.ptah/specs/<ticket-id>-*` (case-insensitive) already exists, stop — never create a second folder for the same ticket:
+  > "Ticket `<ticket-id>` already has a spec at `.ptah/specs/<folder>/`. Run `/ptah:resume <ticket-id>`."
 
 Otherwise, fetch the ticket with id `value` using that source's MCP tools.
 
@@ -63,22 +66,23 @@ If Step 1 got a spec identifier:
 1. Resolve it per **Spec identifiers** in `RULES.md`. If nothing matches, stop:
     > "No spec found for `<spec-id>`."
 2. If that folder's `SPEC.md` exists and isn't empty, stop:
-    > "Spec `<n>` already has a SPEC.md. Run `/ptah:resume <n>`."
+    > "Spec `<id>` already has a SPEC.md. Run `/ptah:resume <id>`."
 3. Otherwise use that folder as `<slug>` and skip 3a–3d — no new folder, no change to `specs.next_id`. Tell the user:
-    > "Continuing spec **`<n>`** at `.ptah/specs/<slug>/`."
+    > "Continuing spec **`<id>`** at `.ptah/specs/<slug>/`."
 
 Then go to Step 4. Ticket context isn't re-fetched, so ask every question normally.
 
-Otherwise:
-
-Read `specs.next_id` from `.ptah/ptah.yml` in the current project.
+Otherwise, build a new folder. `<id>` is the spec's display id per **Spec identifiers** in `RULES.md`.
 
 ### 3a. Get the id
-- If the file doesn't exist, or the `specs` section or `next_id` key is missing, treat the next id as `1`.
-- Otherwise, use `specs.next_id` as `<n>`.
+- **From a ticket** — `<id>` = `<ticket-id>`. Ticket specs take no number.
+- **Without a ticket** — read `specs.next_id` from `.ptah/ptah.yml` in the current project. If the file doesn't exist, or the `specs` section or `next_id` key is missing, treat the next id as `1`. Otherwise, use `specs.next_id` as `<n>`. `<id>` = `<n>`.
 
 ### 3b. Build the slug
-`slug` = `ptah-<n>-<kebab>`, where `<kebab>` is `value` in kebab-case (lowercase, spaces and underscores → `-`, other punctuation removed)
+`<kebab>` is the source text in kebab-case: lowercase, spaces and underscores → `-`, other punctuation removed. The source text is the ticket's title for a ticket spec, and `value` otherwise. If `<kebab>` is longer than 50 characters, cut it at the last `-` before the 50th character.
+
+- **From a ticket** — `slug` = `<ticket-id>-<kebab>`, e.g. `PROJ-45-add-csv-export`
+- **Without a ticket** — `slug` = `ptah-<n>-<kebab>`, e.g. `ptah-3-user-login`
 
 ### 3c. Create the folder
 Create the following structure at `.ptah/specs/<slug>/`:
@@ -94,7 +98,7 @@ Create the following structure at `.ptah/specs/<slug>/`:
 ```
 
 ### 3d. Update the counter
-Write `specs.next_id: <n + 1>` back to `.ptah/ptah.yml` in the current project:
+Only for a spec without a ticket. Write `specs.next_id: <n + 1>` back to `.ptah/ptah.yml` in the current project:
 
 - If `ptah.yml` didn't exist yet, create it containing just:
 ```yaml
@@ -106,9 +110,9 @@ specs:
 
 Never infer the next number from existing folder names. Numbers are never reused, even if a folder is deleted — the counter only moves forward.
 
-Confirm to the user that the folder was created, showing both the number and the full folder name:
+Confirm to the user that the folder was created, showing both the display id and the full folder name:
 
-> "Created spec **`<n>`** at `.ptah/specs/<slug>/`"
+> "Created spec **`<id>`** at `.ptah/specs/<slug>/`"
 
 ---
 
