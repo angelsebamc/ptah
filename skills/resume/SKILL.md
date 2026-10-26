@@ -19,9 +19,9 @@ When the user runs `/ptah:resume <spec-id>`, resolve `<spec-id>` per **Spec iden
 
 Apply the **Always read LOGS.md first** rule from `RULES.md`: read the full `LOGS.md` for the resolved spec folder.
 
-If `LOGS.md` is empty or missing, the spec conversation was never finished. Tell the user:
+If `LOGS.md` is empty or missing, the folder wasn't produced by `/ptah:spec`. Tell the user:
 
-> "Spec `<id>` was started but its SPEC.md was never written. Next step: `/ptah:spec <id>` to continue it."
+> "Spec `<id>` has no LOGS.md at `.ptah/specs/<folder>/`. Ptah can't resume it."
 
 Then stop.
 
