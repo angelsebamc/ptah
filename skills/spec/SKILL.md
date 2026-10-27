@@ -5,7 +5,7 @@ argument-hint: 'name=<feature-name> | <source>=<ticket-id>'
 disable-model-invocation: true
 ---
 
-If the current project has a Ptah config at `.ptah/ptah.yml` (relative to the project root, not the plugin folder) with external context sources configured (e.g. JIRA, Linear, GitHub), pre-fill parts of the spec from a linked ticket.
+If the spec comes from a ticket (e.g. JIRA, Linear, GitHub), pre-fill parts of it through that source's MCP server. Config keys are documented in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
 
 ## Step 1 — Parse command arguments
 
@@ -27,19 +27,20 @@ Neither the feature name nor the ticket title is used as the folder name directl
 
 ---
 
-## Step 2 — Load Ptah config and fetch external context (if any)
+## Step 2 — Resolve the ticket source and fetch the ticket (if any)
 
 If `key` is a context source:
 
-- If `.ptah/ptah.yml` does not exist in the current project, tell the user:
-  > "No Ptah config found. Add `context_sources` to `.ptah/ptah.yml` to use tickets, or run `/ptah:spec name=<feature-name>` instead."
-  Then stop.
-- If `key` is not listed under `context_sources`, tell the user which sources are configured and stop.
-- This plugin does not bundle MCP servers for ticket sources. If the source is configured but its MCP tools are not available in this session, tell the user to install or enable that MCP server and stop. Do not guess or fall back.
+- `<server>` = `context_sources.<key>` from `.ptah/ptah.yml` if that alias is set, otherwise `key`. A missing `ptah.yml` is fine.
+- Find the MCP servers available in this session whose name contains `<server>`, case-insensitive (e.g. `linear` matches `claude_ai_Linear`).
+  - **None** → stop, listing the MCP servers that are available:
+    > "No MCP server matching `<server>` is available. Available servers: <list>. Install or enable the server, or map `<key>` to one of these under `context_sources` in `.ptah/ptah.yml`."
+  - **More than one** → stop, list them, and ask which one to use. Suggest mapping `<key>` to it under `context_sources` so the next run doesn't ask.
+  - **Exactly one** → use it. Do not guess or fall back to another server.
 - Set `<ticket-id>` = `value`, keeping its casing. If `value` is only digits, set it to `<key>-<value>` instead, e.g. `github-123`. If a folder matching `.ptah/specs/<ticket-id>-*` (case-insensitive) already exists, stop — never create a second folder for the same ticket:
   > "Ticket `<ticket-id>` already has a spec at `.ptah/specs/<folder>/`. Run `/ptah:resume <ticket-id>`."
 
-Otherwise, fetch the ticket with id `value` using that source's MCP tools.
+Otherwise, fetch the ticket with id `value` using that server's MCP tools.
 
 DO NOT silently fall back if the ticket does not exist. Inform the user that the ticket does not exist and stop.
 
@@ -142,7 +143,7 @@ Never infer the next number from existing folder names. Numbers are never reused
 
 Write the following to `SPEC.md`.
 
-If external context was loaded and `backlink_header: true` is set in `ptah.yml`, include the source header at the top:
+For a ticket spec, include the `Source:` line linking back to the ticket. Omit it for a spec without a ticket.
 
 ```markdown
 # SPEC — <feature-name>

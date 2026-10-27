@@ -123,7 +123,7 @@ Two roots, never mixed.
 | Location | Purpose |
 |----------|---------|
 | `${CLAUDE_PLUGIN_ROOT}/RULES.md` | This file. Injected into every session by `hooks/session-start.sh` |
-| `${CLAUDE_PLUGIN_ROOT}/guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md` |
+| `${CLAUDE_PLUGIN_ROOT}/guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md` |
 | `${CLAUDE_PLUGIN_ROOT}/skills/<command>/` | One skill per command, invoked as `/ptah:<command>` |
 | `${CLAUDE_PLUGIN_ROOT}/agents/` | Subagents, dispatched as `ptah:architect`, `ptah:implementer`, `ptah:reviewer`. See **Delegated work** |
 
@@ -131,5 +131,5 @@ Two roots, never mixed.
 
 | Location | Purpose |
 |----------|---------|
-| `.ptah/ptah.yml` | Project config: `specs.next_id`, `commands.fix`, `context_sources` |
+| `.ptah/ptah.yml` | Project config, optional. Every key is documented in [`config`](${CLAUDE_PLUGIN_ROOT}/guides/config.md) |
 | `.ptah/specs/<TICKET-ID>-<slug>/`, `.ptah/specs/ptah-<n>-<slug>/` | Per-feature work product (created by `/ptah:spec`) |
