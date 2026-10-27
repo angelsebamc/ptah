@@ -22,16 +22,16 @@ Read `.ptah/ptah.yml` (relative to the project root, not the plugin folder).
 
 ## Step 2 — Ask, one question at a time
 
-For each question, show the current value (or the default when unset). An empty reply keeps it.
+For each question, show the current value when set. An empty reply keeps it. When it's unset, an empty reply takes the recommended answer.
 
 1. **Fix mode**
-   > "How should `/ptah:fix` apply review findings by default?
+   > "How should `/ptah:fix` apply review findings? A flag overrides this for one run.
    > - `auto` — apply all in-scope fixes silently, report at the end
-   > - `plan` — show a one-line-per-finding plan, wait for one confirmation (default)
+   > - `plan` — show a one-line-per-finding plan, wait for one confirmation (recommended)
    > - `interactive` — ask per finding"
 
 2. **Include minor**
-   > "Should `/ptah:fix` also fix minor findings by default? (yes / no — default no)"
+   > "Should `/ptah:fix` also fix minor findings? (yes / no — recommended no)"
 
 3. **Ticket source**
    > "Do you pull tickets from a tracker through an MCP server (e.g. Linear, JIRA, GitHub)? If so, which source name will you type in `/ptah:spec <source>=<ticket-id>`? (e.g. `linear` — or `no`)"

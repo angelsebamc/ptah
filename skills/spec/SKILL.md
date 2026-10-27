@@ -27,11 +27,13 @@ Neither the feature name nor the ticket title is used as the folder name directl
 
 ---
 
-## Step 2 — Resolve the ticket source and fetch the ticket (if any)
+## Step 2 — Check the config and fetch the ticket (if any)
+
+Check the config per **Required keys** in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
 
 If `key` is a context source:
 
-- `<server>` = `context_sources.<key>` from `.ptah/ptah.yml` if that alias is set, otherwise `key`. A missing `ptah.yml` is fine.
+- `<server>` = `context_sources.<key>` from `.ptah/ptah.yml` if that alias is set, otherwise `key`.
 - Find the MCP servers available in this session whose name contains `<server>`, case-insensitive (e.g. `linear` matches `claude_ai_Linear`).
   - **None** → stop, listing the MCP servers that are available:
     > "No MCP server matching `<server>` is available. Available servers: <list>. Install or enable the server, or map `<key>` to one of these under `context_sources` in `.ptah/ptah.yml`."
@@ -106,7 +108,7 @@ For sections without a mapping, ask normally.
 
 ### 4a. Get the id
 - **From a ticket** — `<id>` = `<ticket-id>`. Ticket specs take no number.
-- **Without a ticket** — read `specs.next_id` from `.ptah/ptah.yml` in the current project. If the file doesn't exist, or the `specs` section or `next_id` key is missing, treat the next id as `1`. Otherwise, use `specs.next_id` as `<n>`. `<id>` = `<n>`.
+- **Without a ticket** — read `specs.next_id` from `.ptah/ptah.yml` in the current project. If the `specs` section or `next_id` key is missing, treat the next id as `1`. Otherwise, use `specs.next_id` as `<n>`. `<id>` = `<n>`.
 
 ### 4b. Build the slug
 `<kebab>` is the source text in kebab-case: lowercase, spaces and underscores → `-`, other punctuation removed. The source text is the ticket's title for a ticket spec, and `value` otherwise. If `<kebab>` is longer than 50 characters, cut it at the last `-` before the 50th character.
@@ -127,12 +129,7 @@ Create the following structure at `.ptah/specs/<slug>/`:
 ### 4d. Update the counter
 Only for a spec without a ticket. Write `specs.next_id: <n + 1>` back to `.ptah/ptah.yml` in the current project:
 
-- If `ptah.yml` didn't exist yet, create it containing just:
-```yaml
-specs:
-  next_id: <n + 1>
-```
-- If it existed but had no `specs:` section, add one.
+- If it has no `specs:` section, add one.
 - Leave every other key in `ptah.yml` untouched.
 
 Never infer the next number from existing folder names. Numbers are never reused, even if a folder is deleted — the counter only moves forward.

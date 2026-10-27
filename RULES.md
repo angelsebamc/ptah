@@ -131,5 +131,5 @@ Two roots, never mixed.
 
 | Location | Purpose |
 |----------|---------|
-| `.ptah/ptah.yml` | Project config, optional. Every key is documented in [`config`](${CLAUDE_PLUGIN_ROOT}/guides/config.md) |
+| `.ptah/ptah.yml` | Project config, created by `/ptah:init`. Every key is documented in [`config`](${CLAUDE_PLUGIN_ROOT}/guides/config.md) |
 | `.ptah/specs/<TICKET-ID>-<slug>/`, `.ptah/specs/ptah-<n>-<slug>/` | Per-feature work product (created by `/ptah:spec`) |
