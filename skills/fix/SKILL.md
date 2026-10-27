@@ -24,28 +24,17 @@ Every finding carries a code assigned by the reviewer — `B1`, `B2` for blocker
 | Mode | Flag | Behavior |
 |------|------|----------|
 | `auto` | `-a` | Apply all in-scope fixes silently. Report at the end. Takes no directives. |
-| `plan` | `-p` | Show a one-line-per-finding plan, wait for one reply — "yes" or directives by code — then apply all in one pass. **Default.** |
+| `plan` | `-p` | Show a one-line-per-finding plan, wait for one reply — "yes" or directives by code — then apply all in one pass. |
 | `interactive` | `-i` | Ask per finding before applying. Directives by code work at every prompt. |
 
-Mode is resolved with precedence **flag > config > default (`plan`)**.
-
-### Config (`.ptah/ptah.yml`)
-
-```yaml
-commands:
-  fix:
-    mode: plan              # auto | plan | interactive
-    include_minor: false    # also fix minor issues by default?
-```
-
-Both keys are optional. Missing keys fall back to defaults.
+Mode is resolved with precedence **flag > config**. The config keys, `commands.fix.mode` and `commands.fix.include_minor`, are documented in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
 
 ## Step 1 — Parse command arguments
 
 The command takes exactly one source — a positional spec identifier (see **Spec identifiers** in `RULES.md`) plus optional flags.
 
 Examples:
-- `/fix 3` — uses mode from `ptah.yml`, or `plan` if no config
+- `/fix 3` — uses mode from `ptah.yml`
 - `/fix 3 -a` — applies all fixes silently this run
 - `/fix 3 -i` — asks per finding before applying it
 
@@ -67,15 +56,11 @@ Examples:
 
 ## Step 2 — Resolve mode and scope
 
-Determine the effective mode and scope for this run. Precedence is **flag > config > default**.
+Determine the effective mode and scope for this run. Precedence is **flag > config**.
 
 ### Load Ptah config
 
-Read `.ptah/ptah.yml`.
-
-- If the file doesn't exist, or `commands.fix` is missing → use defaults (`mode: plan`)
-- If `commands.fix.mode` is set, validate it's a fix mode from `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`. Anything else → stop:
-  > "Invalid `commands.fix.mode` value `<value>` in `ptah.yml`. Must be one of: `auto`, `plan`, `interactive`."
+Check the config per **Required keys** in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
 
 The config file is never modified by `/fix`. Flags only affect the current run.
 
@@ -126,7 +111,7 @@ In `plan` and `interactive` modes, the user can steer individual findings by cod
 ### `auto` mode
 Apply every in-scope fix without asking. Do not narrate each fix as it happens — produce the Fix Summary at the end. The only interruption is the stop-and-ask rule for genuinely ambiguous fixes.
 
-### `plan` mode (default)
+### `plan` mode
 Before touching any code, present a fix plan:
 
 ```

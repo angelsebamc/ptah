@@ -21,6 +21,7 @@ Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, f
   - `vocabulary.md` — every fixed value: command/result statuses, spec states, change types and triggers, severities and finding codes, verdicts, fix modes.
   - `result-format.md` — the subagent result (`===RESULT===` … `===<ARTIFACT>.md===` … `===END===`), malformed-result rules, and the user-facing hand-off.
   - `logs-format.md` — the `LOGS.md` entry schema, per-command fields in order, change entries.
+  - `config.md` — every `.ptah/ptah.yml` key, whether it's required, which command reads or writes it, and the required-keys check.
 - `skills/<command>/SKILL.md` — one user-invoked command each: `init`, `spec`, `plan`, `implement`, `review`, `fix`, `resume`.
 - `agents/` — `architect` (plans), `implementer` (writes code), `reviewer` (read-only: `Read, Grep, Glob`).
 
@@ -30,11 +31,11 @@ Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, f
 /ptah:init → /ptah:spec → /ptah:plan → /ptah:implement → /ptah:review ⇄ /ptah:fix
 ```
 
-- `init` writes `commands.fix` to `.ptah/ptah.yml` in the target project.
-- `spec` creates `.ptah/specs/<TICKET-ID>-<slug>/` for a ticket, or `.ptah/specs/ptah-<n>-<slug>/` numbered from `specs.next_id` otherwise, and fills `SPEC.md` one question at a time — optionally pre-filled from a ticket via an MCP source in `context_sources`.
+- `init` writes `commands.fix` and the `context_sources` ticket servers to `.ptah/ptah.yml` in the target project.
+- `spec` creates `.ptah/specs/<TICKET-ID>-<slug>/` for a ticket, or `.ptah/specs/ptah-<n>-<slug>/` numbered from `specs.next_id` otherwise, and fills `SPEC.md` one question at a time — optionally pre-filled from a ticket through the MCP server whose name matches the source key (or its `context_sources` alias).
 - `plan`, `implement`, `review` are **thin dispatchers**. Each resolves the spec, dispatches its subagent with *only the folder path* as the prompt, validates the result, writes the artifact block verbatim (`PLAN.md`, `IMPLEMENTATION-SUMMARY.md`, `REVIEW.md`), and appends the `LOGS.md` entry. Shared handling lives in **Handling the result** in `RULES.md`; each skill states only its differences.
 - On `needs-input`, the dispatcher logs `paused`, asks the questions one at a time, logs each answer as a change entry, and re-dispatches with the same path. Answers travel through `LOGS.md`, never the prompt — so a re-dispatch in a later session works the same way.
-- `fix` applies `REVIEW.md` findings by code (`B1`, `M2`, …) in `auto`, `plan` (default), or `interactive` mode, then routes back to `review`. An `approved` review ends the pipeline.
+- `fix` applies `REVIEW.md` findings by code (`B1`, `M2`, …) in `auto`, `plan`, or `interactive` mode (from `commands.fix.mode`, or a flag), then routes back to `review`. An `approved` review ends the pipeline.
 - `resume` reads only `LOGS.md` and reports where a spec stands. It writes nothing.
 
 ## Design principles
