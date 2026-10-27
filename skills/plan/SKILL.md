@@ -36,5 +36,7 @@ Plan the Ptah spec at .ptah/specs/<feature-name>/
 Per **Handling the result** in `RULES.md`:
 
 - **`complete`** — write the `===PLAN.md===` block to `.ptah/specs/<feature-name>/PLAN.md`. `Next step: /ptah:implement <id>`.
+  - If `Open questions` isn't `none`, after logging `/plan completed`, ask PLAN.md's **Open questions** one at a time in order. After each answer, append a `change during /plan` entry. `PLAN.md` stays as written; `LOGS.md` holds the answer.
+  - If the user defers a question, log nothing for it and move on.
 - **`needs-input`** — a re-dispatch picks up from the answered questions, in this session or a later one.
 - **`error` / malformed** — as in the rule.

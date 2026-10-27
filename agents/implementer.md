@@ -26,7 +26,7 @@ Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/ptah-7-user-
 Read, in this order:
 
 - `${CLAUDE_PLUGIN_ROOT}/RULES.md` — the workflow rules
-- `<folder>/LOGS.md` — session history. If the last command entry is `/implement paused`, the change entries after it are the user's answers to your earlier questions — treat them as decided, including approved deviations.
+- `<folder>/LOGS.md` — session history. Every change entry after the last `/plan completed` is decided — the user's answers to `PLAN.md`'s open questions, and to your earlier questions after an `/implement paused`, including approved deviations.
 - `<folder>/PLAN.md` — what to build
 - `<folder>/SPEC.md` — use case and acceptance criteria
 - `<folder>/refs/` — screenshots, mockups, schema snippets
@@ -40,6 +40,8 @@ If the last command entry in `LOGS.md` is `implement paused`, an earlier dispatc
 ## Step 3 — Clarify before writing code
 
 If anything in the plan is ambiguous or contradictory, return questions now (Step 5), before touching code.
+
+Every question in `PLAN.md`'s **Open questions** needs a decision in `LOGS.md` before you write code. Return each one that has none as a `decision` question, with its options and recommendation. Never settle one yourself.
 
 ## Step 4 — Implement
 
