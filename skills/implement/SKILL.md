@@ -36,5 +36,5 @@ Implement the Ptah spec at .ptah/specs/<feature-name>/
 Per **Handling the result** in `RULES.md`:
 
 - **`complete`** — write the `===IMPLEMENTATION-SUMMARY.md===` block to `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md`. `Next step: /ptah:review <id>`.
-- **`needs-input`** — work the subagent already finished is on disk. If an answer changes the plan itself, update `PLAN.md` to match before re-dispatching, and say so in the change entry's `Impact:`.
+- **`needs-input`** — work the subagent already finished is on disk. If an answer changes the plan itself, update `PLAN.md` to match before re-dispatching, and say so in the change entry's `Impact:`. If an answered question is one of `PLAN.md`'s **Open questions**, remove it from there (write `none` once it's empty).
 - **`error` / malformed** — as in the rule. When handing off, add that code may have changed on disk.
