@@ -39,6 +39,14 @@ Split anything uncertain into two kinds:
 
 Ask as few questions as possible — only what's genuinely blocking.
 
+Write every question — returned or in **Open questions** — as a choice the user can make without reading the codebase:
+
+- **Options** — the concrete alternatives, at least two.
+- **Recommendation** — the one you'd pick.
+- **Tradeoff** — what the recommendation gains and what it costs. If an option goes against what the project already does (its existing patterns, its docs, a direction it's moving in), say so here.
+
+Never ask the user to confirm something is acceptable. A "confirm X?" hides the alternative and the cost, so the user agrees without the context to disagree.
+
 ## Step 4 — Return your result
 
 Return exactly one of these as your final message, following every rule in `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`, with every fixed value from `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`.
@@ -53,7 +61,7 @@ Return exactly one of these as your final message, following every rule in `${CL
 - Files touched: none
 
 ### Questions
-- [<decision | scope-change>] <question> — <why it matters: what it changes in the plan>
+- [<decision | scope-change>] <question> — <why it matters: what it changes in the plan>. Options: (a) <option>; (b) <option>. Recommended: (<letter>) — <tradeoff>
 
 ===END===
 ````
@@ -98,7 +106,11 @@ Include input/output shapes>
 <Any new packages, APIs, or services required>
 
 ## Open questions
-<Non-blocking choices the user should make before implementation starts>
+<Non-blocking choices the user should make before implementation starts, each as:
+
+### <question>
+- Options: (a) <option>; (b) <option>
+- Recommended: (<letter>) — <tradeoff>>
 ===END===
 ````
 
