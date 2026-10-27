@@ -1,7 +1,7 @@
 ---
 name: fix
-description: 'Applies findings from a Ptah REVIEW.md in auto, plan, or interactive mode, lets the user steer by finding code, and appends a Fix Summary. Use when the user runs /fix with a spec number.'
-argument-hint: '<spec-id> [-a | -p | -i]'
+description: 'Applies findings from a Ptah REVIEW.md in auto, plan, or interactive mode, lets the user steer or pull in findings by code, and appends a Fix Summary. Use when the user runs /fix with a spec number, optionally followed by finding codes.'
+argument-hint: '<spec-id> [codes…] [-a | -p | -i]'
 disable-model-invocation: true
 ---
 
@@ -11,7 +11,7 @@ Read review findings and fix all blocker and major issues. Record what was chang
 
 `/fix` works from:
 
-- **A spec** — `/fix <spec-id>` — fixes findings from `.ptah/specs/<feature-name>/REVIEW.md`. This is the feature track.
+- **A spec** — `/fix <spec-id> [codes…]` — fixes findings from `.ptah/specs/<feature-name>/REVIEW.md`. This is the feature track.
 
 Every finding carries a code assigned by the reviewer — `B1`, `B2` for blockers, `M1` for major, `N1` for minor, `S1` for suggestions.
 
@@ -31,17 +31,25 @@ Mode is resolved with precedence **flag > config**. The config keys, `commands.f
 
 ## Step 1 — Parse command arguments
 
-The command takes exactly one source — a positional spec identifier (see **Spec identifiers** in `RULES.md`) plus optional flags.
+The command takes exactly one source — a positional spec identifier (see **Spec identifiers** in `RULES.md`) — then optional finding codes and flags.
+
+- The first positional is the spec identifier. Every positional after it is a finding code.
+- Codes are separated by commas, spaces, or both — `n1,n2`, `n1 n2`, and `n1, n2` are the same. Match them case-insensitively and drop duplicates.
+- Codes pull the named minors and suggestions into scope for this run. They add to the default scope, never narrow it.
 
 Examples:
 - `/fix 3` — uses mode from `ptah.yml`
 - `/fix 3 -a` — applies all fixes silently this run
 - `/fix 3 -i` — asks per finding before applying it
+- `/fix 3 n1,n2` — also fixes minors N1 and N2 this run
+- `/fix 3 S1 -p` — also fixes suggestion S1, in plan mode
 
 **Source errors** stop the command:
 
 - No spec identifier:
-  > "`/fix` needs exactly one source: a spec number (`/fix 3`)."
+  > "`/fix` needs exactly one source: a spec number (`/fix 3`), optionally followed by finding codes (`/fix 3 n1,n2`)."
+- A positional after the spec identifier that isn't shaped like a code (`B`, `M`, `N`, or `S` followed by digits):
+  > "`<arg>` isn't a finding code. Codes look like `B1`, `M2`, `N1`, `S3`."
 
 **Mutually-exclusive flag pairs** produce an error and stop:
 - `-a`, `-p`, `-i` (pick one)
@@ -67,7 +75,7 @@ The config file is never modified by `/fix`. Flags only affect the current run.
 ### Compute in-scope findings
 - Always in scope: blocker (`B`) and major (`M`) findings
 - Minor (`N`) findings: in scope only when `commands.fix.include_minor` is `true`
-- Any minor or suggestion (`S`) the user names by code in a directive: pulled into scope for this run
+- Any minor or suggestion (`S`) the user names by code — as a command argument or in a directive: pulled into scope for this run.
 - Everything else is deferred and listed under **Not in this run**
 
 ---
@@ -86,6 +94,10 @@ Read:
 If `REVIEW.md` is empty or missing, stop:
 
 > "No review found for `<spec-id>`. Run `/ptah:review <id>` first."
+
+Check every code from the command arguments against the findings being fixed. A code that isn't there stops the command — don't guess which finding was meant:
+
+> "`<code>` isn't a finding in `REVIEW.md` for `<id>`. Findings: `<codes>`."
 
 ---
 
@@ -125,7 +137,7 @@ M1 — <title>
    Change: <one-line summary>
    Files:  <files>
 
-(N findings included only if include_minor is true)
+(N findings included only if include_minor is true; N and S findings named by code always included)
 
 Not in this run: <out-of-scope codes, or "none">
 
@@ -181,7 +193,7 @@ Append a **Fix Summary** to the findings file `REVIEW.md`.
 - [x] B1 — <title> — <brief note on how it was fixed>
 - [x] B2 — <title> — <brief note> (user-directed: <the approach given>)
 - [x] M1 — <title> — <brief note>
-- [x] N1 — <title> — <brief note> (only if in scope this run)
+- [x] N1 — <title> — <brief note> (only if in scope this run; "(named by the user)" if pulled in by code)
 - [x] S2 — <title> — <brief note> (named by the user)
 
 ### Skipped
