@@ -5,6 +5,8 @@ argument-hint: 'name=<feature-name> | <source>=<ticket-id>'
 disable-model-invocation: true
 ---
 
+# /spec
+
 If the spec comes from a ticket (e.g. JIRA, Linear, GitHub), pre-fill parts of it through that source's MCP server. Config keys are documented in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
 
 ## Step 1 — Parse command arguments
