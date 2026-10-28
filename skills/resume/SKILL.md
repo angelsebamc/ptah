@@ -5,6 +5,8 @@ argument-hint: '<spec-id>'
 disable-model-invocation: true
 ---
 
+# /resume
+
 Orient the agent on a spec's current state at the start of a new session. Run this before continuing any in-flight work.
 
 ## Step 1 — Locate the spec
