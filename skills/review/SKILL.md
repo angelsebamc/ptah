@@ -1,13 +1,13 @@
 ---
 name: review
-description: 'Reviews an implemented Ptah spec against its SPEC.md and PLAN.md through the isolated, read-only reviewer subagent, and writes REVIEW.md with coded findings (B/M/N/S) and a verdict. Documentation only. Use when the user runs /review with a spec number.'
+description: 'Reviews an implemented Ptah spec against its SPEC.md, its PLAN.md, and the project''s own coding standards through the isolated, read-only reviewer subagent, and writes REVIEW.md with coded findings (B/M/N/S) and a verdict. Documentation only. Use when the user runs /review with a spec number.'
 argument-hint: '<spec-id>'
 disable-model-invocation: true
 ---
 
 # /review
 
-Review the implemented code against the plan and spec.
+Review the implemented code against the plan, the spec, and the project's own coding standards.
 
 `/review` is a thin dispatcher: the review happens in the isolated `reviewer` subagent's own context. See **Delegated work** in `RULES.md`. Passing it anything beyond the folder path defeats the point of isolating it.
 
