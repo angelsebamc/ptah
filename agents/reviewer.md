@@ -2,7 +2,6 @@
 name: reviewer
 description: Reviews an implemented Ptah spec against its SPEC.md and PLAN.md. Invoked internally by /review.
 tools: Read, Grep, Glob
-model: sonnet
 ---
 
 # Ptah reviewer

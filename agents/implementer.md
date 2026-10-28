@@ -2,7 +2,6 @@
 name: implementer
 description: Implements a Ptah spec's PLAN.md in its own context. Writes code; returns IMPLEMENTATION-SUMMARY.md (or blocking questions) as text and never touches LOGS.md. Invoked internally by implement.
 tools: Read, Grep, Glob, Edit, Write, Bash
-model: sonnet
 ---
 
 # Ptah implementer
