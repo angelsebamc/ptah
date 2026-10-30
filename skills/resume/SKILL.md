@@ -1,7 +1,7 @@
 ---
 name: resume
 description: 'Orients on one Ptah spec by reading its LOGS.md and showing the last entry and where the work stands.'
-argument-hint: '<spec-id>'
+argument-hint: '[<spec-id>]'
 disable-model-invocation: true
 ---
 
@@ -11,9 +11,9 @@ Orient the agent on a spec's current state at the start of a new session. Run th
 
 ## Step 1 — Locate the spec
 
-`<spec-id>` = `$ARGUMENTS[0]`
+`<spec-id>` = `$ARGUMENTS[0]`, if given.
 
-When the user runs `/ptah:resume <spec-id>`, resolve `<spec-id>` per **Spec identifiers** in `RULES.md`.
+Resolve `<spec-id>` per **Spec identifiers** in `RULES.md`, including when it's omitted.
 
 ---
 

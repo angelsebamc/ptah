@@ -1,7 +1,7 @@
 ---
 name: plan
 description: 'Writes the implementation plan in PLAN.md for a Ptah spec by dispatching the architect subagent'
-argument-hint: '<spec-id>'
+argument-hint: '[<spec-id>]'
 disable-model-invocation: true
 ---
 

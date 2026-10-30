@@ -1,7 +1,7 @@
 ---
 name: fix
 description: 'Applies findings from a Ptah REVIEW.md in auto, plan, or interactive mode, lets the user steer or pull in findings by code, and appends a Fix Summary. Use when the user runs /fix with a spec number, optionally followed by finding codes.'
-argument-hint: '<spec-id> [codes…] [-a | -p | -i]'
+argument-hint: '[<spec-id>] [codes…] [-a | -p | -i]'
 disable-model-invocation: true
 ---
 
@@ -11,7 +11,7 @@ Read review findings and fix all blocker and major issues. Record what was chang
 
 `/fix` works from:
 
-- **A spec** — `/fix <spec-id> [codes…]` — fixes findings from `.ptah/specs/<feature-name>/REVIEW.md`. This is the feature track.
+- **A spec** — `/fix [<spec-id>] [codes…]` — fixes findings from `.ptah/specs/<feature-name>/REVIEW.md`. This is the feature track.
 
 Every finding carries a code assigned by the reviewer — `B1`, `B2` for blockers, `M1` for major, `N1` for minor, `S1` for suggestions.
 
@@ -31,9 +31,9 @@ Mode is resolved with precedence **flag > config**. The config keys, `commands.f
 
 ## Step 1 — Parse command arguments
 
-The command takes exactly one source — a positional spec identifier (see **Spec identifiers** in `RULES.md`) — then optional finding codes and flags.
+The command takes one source — an optional positional spec identifier (see **Spec identifiers** in `RULES.md`) — then optional finding codes and flags.
 
-- The first positional is the spec identifier. Every positional after it is a finding code.
+- If the first positional is shaped like a finding code, or a comma-separated list of them, the spec identifier was omitted and every positional is a finding code. Otherwise the first positional is the spec identifier and every positional after it is a finding code.
 - Codes are separated by commas, spaces, or both — `n1,n2`, `n1 n2`, and `n1, n2` are the same. Match them case-insensitively and drop duplicates.
 - Codes pull the named minors and suggestions into scope for this run. They add to the default scope, never narrow it.
 
@@ -43,13 +43,11 @@ Examples:
 - `/fix 3 -i` — asks per finding before applying it
 - `/fix 3 n1,n2` — also fixes minors N1 and N2 this run
 - `/fix 3 S1 -p` — also fixes suggestion S1, in plan mode
+- `/fix n1,n2` — the spec comes from the branch or this session; also fixes minors N1 and N2
 
-**Source errors** stop the command:
+A positional after the spec identifier that isn't shaped like a code (`B`, `M`, `N`, or `S` followed by digits) stops the command:
 
-- No spec identifier:
-  > "`/fix` needs exactly one source: a spec number (`/fix 3`), optionally followed by finding codes (`/fix 3 n1,n2`)."
-- A positional after the spec identifier that isn't shaped like a code (`B`, `M`, `N`, or `S` followed by digits):
-  > "`<arg>` isn't a finding code. Codes look like `B1`, `M2`, `N1`, `S3`."
+> "`<arg>` isn't a finding code. Codes look like `B1`, `M2`, `N1`, `S3`."
 
 **Mutually-exclusive flag pairs** produce an error and stop:
 - `-a`, `-p`, `-i` (pick one)
@@ -82,7 +80,7 @@ The config file is never modified by `/fix`. Flags only affect the current run.
 
 ## Step 3 — Resolve the spec and read context
 
-Resolve `<spec-id>` per **Spec identifiers** in `RULES.md`.
+Resolve `<spec-id>` per **Spec identifiers** in `RULES.md`, including when it's omitted.
 
 Read:
 

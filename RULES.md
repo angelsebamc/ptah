@@ -92,12 +92,49 @@ Every spec folder created by `/ptah:spec` is named one of two ways:
 
 Every command that takes a `<spec-id>` accepts a bare number (`3`), a prefixed number (`some-web-3`), a ticket id (`PROJ-45`), or the full folder name. Matching is case-insensitive: `PROJ-45` and `proj-45` are the same spec. Resolve it in this order:
 
-1. If it matches a folder name in `.ptah/specs/`, use it.
-2. Otherwise, if it is a number, glob `.ptah/specs/<repo>-<number>-*`.
-3. Otherwise, glob `.ptah/specs/<spec-id>-*`.
-4. If exactly one folder matches, use it. If more than one matches, stop, list them, and ask for the full folder name. If none matches, stop: "No spec found for `<spec-id>`."
+1. If no `<spec-id>` was given, get one per **When the identifier is omitted**.
+2. If it matches a folder name in `.ptah/specs/`, use it.
+3. Otherwise, if it is a number, glob `.ptah/specs/<repo>-<number>-*`.
+4. Otherwise, glob `.ptah/specs/<spec-id>-*`.
+5. If exactly one folder matches, use it. If more than one matches, stop, list them, and ask for the full folder name. If none matches, stop: "No spec found for `<spec-id>`."
+6. Offer to switch to the spec's branch per **Switching to the spec's branch**. Never skip this step.
 
 Commands refer to the resolved folder as `<feature-name>`.
+
+### When the identifier is omitted
+
+A command that takes a `<spec-id>` and gets none picks the spec in this order, stopping at the first that gives one:
+
+1. **The git branch.** Take the part of `git branch --show-current` after the last `/`. It names a spec when, case-insensitive, it is the spec's id — `<repo>-<n>` for a spec without a ticket, the ticket id for a ticket spec — or starts with that id followed by `-`. E.g. `user/PROJ-45-csv-export` names `PROJ-45-add-csv-export`; `PROJ-4-fix` doesn't. If more than one spec matches, stop, list them, and ask for the full folder name.
+2. **This session's last hand-off.** Take the `<id>` from the first line of the most recent Ptah hand-off in this conversation — `/<command> <id> <status>`, e.g. `/review PROJ-45 completed` — and use it as `<spec-id>`.
+3. **The user picks.** Ask, listing every spec in `.ptah/specs/` by its display id and the rest of its folder name — specs without a ticket by number first, then ticket specs — and wait for the reply:
+   > "Which spec? Reply with its id.
+   >
+   > These specs are available:
+   > - 3 user-login
+   > - PROJ-45 add-csv-export"
+
+   Use the reply as `<spec-id>`. If `.ptah/specs/` has no specs, stop: "No specs yet. Run `/ptah:spec` to start one."
+
+Never guess from folder names or `LOGS.md` timestamps.
+
+Before doing anything else, tell the user which spec was picked and why:
+
+> "Using `<id>` from branch `<branch>`." or "Using `<id>` from this session."
+
+### Switching to the spec's branch
+
+Once a spec is resolved — from an id given with the command or any source in **When the identifier is omitted** — skip this if the current branch already names it, by the rule in **The git branch**. Otherwise look for local branches (`git branch --format='%(refname:short)'`) that name the spec, by the same rule:
+
+- **One** → ask: "Spec `<id>` has branch `<branch>`. Switch to it? (yes / no)"
+- **More than one** → list them and ask which one to switch to, or none.
+- **None**, or the user says no → stay on the current branch.
+
+Before switching, check `git status --porcelain`. If it shows uncommitted changes, don't switch — stop:
+
+> "You have uncommitted changes on `<current-branch>`. Commit or stash them, then run `/ptah:<command> <id>` again."
+
+Otherwise run `git switch <branch>` and go on with the command. Ptah never creates branches.
 
 ### Displaying an identifier
 

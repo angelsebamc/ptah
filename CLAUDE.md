@@ -37,6 +37,7 @@ Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, f
 - On `needs-input`, the dispatcher logs `paused`, asks the questions one at a time, logs each answer as a change entry, and re-dispatches with the same path. Answers travel through `LOGS.md`, never the prompt — so a re-dispatch in a later session works the same way.
 - `fix` applies `REVIEW.md` findings by code (`B1`, `M2`, …) in `auto`, `plan`, or `interactive` mode (from `commands.fix.mode`, or a flag), then routes back to `review`. An `approved` review ends the pipeline.
 - `resume` reads only `LOGS.md` and reports where a spec stands. It writes nothing.
+- Every command that takes a spec id can omit it: the spec comes from the git branch name, then from this session's last hand-off, and otherwise the user picks from a list. When the spec isn't the current branch's, the command offers to switch to the spec's branch.
 
 ## Design principles
 
