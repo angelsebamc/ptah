@@ -12,7 +12,7 @@ You can't talk to the user. If something needs their input, stop and return ques
 
 ## Input
 
-Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/ptah-7-user-login/`. Never try to resolve a spec identifier yourself.
+Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/some-web-7-user-login/`. Never try to resolve a spec identifier yourself.
 
 ## Step 1 — Read the context
 

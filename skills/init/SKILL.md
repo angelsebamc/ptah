@@ -1,6 +1,6 @@
 ---
 name: init
-description: 'Creates the project''s Ptah config at .ptah/ptah.yml: fix defaults and ticket sources.'
+description: 'Creates the project''s Ptah config at .ptah/ptah.yml: fix defaults and the ticket server.'
 disable-model-invocation: true
 model: haiku
 ---
@@ -14,7 +14,7 @@ Configure Ptah for this project. Every key is documented in `${CLAUDE_PLUGIN_ROO
 Read `.ptah/ptah.yml` (relative to the project root, not the plugin folder).
 
 - **Missing** → start from an empty config.
-- **Present** → show the user the current `commands.fix` and `context_sources` values, if any.
+- **Present** → show the user the current `commands.fix` and `tickets.server` values, if any.
 - **Not valid YAML** → stop:
   > "`.ptah/ptah.yml` isn't valid YAML. Fix it by hand, then re-run `/ptah:init`."
 
@@ -33,16 +33,14 @@ For each question, show the current value when set. An empty reply keeps it. Whe
 2. **Include minor**
    > "Should `/ptah:fix` also fix minor findings? (yes / no — recommended no)"
 
-3. **Ticket source**
-   > "Do you pull tickets from a tracker through an MCP server (e.g. Linear, JIRA, GitHub)? If so, which source name will you type in `/ptah:spec <source>=<ticket-id>`? (e.g. `linear` — or `no`)"
+3. **Ticket server**
+   > "Do you pull tickets from a tracker through an MCP server (e.g. Linear, JIRA, GitHub)? If so, which one? (e.g. `linear` — or `no`)"
 
-   On `no`, skip to Step 3. Otherwise `<key>` = the answer, lowercased. Find the MCP servers available in this session whose name contains `<key>`, case-insensitive:
+   On `no`, leave `tickets.server` out of the config and skip to Step 3. Otherwise find the MCP servers available in this session whose name contains the answer, case-insensitive (e.g. `linear` matches `claude_ai_Linear`):
 
    - **Exactly one** → `<server>` = its full name. Tell the user which server was found.
    - **More than one** → list them and ask which one to use.
-   - **None** → list the available servers and ask which one `<key>` should use. If there are none, or the user picks none, tell them to install or enable the server and re-run `/ptah:init`, and leave `context_sources.<key>` unset.
-
-   Then ask whether there's another source, and repeat until the user says no.
+   - **None** → list the available servers and ask which one to use. If there are none, or the user picks none, tell them to install or enable the server and re-run `/ptah:init`, and leave `tickets.server` unset.
 
 ## Step 3 — Write the config
 
@@ -54,12 +52,12 @@ commands:
     mode: <auto | plan | interactive>
     include_minor: <true | false>
 
-context_sources:
-  <key>: <server>
+tickets:
+  server: <server>
 ```
 
-- Change only `commands.fix.mode`, `commands.fix.include_minor`, and the `context_sources` entries the user answered. Anything else — stays exactly as it was.
-- Omit `context_sources` if it has no entries.
+- Change only `commands.fix.mode`, `commands.fix.include_minor`, and `tickets.server`. Anything else — stays exactly as it was.
+- Omit `tickets` if there's no ticket server.
 
 ## Step 4 — Hand off to user
 
@@ -67,6 +65,6 @@ context_sources:
 /init completed
 Artifact: `.ptah/ptah.yml`
 fix: mode <mode>, include_minor <true | false>
-ticket sources: <key> → <server>, … | none
-Next: /ptah:spec name=<feature-name>, or /ptah:spec <key>=<ticket-id>
+ticket server: <server> | none
+Next: /ptah:spec, or /ptah:spec <ticket-id>
 ```

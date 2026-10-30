@@ -31,8 +31,8 @@ Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, f
 /ptah:init → /ptah:spec → /ptah:plan → /ptah:implement → /ptah:review ⇄ /ptah:fix
 ```
 
-- `init` writes `commands.fix` and the `context_sources` ticket servers to `.ptah/ptah.yml` in the target project.
-- `spec` creates `.ptah/specs/<TICKET-ID>-<slug>/` for a ticket, or `.ptah/specs/ptah-<n>-<slug>/` numbered from `specs.next_id` otherwise, and fills `SPEC.md` one question at a time — optionally pre-filled from a ticket through the MCP server whose name matches the source key (or its `context_sources` alias).
+- `init` writes `commands.fix` and the `tickets.server` MCP server to `.ptah/ptah.yml` in the target project.
+- `spec` takes a ticket id or nothing. It creates `.ptah/specs/<TICKET-ID>-<slug>/` for a ticket, or `.ptah/specs/<repo>-<n>-<slug>/` otherwise — `<repo>` from the git root folder, `<n>` from `specs.next_id`, and the slug from a name the agent infers from the answers — and fills `SPEC.md` one question at a time, pre-filled from the ticket through `tickets.server` when there is one.
 - `plan`, `implement`, `review` are **thin dispatchers**. Each resolves the spec, dispatches its subagent with *only the folder path* as the prompt, validates the result, writes the artifact block verbatim (`PLAN.md`, `IMPLEMENTATION-SUMMARY.md`, `REVIEW.md`), and appends the `LOGS.md` entry. Shared handling lives in **Handling the result** in `RULES.md`; each skill states only its differences.
 - On `needs-input`, the dispatcher logs `paused`, asks the questions one at a time, logs each answer as a change entry, and re-dispatches with the same path. Answers travel through `LOGS.md`, never the prompt — so a re-dispatch in a later session works the same way.
 - `fix` applies `REVIEW.md` findings by code (`B1`, `M2`, …) in `auto`, `plan`, or `interactive` mode (from `commands.fix.mode`, or a flag), then routes back to `review`. An `approved` review ends the pipeline.
