@@ -1,7 +1,7 @@
 ---
 name: implement
 description: 'Implements a Ptah spec''s PLAN.md by dispatching the implementer subagent, relaying its blocking questions and writing IMPLEMENTATION-SUMMARY.md.'
-argument-hint: '<spec-id>'
+argument-hint: '[<spec-id>]'
 disable-model-invocation: true
 ---
 
