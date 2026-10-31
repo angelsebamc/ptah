@@ -43,6 +43,7 @@ Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, f
 
 These are why the files look the way they do. Keep them when editing.
 
+- **Every stage writes an artifact the next stage reads.** The intent (the ticket), `SPEC.md`, `PLAN.md`, the diff with `IMPLEMENTATION-SUMMARY.md`, and `REVIEW.md`, tied together by `LOGS.md`, are the audit trail. Stages share nothing but the spec folder and the code. The other principles follow from this one.
 - **One job per command.** `implement` doesn't review or open PRs; `review` never touches code. A new responsibility is a new command.
 - **Never auto-advance.** Every skill sets `disable-model-invocation: true` and ends with a hand-off naming the next command. The user runs it.
 - **Isolated review.** The reviewer gets a fresh context and the folder path only. An agent reviewing work from its own conversation keeps rationalizations that never reached the artifacts. Never pass a subagent conversation context, summaries, or explanations on anyone's behalf.
