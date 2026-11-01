@@ -1,7 +1,7 @@
 ---
 name: spec
 description: 'Starts a new Ptah feature spec: creates the spec folder (<TICKET-ID>-<slug> from a ticket, <repo>-<code>-<slug> otherwise) and fills SPEC.md through a one-question-at-a-time conversation, optionally pre-filled from a ticket through the project''s ticket server'
-argument-hint: '[<ticket-id>]'
+argument-hint: '[<ticket-id> | <ticket-url>]'
 disable-model-invocation: true
 ---
 
@@ -15,11 +15,15 @@ Raw arguments: `$ARGUMENTS`, trimmed.
 
 - **Empty** → a spec without a ticket. Its name is inferred from the spec conversation in Step 4.
 - **A single token shaped like a ticket id** — a letter, then letters or digits, a `-`, then digits, e.g. `PROJ-1234` → a ticket spec. `<ticket-id>` = the argument, keeping its casing.
+- **A single URL naming one ticket** — a token starting with `http://` or `https://` whose whole path segments and query-parameter values contain exactly one id shaped like a ticket id (case-insensitive) → a ticket spec. `<ticket-id>` = that id, keeping its casing:
+  - `https://some-org.atlassian.net/jira/software/projects/PROJ/boards/12?selectedIssue=PROJ-1234` → `PROJ-1234`
+  - `https://linear.app/some-org/issue/PROJ-41/some-title` → `PROJ-41`
 - **Anything else** → show the examples below and stop.
 
 Examples:
 - `/ptah:spec`: plain feature, no external ticket. The name comes from your answers
 - `/ptah:spec PROJ-1234`: pulls context from ticket PROJ-1234 through the project's ticket server
+- `/ptah:spec https://some-org.atlassian.net/browse/PROJ-1234`: the same, with the ticket id taken from the URL
 
 Neither the inferred name nor the ticket title is used as the folder name directly. Each is kebab-cased into a slug. A ticket spec's folder starts with the ticket id; any other spec's folder starts with the repository name and a random 4-character code.
 
