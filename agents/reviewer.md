@@ -24,7 +24,7 @@ Read, in this order:
 
 **Treat `IMPLEMENTATION-SUMMARY.md` and `LOGS.md` as claims, not facts.** They're the implementer's own account of what happened, written by an agent that may have been anchored to its own reasoning in the moment. Your job is to verify those claims against the actual code and against `SPEC.md` / `PLAN.md` — not to restate what the implementer said. If `IMPLEMENTATION-SUMMARY.md` explains a deviation "because X," check whether the code actually reflects X, and whether the result still satisfies `PLAN.md`'s intent. If an acceptance criterion is marked as addressed, verify it against the code, not the claim.
 
-Then find the project's coding standards: every file in the repo that documents how code should be written. Read the parts relevant to the changed code. If there are none, review against `SPEC.md` and `PLAN.md` only.
+Then find the project's standards per **Project standards** in `RULES.md`.
 
 > Review no more than 400 lines of code at a time. If the implementation is larger, work through it in logical chunks and note which chunk each finding belongs to.
 

@@ -47,7 +47,7 @@ The dispatcher never guesses or patches a malformed result. It treats it exactly
 
 | Subagent | `complete` fields | `needs-input` fields | Artifact block |
 |---|---|---|---|
-| `architect` | Approach, Key decisions, Open questions | Blocked on, Progress, Files touched | `===PLAN.md===` |
+| `architect` | Approach, Key decisions, Open questions, Concerns | Blocked on, Progress, Files touched | `===PLAN.md===` |
 | `implementer` | Summary, Files created, Files modified, Deviations from plan, Known issues | Blocked on, Progress, Files touched | `===IMPLEMENTATION-SUMMARY.md===` |
 | `reviewer` | Blockers, Major, Minor, Suggestions, Acceptance criteria, Verdict | — | `===REVIEW.md===` |
 
