@@ -44,6 +44,10 @@ Answers go through `LOGS.md` and never through the prompt, so a re-dispatch in a
 
 Subagents can't spawn subagents, so they're always dispatched from the main session.
 
+### Project standards
+
+A subagent finds the target project's standards: every file in it that documents how code should be written or how the product should behave — `CLAUDE.md` files, docs, and skills (`.claude/skills/*/SKILL.md`). Read skills as files; never invoke them. Read the parts relevant to the feature, and cite a standard as `<file>:<line>`.
+
 ### Handling the result
 
 Dispatching commands (`/plan`, `/implement`, `/review`) handle the subagent's result the same way. First check it against every rule in [`the result format`](${CLAUDE_PLUGIN_ROOT}/guides/result-format.md).

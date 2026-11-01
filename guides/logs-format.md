@@ -37,7 +37,7 @@ This guide defines the schema. The discipline (when to log, when not to) lives i
 | Field | Shape |
 |---|---|
 | Counts | digits only, e.g. `3` |
-| `Open questions` | a count, or `none` |
+| `Open questions`, `Concerns` | a count, or `none` |
 | `Acceptance criteria` | `<X> of <Y> met` |
 | `Deviations from plan` | `no`, or `yes — see change entries above` |
 | `Known issues`, `New issues found` | `no`, or `yes — <note>` |
@@ -82,6 +82,7 @@ Written when a subagent returns `error` or a malformed result. No artifact is wr
 - Approach
 - Key decisions
 - Open questions (count or `none`)
+- Concerns (count or `none`)
 - Next step
 
 ### `/implement completed`
@@ -145,6 +146,7 @@ All five fields are required, in the order shown. `Next step:` is **not** includ
 - Approach: new boolean field on accounts table + UI toggle in form
 - Key decisions: reuse existing form component
 - Open questions: none
+- Concerns: none
 - Next step: /ptah:implement PROJ-42
 
 ## 2026-04-23 14:22:18 — /implement paused
