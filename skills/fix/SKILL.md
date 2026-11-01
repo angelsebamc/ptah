@@ -38,11 +38,11 @@ The command takes one source — an optional positional spec identifier (see **S
 - Codes pull the named minors and suggestions into scope for this run. They add to the default scope, never narrow it.
 
 Examples:
-- `/fix 3` — uses mode from `ptah.yml`
-- `/fix 3 -a` — applies all fixes silently this run
-- `/fix 3 -i` — asks per finding before applying it
-- `/fix 3 n1,n2` — also fixes minors N1 and N2 this run
-- `/fix 3 S1 -p` — also fixes suggestion S1, in plan mode
+- `/fix k3f9` — uses mode from `ptah.yml`
+- `/fix k3f9 -a` — applies all fixes silently this run
+- `/fix k3f9 -i` — asks per finding before applying it
+- `/fix k3f9 n1,n2` — also fixes minors N1 and N2 this run
+- `/fix k3f9 S1 -p` — also fixes suggestion S1, in plan mode
 - `/fix n1,n2` — the spec comes from the branch or this session; also fixes minors N1 and N2
 
 A positional after the spec identifier that isn't shaped like a code (`B`, `M`, `N`, or `S` followed by digits) stops the command:
