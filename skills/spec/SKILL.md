@@ -146,7 +146,7 @@ Create the following structure at `.ptah/specs/<slug>/`:
 
 Write the following to `SPEC.md`.
 
-For a ticket spec, include the `Source:` line linking back to the ticket. `<ticket-url>` comes from the ticket server, not from the argument. Omit the line for a spec without a ticket.
+For a ticket spec, include the `Source:` line linking back to the ticket. Omit it for a spec without a ticket.
 
 ```markdown
 # SPEC — <feature-name>
