@@ -3,9 +3,6 @@
 `.ptah/ptah.yml`, relative to the project root. `/ptah:init` creates it.
 
 ```yaml
-specs:
-  next_id: 4
-
 commands:
   fix:
     mode: plan
@@ -23,7 +20,6 @@ tickets:
 |-----|----------|------------|---------|---------|
 | `commands.fix.mode` | yes | `/ptah:init` | `/ptah:fix` | Fix mode, one of the fix modes in [`vocabulary`](./vocabulary.md). A flag overrides it for one run. |
 | `commands.fix.include_minor` | yes | `/ptah:init` | `/ptah:fix` | Whether `/ptah:fix` also fixes minor findings. |
-| `specs.next_id` | no — starts at `1` | `/ptah:spec` | `/ptah:spec` | Number for the next spec without a ticket. Only moves forward; never edit it by hand to reuse a number. |
 | `tickets.server` | no | `/ptah:init` | `/ptah:spec` | Full name of the MCP server that `/ptah:spec <ticket-id>` fetches tickets from. Unset, `/ptah:spec <ticket-id>` stops and asks for `/ptah:init`. |
 
 A command changes only the keys it writes and leaves every other key exactly as it was.
