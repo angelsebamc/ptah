@@ -1,6 +1,6 @@
 ---
 name: spec
-description: 'Starts a new Ptah feature spec: creates the spec folder (<TICKET-ID>-<slug> from a ticket, <repo>-<n>-<slug> otherwise) and fills SPEC.md through a one-question-at-a-time conversation, optionally pre-filled from a ticket through the project''s ticket server'
+description: 'Starts a new Ptah feature spec: creates the spec folder (<TICKET-ID>-<slug> from a ticket, <repo>-<code>-<slug> otherwise) and fills SPEC.md through a one-question-at-a-time conversation, optionally pre-filled from a ticket through the project''s ticket server'
 argument-hint: '[<ticket-id>]'
 disable-model-invocation: true
 ---
@@ -21,7 +21,7 @@ Examples:
 - `/ptah:spec`: plain feature, no external ticket. The name comes from your answers
 - `/ptah:spec PROJ-1234`: pulls context from ticket PROJ-1234 through the project's ticket server
 
-Neither the inferred name nor the ticket title is used as the folder name directly. Each is kebab-cased into a slug. A ticket spec's folder starts with the ticket id; any other spec's folder starts with the repository name and is numbered automatically from `ptah.yml`.
+Neither the inferred name nor the ticket title is used as the folder name directly. Each is kebab-cased into a slug. A ticket spec's folder starts with the ticket id; any other spec's folder starts with the repository name and a random 4-character code.
 
 ---
 
@@ -107,8 +107,14 @@ For sections without a mapping, ask normally.
 `<id>` is the spec's display id per **Spec identifiers** in `RULES.md`.
 
 ### 4a. Get the id
-- **From a ticket** — `<id>` = `<ticket-id>`. Ticket specs take no number.
-- **Without a ticket** — read `specs.next_id` from `.ptah/ptah.yml` in the current project. If the `specs` section or `next_id` key is missing, treat the next id as `1`. Otherwise, use `specs.next_id` as `<n>`. `<id>` = `<n>`.
+- **From a ticket** — `<id>` = `<ticket-id>`. Ticket specs take no code.
+- **Without a ticket** — generate `<code>` by running:
+
+  ```sh
+  LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c 4
+  ```
+
+  If any folder in `.ptah/specs/` starts with `<repo>-<code>-`, run it again. `<id>` = `<code>`. Never make up a code or pick one yourself.
 
 ### 4b. Name the feature
 - **From a ticket** — `<feature-name>` = the ticket's title.
@@ -118,7 +124,7 @@ For sections without a mapping, ask normally.
 `<kebab>` is `<feature-name>` in kebab-case, per **Spec identifiers** in `RULES.md`. If `<kebab>` is longer than 50 characters, cut it at the last `-` before the 50th character.
 
 - **From a ticket** — `slug` = `<ticket-id>-<kebab>`, e.g. `PROJ-45-add-csv-export`
-- **Without a ticket** — `slug` = `<repo>-<n>-<kebab>`, e.g. `some-web-3-user-login`
+- **Without a ticket** — `slug` = `<repo>-<code>-<kebab>`, e.g. `some-web-k3f9-user-login`
 
 ### 4d. Create the folder
 Create the following structure at `.ptah/specs/<slug>/`:
@@ -129,14 +135,6 @@ Create the following structure at `.ptah/specs/<slug>/`:
   SPEC.md
   refs/
 ```
-
-### 4e. Update the counter
-Only for a spec without a ticket. Write `specs.next_id: <n + 1>` back to `.ptah/ptah.yml` in the current project:
-
-- If it has no `specs:` section, add one.
-- Leave every other key in `ptah.yml` untouched.
-
-Never infer the next number from existing folder names. Numbers are never reused, even if a folder is deleted — the counter only moves forward.
 
 ---
 

@@ -52,7 +52,7 @@ For each question, show the current value when set. An empty reply keeps it. Whe
    - exit `0`, any other source → `ignored by <source>`
 
    Show the state as the current value (`currently: <state>`), then ask:
-   > "Keep `.ptah/` out of git for you only? It's added to `.git/info/exclude`, which is never committed, so teammates aren't affected — but they won't see your specs either, and specs without a ticket may reuse a number a teammate already took. (yes / no)"
+   > "Keep `.ptah/` out of git for you only? It's added to `.git/info/exclude`, which is never committed, so teammates aren't affected — but they won't see your specs either. (yes / no)"
 
    An empty reply keeps the current state.
 
