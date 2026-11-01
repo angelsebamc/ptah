@@ -4,7 +4,9 @@
 
 <h1 align="center">Ptah</h1>
 
-<p align="center">A spec-driven workflow for AI coding agents, from spec to PR.</p>
+<p align="center"><b>Conceived as a spec. Spoken into code.</b></p>
+
+In Egyptian mythology, Ptah is the creator god of Memphis, patron of craftsmen, architects and builders. According to the myth, he brought the world into being by conceiving it in his heart and speaking it with his tongue. Ptah, the workflow, does the same with your code: every feature is conceived as a spec, takes shape in a plan, and comes into being by the hand of an agent.
 
 Ptah is a Claude Code plugin. You write a spec, and Ptah plans, implements, reviews and fixes it one step at a time. Every step leaves a file you can read in `.ptah/specs/<spec>/`.
 
