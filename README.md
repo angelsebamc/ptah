@@ -39,6 +39,6 @@ Run these inside Claude Code, in your project:
 
 Ptah never moves on by itself: each command ends by telling you the next one to run. When a review comes back `approved`, the work is ready for a PR.
 
-You can leave out the spec id: Ptah takes it from your git branch, or asks you to pick one.
+You can leave out the spec id: Ptah takes it from your git branch, or asks you to pick one. If you're not on the spec's branch, Ptah offers to switch to it, or to create it when it doesn't exist yet.
 
 Everything that happens is logged in the spec's `LOGS.md`. Starting a new session? Run `/ptah:resume`.

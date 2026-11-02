@@ -132,13 +132,24 @@ Once a spec is resolved — from an id given with the command or any source in *
 
 - **One** → ask: "Spec `<id>` has branch `<branch>`. Switch to it? (yes / no)"
 - **More than one** → list them and ask which one to switch to, or none.
-- **None**, or the user says no → stay on the current branch.
+- **None** → offer to create one, per **Creating the spec's branch**.
+- The user says no → stay on the current branch.
 
 Before switching, check `git status --porcelain`. If it shows uncommitted changes, don't switch — stop:
 
 > "You have uncommitted changes on `<current-branch>`. Commit or stash them, then run `/ptah:<command> <id>` again."
 
-Otherwise run `git switch <branch>` and go on with the command. Ptah never creates branches.
+Otherwise run `git switch <branch>` and go on with the command.
+
+### Creating the spec's branch
+
+If `git status --porcelain` shows uncommitted changes, don't offer — stay on the current branch. Otherwise:
+
+1. Get the base: `git symbolic-ref --short refs/remotes/origin/HEAD`.
+2. Ask: "Spec `<id>` has no branch. Create `<feature-name>` from `<base>`? (yes / no, or reply with another name or base)". If step 1 failed, ask instead: "Spec `<id>` has no branch. Create `<feature-name>`? Reply with the existing branch to base it on (e.g. `develop`), or no."
+3. If the user replies with another name, it must start with the spec's id, by the rule in **The git branch** — e.g. `user/PROJ-45-csv`, not `csv-export`. If it doesn't, say so and ask again.
+4. `<base-branch>` is `<base>` without a leading `origin/`. Run `git fetch origin <base-branch>`. If it fails, show its error and ask: "Couldn't fetch `<base-branch>`. Create `<name>` from the last fetched `origin/<base-branch>`, which may be behind? (yes / no)". On no, stop.
+5. Run `git switch --no-track -c <name> origin/<base-branch>` and go on with the command. If the switch fails, stop and show its error.
 
 ### Displaying an identifier
 
