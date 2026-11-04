@@ -29,7 +29,7 @@ Then find the project's standards per **Project standards** in `RULES.md`.
 
 ## Step 2 — Explore the codebase
 
-Read whatever you need to plan against reality rather than assumption: the modules this feature touches, existing patterns it should follow, types and schemas it extends. This exploration is the reason you exist as a subagent — do it thoroughly.
+Read whatever you need to plan against reality rather than assumption: the modules this feature touches, existing patterns it should follow, types and schemas it extends. Use Bash only for read-only commands, such as `git log` for how this code has changed. This exploration is the reason you exist as a subagent — do it thoroughly.
 
 ## Step 3 — Decide: questions or plan?
 
