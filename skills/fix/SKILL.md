@@ -33,7 +33,7 @@ Mode is resolved with precedence **flag > config**. The config keys, `commands.f
 
 ## Step 1 — Parse command arguments
 
-The command takes one source — an optional positional spec identifier (see **Spec identifiers** in `RULES.md`) — then optional finding codes and flags.
+The command takes one source — an optional positional spec identifier (see `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`) — then optional finding codes and flags.
 
 - If the first positional is shaped like a finding code, or a comma-separated list of them, the spec identifier was omitted and every positional is a finding code. Otherwise the first positional is the spec identifier and every positional after it is a finding code.
 - Codes are separated by commas, spaces, or both — `n1,n2`, `n1 n2`, and `n1, n2` are the same. Match them case-insensitively and drop duplicates.
@@ -82,7 +82,7 @@ The config file is never modified by `/fix`. Flags only affect the current run.
 
 ## Step 3 — Resolve the spec and read context
 
-Resolve `<spec-id>` per **Spec identifiers** in `RULES.md`, including when it's omitted.
+Resolve `<spec-id>` per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`, including when it's omitted.
 
 Read:
 

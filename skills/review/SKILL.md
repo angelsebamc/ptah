@@ -11,11 +11,11 @@ Review the implemented code against the plan, the spec, and the project's own st
 
 `RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
-`/review` is a thin dispatcher: the review happens in the isolated `reviewer` subagent's own context. See **Delegated work** in `RULES.md`. Passing it anything beyond the folder path defeats the point of isolating it.
+`/review` is a thin dispatcher: the review happens in the isolated `reviewer` subagent's own context. See `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`. Passing it anything beyond the folder path defeats the point of isolating it.
 
 ## Step 1 — Resolve the spec
 
-Resolve `<spec-id>` per **Spec identifiers** in `RULES.md`.
+Resolve `<spec-id>` per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`.
 
 If `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md` is empty or missing, stop and tell the user:
 
@@ -35,7 +35,7 @@ Review the Ptah spec at .ptah/specs/<feature-name>/
 
 ## Step 3 — Handle the result
 
-Per **Handling the result** in `RULES.md`. The reviewer never returns `needs-input`.
+Per **Handling the result** in `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`. The reviewer never returns `needs-input`.
 
 - **`complete`** — write the `===REVIEW.md===` block to `.ptah/specs/<feature-name>/REVIEW.md`. Take `Next step:` from the verdict:
 

@@ -11,11 +11,11 @@ Write the technical plan for a spec in `PLAN.md`.
 
 `RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
-`/plan` is a thin dispatcher: the planning happens in the `architect` subagent's own context. See **Delegated work** in `RULES.md`.
+`/plan` is a thin dispatcher: the planning happens in the `architect` subagent's own context. See `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`.
 
 ## Step 1 — Resolve the spec
 
-Resolve `<spec-id>` per **Spec identifiers** in `RULES.md`.
+Resolve `<spec-id>` per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`.
 
 If `.ptah/specs/<feature-name>/SPEC.md` is empty or missing, stop and tell the user:
 
@@ -35,7 +35,7 @@ Plan the Ptah spec at .ptah/specs/<feature-name>/
 
 ## Step 3 — Handle the result
 
-Per **Handling the result** in `RULES.md`:
+Per **Handling the result** in `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`:
 
 - **`complete`** — write the `===PLAN.md===` block to `.ptah/specs/<feature-name>/PLAN.md`. `Next step: /ptah:implement <id>`.
   - If `Open questions` isn't `none`, after logging `/plan completed`, ask PLAN.md's **Open questions** one at a time in order. After each answer, update `PLAN.md` to match: rework the sections the chosen option affects, and remove the question from **Open questions** (write `none` once it's empty). Then append a `change during /plan` entry whose `Impact:` names the `PLAN.md` sections updated.
