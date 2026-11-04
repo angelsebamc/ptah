@@ -20,7 +20,7 @@ This guide defines the schema. The discipline (when to log, when not to) lives i
 
 1. **Heading** — `H2` (`##`), exact format: `<YYYY-MM-DD HH:MM:SS> — /<command> <status>`
    - Date and time use 24-hour local time, e.g. `2026-05-08 14:32:07`
-   - Get the timestamp from the shell with `date '+%Y-%m-%d %H:%M:%S'` right before appending. Never write one from memory or copy it from an earlier entry
+   - Get the timestamp from the shell right before appending: `date '+%Y-%m-%d %H:%M:%S'` (POSIX) or `Get-Date -Format 'yyyy-MM-dd HH:mm:ss'` (PowerShell). Never write one from memory or copy it from an earlier entry
    - `<status>` is a **command status** from `vocabulary.md`
 2. **Body** — unordered list (`-`), one field per line, in the order defined below
 3. **One line per value** — no value spans lines, is empty, or has leading or trailing whitespace; lists inside a value are comma-separated
