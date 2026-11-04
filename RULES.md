@@ -30,7 +30,7 @@ While working on any spec, append **change entries** to the corresponding `LOGS.
 
 ### When to log
 
-Log a change entry, without asking, whenever an event matches a change type in [`vocabulary`](${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md).
+Log a change entry, without asking, whenever an event matches a change type in [`vocabulary`](./guides/vocabulary.md).
 
 ### When NOT to log
 
@@ -45,9 +45,9 @@ Routine work creates noise — do not log it:
 
 ## Reports and vocabulary
 
-Every fixed value in Ptah — command statuses, result statuses, spec states, change types and triggers, severities, verdicts, fix modes — is defined once, in [`vocabulary`](${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md). Commands use those values exactly; a value that isn't on its list is an error, never something to coerce.
+Every fixed value in Ptah — command statuses, result statuses, spec states, change types and triggers, severities, verdicts, fix modes — is defined once, in [`vocabulary`](./guides/vocabulary.md). Commands use those values exactly; a value that isn't on its list is an error, never something to coerce.
 
-Every final report follows [`the result format`](${CLAUDE_PLUGIN_ROOT}/guides/result-format.md), in markdown.
+Every final report follows [`the result format`](./guides/result-format.md), in markdown.
 
 `LOGS.md` entries, results, and hand-offs share the same field names, so information moves between them by copying, not translating.
 
@@ -64,11 +64,11 @@ Two roots, never mixed.
 | `${CLAUDE_PLUGIN_ROOT}/RULES.md` | This file |
 | `${CLAUDE_PLUGIN_ROOT}/guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md`, `spec-identifiers.md`, `delegated-work.md`, `project-standards.md` |
 | `${CLAUDE_PLUGIN_ROOT}/skills/<command>/` | One skill per command, invoked as `/ptah:<command>` |
-| `${CLAUDE_PLUGIN_ROOT}/agents/` | Subagents, dispatched as `ptah:architect`, `ptah:implementer`, `ptah:reviewer`. See [`delegated work`](${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md) |
+| `${CLAUDE_PLUGIN_ROOT}/agents/` | Subagents, dispatched as `ptah:architect`, `ptah:implementer`, `ptah:reviewer`. See [`delegated work`](./guides/delegated-work.md) |
 
 **Project files** are the work product, relative to the project root (the session's working directory):
 
 | Location | Purpose |
 |----------|---------|
-| `.ptah/ptah.yml` | Project config, created by `/ptah:init`. Every key is documented in [`config`](${CLAUDE_PLUGIN_ROOT}/guides/config.md) |
+| `.ptah/ptah.yml` | Project config, created by `/ptah:init`. Every key is documented in [`config`](./guides/config.md) |
 | `.ptah/specs/<TICKET-ID>-<slug>/`, `.ptah/specs/<repo>-<code>-<slug>/` | Per-feature work product (created by `/ptah:spec`) |
