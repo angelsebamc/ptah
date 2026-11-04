@@ -45,12 +45,12 @@ Otherwise, identify:
 Print exactly two lines, with a blank line between them:
 
 ```
-Last entry: <HH:MM> <type> — <what>
+Last entry: <timestamp> <type> — <what>
 
 Where you are: <one-line synthesis>
 ```
 
-`<HH:MM>` is the time from the last entry's heading. `<type>` and `<what>` depend on the entry:
+`<timestamp>` is the last entry's heading timestamp, as written. `<type>` and `<what>` depend on the entry:
 
 | Last entry | `<type>` | `<what>` |
 |---|---|---|
