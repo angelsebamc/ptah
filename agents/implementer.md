@@ -24,7 +24,6 @@ Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/some-web-k3f
 
 Read, in this order:
 
-- `${CLAUDE_PLUGIN_ROOT}/RULES.md` — the workflow rules
 - `<folder>/LOGS.md` — session history. Every change entry after the last `/plan completed` is decided — the user's answers to `PLAN.md`'s open questions, and to your earlier questions after an `/implement paused`, including approved deviations.
 - `<folder>/PLAN.md` — what to build
 - `<folder>/SPEC.md` — use case and acceptance criteria

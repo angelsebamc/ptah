@@ -35,7 +35,7 @@ Neither the inferred name nor the ticket title is used as the folder name direct
 
 Check the config per **Required keys** in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
 
-For a spec without a ticket, get `<repo>` now, per **Spec identifiers** in `RULES.md`, so a missing git repository stops the command before the conversation.
+For a spec without a ticket, get `<repo>` now, per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`, so a missing git repository stops the command before the conversation.
 
 For a ticket spec:
 
@@ -110,7 +110,7 @@ For sections without a mapping, ask normally.
 
 ## Step 4 — Create the folder structure
 
-`<id>` is the spec's display id per **Spec identifiers** in `RULES.md`.
+`<id>` is the spec's display id per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`.
 
 ### 4a. Get the id
 - **From a ticket** — `<id>` = `<ticket-id>`. Ticket specs take no code.
@@ -133,7 +133,7 @@ For sections without a mapping, ask normally.
 - **Without a ticket** — infer `<feature-name>` from the Description and Problem answers: a short phrase naming what the feature does, e.g. `user login`. Don't ask the user for it.
 
 ### 4c. Build the slug
-`<kebab>` is `<feature-name>` in kebab-case, per **Spec identifiers** in `RULES.md`. If `<kebab>` is longer than 50 characters, cut it at the last `-` before the 50th character.
+`<kebab>` is `<feature-name>` in kebab-case, per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`. If `<kebab>` is longer than 50 characters, cut it at the last `-` before the 50th character.
 
 - **From a ticket** — `slug` = `<ticket-id>-<kebab>`, e.g. `PROJ-45-add-csv-export`
 - **Without a ticket** — `slug` = `<repo>-<code>-<kebab>`, e.g. `some-web-k3f9-user-login`

@@ -18,14 +18,13 @@ Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/some-web-k3f
 
 Read, in this order:
 
-- `${CLAUDE_PLUGIN_ROOT}/RULES.md` — the workflow rules
 - `<folder>/LOGS.md` — session history. If the last command entry is `/plan paused`, the change entries after it are the user's answers to your earlier questions — treat them as decided.
 - `<folder>/SPEC.md` — the use case and acceptance criteria
 - `<folder>/refs/` — screenshots, mockups, schema snippets
 
 If `SPEC.md` is empty or missing, return `error`.
 
-Then find the project's standards per **Project standards** in `RULES.md`.
+Then find the project's standards per `${CLAUDE_PLUGIN_ROOT}/guides/project-standards.md`.
 
 ## Step 2 — Explore the codebase
 

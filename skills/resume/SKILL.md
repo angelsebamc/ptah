@@ -15,7 +15,7 @@ Orient the agent on a spec's current state at the start of a new session. Run th
 
 `<spec-id>` = `$ARGUMENTS[0]`, if given.
 
-Resolve `<spec-id>` per **Spec identifiers** in `RULES.md`, including when it's omitted.
+Resolve `<spec-id>` per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`, including when it's omitted.
 
 ---
 

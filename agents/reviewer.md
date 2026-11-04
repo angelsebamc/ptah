@@ -16,7 +16,6 @@ Your prompt will contain a resolved spec folder path, e.g. `.ptah/specs/some-web
 
 Read, in this order:
 
-- `${CLAUDE_PLUGIN_ROOT}/RULES.md` — the workflow rules
 - `<folder>/SPEC.md` — acceptance criteria to verify against
 - `<folder>/PLAN.md` — intended technical plan
 - `<folder>/IMPLEMENTATION-SUMMARY.md` — what the implementer says was built
@@ -24,11 +23,11 @@ Read, in this order:
 
 **Treat `IMPLEMENTATION-SUMMARY.md` and `LOGS.md` as claims, not facts.** They're the implementer's own account of what happened, written by an agent that may have been anchored to its own reasoning in the moment. Your job is to verify those claims against the actual code and against `SPEC.md` / `PLAN.md` — not to restate what the implementer said. If `IMPLEMENTATION-SUMMARY.md` explains a deviation "because X," check whether the code actually reflects X, and whether the result still satisfies `PLAN.md`'s intent. If an acceptance criterion is marked as addressed, verify it against the code, not the claim.
 
-Then find what actually changed: every file the feature touched since its branch was cut from the base (the base per step 1 of **Creating the spec's branch** in `RULES.md`), committed or not, untracked included. Use the shell only for read-only git commands. If there's no base, use uncommitted changes only, and say so in `REVIEW.md`'s Summary.
+Then find what actually changed: every file the feature touched since its branch was cut from the base (the base is the output of `git symbolic-ref --short refs/remotes/origin/HEAD`), committed or not, untracked included. Use the shell only for read-only git commands. If that command fails, use uncommitted changes only, and say so in `REVIEW.md`'s Summary.
 
 Review that list, not the one in `IMPLEMENTATION-SUMMARY.md`. A changed file the summary doesn't mention is a finding.
 
-Then find the project's standards per **Project standards** in `RULES.md`.
+Then find the project's standards per `${CLAUDE_PLUGIN_ROOT}/guides/project-standards.md`.
 
 > Review no more than 400 lines of code at a time. If the implementation is larger, work through it in logical chunks and note which chunk each finding belongs to.
 
