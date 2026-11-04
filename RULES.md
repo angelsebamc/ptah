@@ -180,7 +180,7 @@ Two roots, never mixed.
 
 | Location | Purpose |
 |----------|---------|
-| `${CLAUDE_PLUGIN_ROOT}/RULES.md` | This file. Injected into every session by `hooks/session-start.sh` |
+| `${CLAUDE_PLUGIN_ROOT}/RULES.md` | This file |
 | `${CLAUDE_PLUGIN_ROOT}/guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md` |
 | `${CLAUDE_PLUGIN_ROOT}/skills/<command>/` | One skill per command, invoked as `/ptah:<command>` |
 | `${CLAUDE_PLUGIN_ROOT}/agents/` | Subagents, dispatched as `ptah:architect`, `ptah:implementer`, `ptah:reviewer`. See **Delegated work** |

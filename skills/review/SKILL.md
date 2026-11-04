@@ -9,6 +9,8 @@ disable-model-invocation: true
 
 Review the implemented code against the plan, the spec, and the project's own standards.
 
+`RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
+
 `/review` is a thin dispatcher: the review happens in the isolated `reviewer` subagent's own context. See **Delegated work** in `RULES.md`. Passing it anything beyond the folder path defeats the point of isolating it.
 
 ## Step 1 — Resolve the spec

@@ -9,6 +9,8 @@ disable-model-invocation: true
 
 Orient the agent on a spec's current state at the start of a new session. Run this before continuing any in-flight work.
 
+`RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
+
 ## Step 1 — Locate the spec
 
 `<spec-id>` = `$ARGUMENTS[0]`, if given.

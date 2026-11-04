@@ -9,6 +9,8 @@ disable-model-invocation: true
 
 Write the technical plan for a spec in `PLAN.md`.
 
+`RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
+
 `/plan` is a thin dispatcher: the planning happens in the `architect` subagent's own context. See **Delegated work** in `RULES.md`.
 
 ## Step 1 — Resolve the spec
