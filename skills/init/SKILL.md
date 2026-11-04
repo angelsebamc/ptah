@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 Configure Ptah for this project. Every key is documented in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
 
+`RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
+
 ## Step 1 — Read the current config
 
 Read `.ptah/ptah.yml` (relative to the project root, not the plugin folder).

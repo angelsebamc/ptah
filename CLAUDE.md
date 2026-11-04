@@ -4,19 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, from spec to PR. Ptah is the methodology; the agent harness and the LLM are underneath it. The repo has no application code and no build, lint, or test tooling — it's Markdown prompts plus one SessionStart hook. Editing Ptah means editing the instructions an agent follows. This repo does not use Ptah on itself.
+Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, from spec to PR. Ptah is the methodology; the agent harness and the LLM are underneath it. The repo has no application code and no build, lint, or test tooling — it's Markdown prompts only. Editing Ptah means editing the instructions an agent follows. This repo does not use Ptah on itself.
 
 ### Testing a change
 
 - Load the plugin into a scratch project and run the commands: `claude --plugin-dir /path/to/ptah`.
-- Check the hook on its own: `CLAUDE_PLUGIN_ROOT=$PWD bash hooks/session-start.sh` — every `${CLAUDE_PLUGIN_ROOT}` in the output should be an absolute path.
-- The hook runs only at session start, so a change to `RULES.md` or the hook needs a new session to show up.
+- Skills skip reading `RULES.md` when its full text is already in context, so test an edit to it in a new session.
 
 ## Layout
 
 - `.claude-plugin/plugin.json` — manifest. Its name `ptah` namespaces everything: skills are `/ptah:<command>`, agents are `ptah:<agent>`.
-- `hooks/hooks.json` → `hooks/session-start.sh` — prints `RULES.md` into the session context. Claude Code doesn't substitute `${CLAUDE_PLUGIN_ROOT}` in hook output, so the script does it. Keep links in `RULES.md` written as `${CLAUDE_PLUGIN_ROOT}/...`.
-- `RULES.md` — cross-cutting rules every command and subagent follows: read `LOGS.md` first, stop and ask one question at a time, wait for the user, delegated work and result handling, logging discipline, spec identifiers, path conventions.
+- `RULES.md` — cross-cutting rules every command and subagent follows: read `LOGS.md` first, stop and ask one question at a time, wait for the user, delegated work and result handling, logging discipline, spec identifiers, path conventions. Every skill reads it before its Step 1, every agent in its Step 1.
 - `guides/` — single sources of truth:
   - `vocabulary.md` — every fixed value: command/result statuses, spec states, change types and triggers, severities and finding codes, verdicts, fix modes.
   - `result-format.md` — the subagent result (`===RESULT===` … `===<ARTIFACT>.md===` … `===END===`), malformed-result rules, and the user-facing hand-off.
@@ -55,9 +53,8 @@ These are why the files look the way they do. Keep them when editing.
 
 ## Claude Code constraints
 
-- `${CLAUDE_PLUGIN_ROOT}` is expanded in skill and agent content, not in hook output.
+- `${CLAUDE_PLUGIN_ROOT}` is expanded in skill and agent content, not in files read at runtime such as `RULES.md` and the guides. The agent resolves those links against the expanded path it read the file from.
 - Subagents can't talk to the user and can't spawn subagents. That's why dispatching happens only from the main session, and why questions come back as `needs-input`.
-- Agents don't get the hook's context, so each agent reads `${CLAUDE_PLUGIN_ROOT}/RULES.md` itself in its Step 1.
 
 ## Editing conventions
 
@@ -72,11 +69,11 @@ These are why the files look the way they do. Keep them when editing.
 
 - `/ptah:ship` — commit and open the PR, as its own command. When it lands, `approved`'s next step becomes `/ptah:ship <id>` in `vocabulary.md`, `logs-format.md`, and `skills/review/SKILL.md`.
 - `/ptah:status` — overview of every spec's state (states are already defined in `vocabulary.md`).
-- A second harness adapter (Devin). Keep Claude Code specifics confined to frontmatter, `${CLAUDE_PLUGIN_ROOT}`, `$ARGUMENTS`, and the hook, so the prompt bodies stay portable.
+- A second harness adapter (Devin). Keep Claude Code specifics confined to frontmatter, `${CLAUDE_PLUGIN_ROOT}`, and `$ARGUMENTS`, so the prompt bodies stay portable.
 
 ## Line endings
 
-Commit with LF. Windows checkouts may show every file as modified — use `git diff --ignore-cr-at-eol`. `hooks/session-start.sh` must stay LF-only: bash fails on CRLF. `.gitattributes` pins `*.sh` to LF.
+Commit with LF. Windows checkouts may show every file as modified — use `git diff --ignore-cr-at-eol`.
 
 ## Working on this repo
 

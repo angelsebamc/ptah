@@ -9,6 +9,8 @@ disable-model-invocation: true
 
 Implement a spec's plan, and document what was built in `IMPLEMENTATION-SUMMARY.md`.
 
+`RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
+
 `/implement` is a thin dispatcher: the implementation — reading the plan, writing the code — happens in the `implementer` subagent's own context. This session only relays questions, writes `IMPLEMENTATION-SUMMARY.md`, and logs. See **Delegated work** in `RULES.md`.
 
 ## Step 1 — Resolve the spec

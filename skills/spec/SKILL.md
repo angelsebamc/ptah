@@ -9,6 +9,8 @@ disable-model-invocation: true
 
 If the spec comes from a ticket (e.g. JIRA, Linear, GitHub), pre-fill parts of it through the project's ticket server. Config keys are documented in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
 
+`RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
+
 ## Step 1 — Parse command arguments
 
 Raw arguments: `$ARGUMENTS`, trimmed.

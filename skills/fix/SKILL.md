@@ -9,6 +9,8 @@ disable-model-invocation: true
 
 Read review findings and fix all blocker and major issues. Record what was changed next to the findings.
 
+`RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
+
 `/fix` works from:
 
 - **A spec** — `/fix [<spec-id>] [codes…]` — fixes findings from `.ptah/specs/<feature-name>/REVIEW.md`. This is the feature track.
