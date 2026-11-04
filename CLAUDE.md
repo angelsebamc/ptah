@@ -23,7 +23,7 @@ Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, f
   - `logs-format.md` — the `LOGS.md` entry schema, per-command fields in order, change entries.
   - `config.md` — every `.ptah/ptah.yml` key, whether it's required, which command reads or writes it, and the required-keys check.
 - `skills/<command>/SKILL.md` — one user-invoked command each: `init`, `spec`, `plan`, `implement`, `review`, `fix`, `resume`.
-- `agents/` — `architect` (plans), `implementer` (writes code), `reviewer` (read-only: `Read, Grep, Glob`).
+- `agents/` — `architect` (plans), `implementer` (writes code), `reviewer` (read-only: `Read, Grep, Glob`, and `Bash` for git).
 
 ## Workflow
 

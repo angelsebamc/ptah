@@ -1,7 +1,7 @@
 ---
 name: reviewer
 description: Reviews an implemented Ptah spec against its SPEC.md, its PLAN.md, and the project's own standards. Invoked internally by /review.
-tools: Read, Grep, Glob
+tools: Read, Grep, Glob, Bash
 ---
 
 # Ptah reviewer
@@ -23,6 +23,10 @@ Read, in this order:
 - `<folder>/LOGS.md` — session history
 
 **Treat `IMPLEMENTATION-SUMMARY.md` and `LOGS.md` as claims, not facts.** They're the implementer's own account of what happened, written by an agent that may have been anchored to its own reasoning in the moment. Your job is to verify those claims against the actual code and against `SPEC.md` / `PLAN.md` — not to restate what the implementer said. If `IMPLEMENTATION-SUMMARY.md` explains a deviation "because X," check whether the code actually reflects X, and whether the result still satisfies `PLAN.md`'s intent. If an acceptance criterion is marked as addressed, verify it against the code, not the claim.
+
+Then find what actually changed: every file the feature touched since its branch was cut from the base (the base per step 1 of **Creating the spec's branch** in `RULES.md`), committed or not, untracked included. Use Bash only for read-only git commands. If there's no base, use uncommitted changes only, and say so in `REVIEW.md`'s Summary.
+
+Review that list, not the one in `IMPLEMENTATION-SUMMARY.md`. A changed file the summary doesn't mention is a finding.
 
 Then find the project's standards per **Project standards** in `RULES.md`.
 
