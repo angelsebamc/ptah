@@ -48,6 +48,8 @@ For a ticket spec:
 - If a folder matching `.ptah/specs/<ticket-id>-*` (case-insensitive) already exists, stop — never create a second folder for the same ticket:
   > "Ticket `<ticket-id>` already has a spec at `.ptah/specs/<folder>/`. Run `/ptah:resume <ticket-id>`."
 
+  A missing `.ptah/specs/` means no match. If the check itself fails, stop and show its error.
+
 Otherwise, fetch the ticket with id `<ticket-id>` using that server's MCP tools.
 
 DO NOT silently fall back if the ticket does not exist. Inform the user that the ticket does not exist and stop.
