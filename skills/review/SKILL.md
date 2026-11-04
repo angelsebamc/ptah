@@ -1,6 +1,6 @@
 ---
 name: review
-description: 'Reviews an implemented Ptah spec against its SPEC.md, its PLAN.md, and the project''s own standards through the isolated, read-only reviewer subagent, and writes REVIEW.md with coded findings (B/M/N/S) and a verdict. Documentation only. Use when the user runs /review with a spec id.'
+description: 'Reviews an implemented Ptah spec against its SPEC.md, its PLAN.md, and the project''s own standards through the isolated, read-only reviewer subagent, and writes REVIEW.md with coded findings (B/M/N/S) and a verdict.'
 argument-hint: '[<spec-id>]'
 disable-model-invocation: true
 ---

@@ -112,10 +112,16 @@ For sections without a mapping, ask normally.
 
 ### 4a. Get the id
 - **From a ticket** — `<id>` = `<ticket-id>`. Ticket specs take no code.
-- **Without a ticket** — generate `<code>` by running:
+- **Without a ticket** — generate `<code>` by running, in a POSIX shell:
 
   ```sh
   LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c 4
+  ```
+
+  or in PowerShell:
+
+  ```powershell
+  -join (1..4 | ForEach-Object { 'abcdefghijklmnopqrstuvwxyz0123456789'.ToCharArray() | Get-Random })
   ```
 
   If any folder in `.ptah/specs/` starts with `<repo>-<code>-`, run it again. `<id>` = `<code>`. Never make up a code or pick one yourself.
