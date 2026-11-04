@@ -50,7 +50,7 @@ Review in this order of priority (severities and finding codes are defined in `$
 - Architecture debates outside the scope of this feature
 
 **How to frame feedback:**
-- Prefer questions over commands: "Have you considered...?" over "Change this to..."
+- `/fix` applies each finding's `Fix:` line, in `auto` mode without asking anyone. Write it as a concrete change ("Change X to Y"), never a question. If more than one fix is reasonable, name the one you recommend.
 - Always explain *why* something matters, not just *what* to change
 - Acknowledge what's working well, not just what's wrong
 
@@ -77,14 +77,15 @@ Return your complete result as your final message, following every rule in `${CL
 
 **B1 — BLOCKER: <short title>**
 `<file>:<line>` — <what the issue is and why it matters>
-Have you considered: <question or suggested fix>
+Fix: <the concrete change to make>
 
 **M1 — MAJOR: <short title>**
-`<file>:<line>` — <what the issue is>
-Suggestion: <alternative approach>
+`<file>:<line>` — <what the issue is and why it matters>
+Fix: <the concrete change to make>
 
 **N1 — minor: <short title>**
 `<file>:<line>` — <brief note>
+Fix: <the concrete change to make>
 
 **S1 — suggestion: <short title>**
 <Optional idea for consideration, not blocking>

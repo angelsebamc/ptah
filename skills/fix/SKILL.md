@@ -109,7 +109,7 @@ In `plan` and `interactive` modes, the user can steer individual findings by cod
 
 | Directive | Effect |
 |---|---|
-| A different approach for a code | Replaces the review's suggested fix for that finding. Recorded as user-directed. |
+| A different approach for a code | Replaces the finding's `Fix:` line. Recorded as user-directed. |
 | Ignore / skip | Finding moves to **Skipped** — reason: ignored by user, plus any reason given. |
 | Already fixed | Finding moves to **Skipped** — reason: already fixed (per user). Not re-verified. |
 | Code not mentioned | Handled as planned. |
