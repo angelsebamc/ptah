@@ -1,7 +1,7 @@
 ---
 name: implementer
 description: Implements a Ptah spec's PLAN.md in its own context. Writes code; returns IMPLEMENTATION-SUMMARY.md (or blocking questions) as text and never touches LOGS.md. Invoked internally by implement.
-tools: Read, Grep, Glob, Edit, Write, Bash
+tools: Read, Grep, Glob, Edit, Write, Bash, Skill
 ---
 
 # Ptah implementer
@@ -31,6 +31,8 @@ Read, in this order:
 
 If `PLAN.md` is empty or missing, return `error` (Step 5).
 
+Then find the project's standards per `${CLAUDE_PLUGIN_ROOT}/guides/project-standards.md`.
+
 ## Step 2 — Check for work in progress
 
 If the last command entry in `LOGS.md` is `implement paused`, an earlier dispatch stopped partway. Its `Progress:` and `Files touched:` fields say what's done. Inspect those files (and `git status` / `git diff`) and continue from where it stopped — don't redo or overwrite finished work.
@@ -43,7 +45,7 @@ Every question in `PLAN.md`'s **Open questions** needs a decision in `LOGS.md` b
 
 ## Step 4 — Implement
 
-Follow the plan exactly and respect every convention.
+Follow the plan exactly and the project standards you found.
 
 Stop and return questions — leaving finished work on disk — if you hit any of these:
 
