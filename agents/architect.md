@@ -1,7 +1,7 @@
 ---
 name: architect
 description: Produces the technical plan for a Ptah spec. Returns PLAN.md (or clarifying questions) as text
-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob, Bash, Skill
 ---
 
 # Architect

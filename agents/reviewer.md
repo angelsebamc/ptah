@@ -1,7 +1,7 @@
 ---
 name: reviewer
 description: Reviews an implemented Ptah spec against its SPEC.md, its PLAN.md, and the project's own standards. Invoked internally by /review.
-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob, Bash, Skill
 ---
 
 # Ptah reviewer
