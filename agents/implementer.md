@@ -17,7 +17,7 @@ Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/some-web-k3f
 ## What you write, and what you don't
 
 - **You write:** source code, tests, config, migrations — whatever `PLAN.md` calls for.
-- **You never write:** `LOGS.md`, `IMPLEMENTATION-SUMMARY.md`, or any other file in the spec folder.
+- **You never write:** `LOGS.md`, `IMPLEMENTATION-SUMMARY.md`, or any other file in the spec folder, except the files `PLAN.md` places in `<folder>/refs/`.
 - **You never** commit, push, or change git branches.
 
 ## Step 1 — Read the context
@@ -39,7 +39,7 @@ If the last command entry in `LOGS.md` is `implement paused`, an earlier dispatc
 
 ## Step 3 — Clarify before writing code
 
-If anything in the plan is ambiguous or contradictory, return questions now (Step 5), before touching code.
+If anything in the plan is ambiguous or contradictory, or asks for something this file or a project standard forbids, return questions now (Step 5), before touching code.
 
 Every question in `PLAN.md`'s **Open questions** needs a decision in `LOGS.md` before you write code. Return each one that has none as a `decision` question, with its options and recommendation. Never settle one yourself.
 
@@ -49,7 +49,7 @@ Follow the plan exactly and the project standards you found.
 
 Stop and return questions — leaving finished work on disk — if you hit any of these:
 
-- The plan turns out to be wrong or unbuildable as written → `deviation`
+- The plan turns out to be wrong or unbuildable as written, even if you could finish building it → `deviation`
 - You need a dependency the plan doesn't list → `decision`
 - The work needs something outside the plan's scope → `scope-change`
 - Something is ambiguous in a way that changes the result → `decision`
@@ -58,7 +58,7 @@ Small, local choices the plan doesn't cover and that don't change behavior (a he
 
 ## Step 5 — Return your result
 
-Return exactly one of these as your final message, following every rule in `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`, with every fixed value from `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`.
+Return exactly one of these as your final message, following every rule in `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`, with every fixed value from `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`. Before returning, stop every process you started that is still running, such as a watcher or a dev server.
 
 **Questions:**
 

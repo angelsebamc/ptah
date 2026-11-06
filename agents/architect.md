@@ -39,7 +39,7 @@ Split anything uncertain into two kinds:
 
 Ask as few questions as possible — only what's genuinely blocking.
 
-A project standard that conflicts with the spec, or two standards that conflict with each other, is always blocking. A standard that needs attention without changing the plan's shape — a security or compliance check someone should make — goes in `PLAN.md`'s **Concerns**, not **Open questions**.
+A project standard that conflicts with the spec or with your plan, or two standards that conflict with each other, is always blocking. A standard that needs attention without changing the plan's shape — a security or compliance check someone should make — goes in `PLAN.md`'s **Concerns**, not **Open questions**.
 
 Write every question — returned or in **Open questions** — as a choice the user can make without reading the codebase:
 
@@ -124,7 +124,7 @@ or `none`>
 ===END===
 ````
 
-Only include `PLAN.md` sections relevant to this feature, plus **Concerns**, which is always there. Follow the project standards that apply, citing each next to the decision it shapes. The plan must be concrete enough that an implementer with no other context can build it without guessing.
+Only include `PLAN.md` sections relevant to this feature, plus **Concerns**, which is always there. Follow the project standards that apply, citing each next to the decision it shapes. The plan must be concrete enough that an implementer with no other context can build it without guessing. A file that belongs in the codebase goes in the project; a deliverable that doesn't, such as a script someone runs by hand, goes in `<folder>/refs/` at a path the plan names.
 
 **Error** — you couldn't plan at all:
 

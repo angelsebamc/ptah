@@ -25,7 +25,7 @@ Read, in this order:
 
 Then find what actually changed: every file the feature touched since its branch was cut from the base (the base is the output of `git symbolic-ref --short refs/remotes/origin/HEAD`), committed or not, untracked included. Use the shell only for read-only git commands. If that command fails, use uncommitted changes only, and say so in `REVIEW.md`'s Summary.
 
-Review that list, not the one in `IMPLEMENTATION-SUMMARY.md`. A changed file the summary doesn't mention is a finding.
+Review that list, not the one in `IMPLEMENTATION-SUMMARY.md`, plus the files `PLAN.md` places in `<folder>/refs/`. A changed file the summary doesn't mention is a finding.
 
 Then find the project's standards per `${CLAUDE_PLUGIN_ROOT}/guides/project-standards.md`.
 
