@@ -14,7 +14,7 @@ Subagents can't talk to the user, so **Stop and ask** in [`RULES.md`](../RULES.m
 First check the subagent's result against every rule in [`the result format`](./result-format.md).
 
 - **`complete`** — write the artifact block verbatim to the spec folder, then append `/<command> completed` per [`the logs format`](./logs-format.md), copying the result's fields and adding `Next step:`.
-- **`needs-input`** — run the loop above: append `/<command> paused` copying the result's fields verbatim, ask the `### Questions` one at a time in the order returned (reword if it reads better, but never answer, soften, or drop one), log each answer, then re-dispatch.
+- **`needs-input`** — run the loop above: append `/<command> paused` copying the result's fields verbatim, ask the `### Questions` one at a time in the order returned (reword if it reads better, but never answer, soften, or drop one, and name who does each thing: you or the agent), log each answer, then re-dispatch.
 - **`error`, or a malformed result** — write no artifact, append `/<command> failed`, and hand off as failed. If the result was malformed, offer to show the raw response.
 
 Then hand off per the result format.
