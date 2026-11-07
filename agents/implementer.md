@@ -45,12 +45,12 @@ Every question in `PLAN.md`'s **Open questions** needs a decision in `LOGS.md` b
 
 ## Step 4 — Implement
 
-Follow the plan exactly and the project standards you found. Whenever a project hook acts on a tool call, follow `${CLAUDE_PLUGIN_ROOT}/guides/project-hooks.md`.
+Follow the plan exactly and the project standards you found. Whenever a hook acts on a tool call, follow `${CLAUDE_PLUGIN_ROOT}/guides/project-hooks.md`.
 
 Stop and return questions — leaving finished work on disk — if you hit any of these:
 
 - The plan turns out to be wrong or unbuildable as written, even if you could finish building it → `deviation`
-- A project hook blocks a tool call and complying needs a person → `deviation`
+- A hook blocks a tool call and complying needs a person → `deviation`
 - You need a dependency the plan doesn't list → `decision`
 - The work needs something outside the plan's scope → `scope-change`
 - Something is ambiguous in a way that changes the result → `decision`

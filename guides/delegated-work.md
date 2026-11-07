@@ -9,7 +9,7 @@ Subagents can't talk to the user, so **Stop and ask** in [`RULES.md`](../RULES.m
 3. After each answer, the dispatcher appends a change entry recording it (`Trigger: user-request`, the tagged type, `What:` the answer as a one-line decision).
 4. The dispatcher re-dispatches with the same prompt — just the folder path. The subagent finds the answers in `LOGS.md`, where they belong anyway.
 
-If the user can't answer now because it needs something outside Ptah, such as an approval, log that answer and don't re-dispatch. Hand off as paused, with `Next:` naming what the user needs to do, then the command to re-run.
+If the user can't answer now because it needs something outside Ptah, such as an approval, log that answer and don't re-dispatch. Hand off as paused, with `Next:` naming what the user needs to do, then the command to re-run. When the command is re-run and such an answer is the last change entry in `LOGS.md`, ask that question again before re-dispatching — done by the user, plan changed, or still blocked — and log the new answer.
 
 ## Handling the result
 
