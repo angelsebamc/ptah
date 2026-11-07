@@ -175,6 +175,7 @@ These apply regardless of mode. Any of them hitting is a **Stop and ask** from `
 - If a fix requires a design change, stop and ask the user before proceeding
 - If a fix introduces a new dependency not in the original design, ask first
 - Keep fixes minimal and focused — don't improve things that aren't broken
+- A hook blocks a tool call and complying needs a person. Handle every hook per `${CLAUDE_PLUGIN_ROOT}/guides/project-hooks.md`
 
 ---
 
@@ -199,6 +200,7 @@ Append a **Fix Summary** to the findings file `REVIEW.md`.
 ### Skipped
 - [ ] M2 — <title> — ignored by user<: reason, if given>
 - [ ] N3 — <title> — already fixed (per user)
+- [ ] B3 — <title> — blocked by a hook: <the hook's message>
 <"None" if every in-scope finding was applied.>
 
 ### Deferred
