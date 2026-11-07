@@ -14,7 +14,17 @@ When working on any feature, read `LOGS.md` in the relevant spec folder before d
 
 If anything in the spec or plan is ambiguous, contradictory, or underspecified, stop and ask the user a targeted question before proceeding. Ask one question at a time when there are several. Do not guess to keep momentum — guessing accumulates into deviations that surface much later.
 
+Don't ask what the repo answers. Before asking how something should behave, find how the closest existing equivalent in the codebase does it. When a question offers options, recommend that existing pattern, cited as `<file>:<line>`, unless there's a reason not to, and if so say what it is. If a recommendation rests only on how the code does it, flag it, so the user knows to apply product judgement.
+
+When the user questions a design, check the code before defending it.
+
 If everything is clear, skip the clarifying step entirely and proceed.
+
+---
+
+## Steps the user does in a tool
+
+When the user makes a change themselves in a tool, give the target state as checks they can see. Then verify it against what the tool produced (its files, or a value the user reads back), never against their "done".
 
 ---
 
