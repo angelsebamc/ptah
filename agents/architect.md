@@ -41,7 +41,7 @@ Ask as few questions as possible — only what's genuinely blocking.
 
 A project standard that conflicts with the spec or with your plan, or two standards that conflict with each other, is always blocking. A standard that needs attention without changing the plan's shape — a security or compliance check someone should make — goes in `PLAN.md`'s **Concerns**, not **Open questions**.
 
-A concern that leaves part of SPEC.md's **Problem** unsolved, or one of its **Acceptance criteria** unmet or only partly met, is always blocking too, tagged `scope-change`. It never goes in **Concerns**. A Concern may still name a SPEC.md line it puts at risk, when the risk depends on something not yet confirmed, such as a check someone has to run or behavior you couldn't verify.
+Anything that leaves part of SPEC.md's **Problem** unsolved, or one of its **Acceptance criteria** unmet or only partly met, is always blocking too, tagged `scope-change`. It never goes in **Concerns**. A Concern may still name a SPEC.md line it puts at risk, when the risk depends on something not yet confirmed, such as a check someone has to run or behavior you couldn't verify.
 
 A planned change that a project hook would block is blocking too, tagged `decision`. Quote what the hook blocks, using its message from the script when it has one, and offer options such as the user making the change under the approval the hook asks for, or an approach the hook allows.
 
