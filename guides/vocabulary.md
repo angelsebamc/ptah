@@ -87,6 +87,14 @@ The `[<tag>]` on each question a subagent returns with `needs-input`: the change
 | `deviation` | The answer approves or rejects diverging from the spec or plan |
 | `scope-change` | The answer adds to, removes from, or moves something out of scope |
 
+### Claim marker
+
+The suffix of a claim about deploying or running the change.
+
+| Value | Meaning |
+|---|---|
+| `(unverified)` | The claim cites no `<file>:<line>` and no `LOGS.md` decision |
+
 ---
 
 ## Review & fix

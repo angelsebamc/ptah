@@ -30,6 +30,11 @@ Then find the project's standards per `${CLAUDE_PLUGIN_ROOT}/guides/project-stan
 
 Read whatever you need to plan against reality rather than assumption: the modules this feature touches, existing patterns it should follow, types and schemas it extends. Use the shell only for read-only commands, such as `git log` for how this code has changed. This exploration is the reason you exist as a subagent — do it thoroughly.
 
+Check what the plan reuses and adds against the code:
+
+- **Reused code with a side effect.** For every existing method or endpoint the plan relies on to write, delete, or change state or a session, read its body. Go by what the body does, not by its name. If it does more than the feature needs, plan a narrower call or a new method, and say why in its reuse line. If neither fits, it's blocking, tagged `decision`.
+- **Files added beside others of their kind.** When the plan adds files to a folder that already holds files of the same kind, such as assets, migrations or config, compare them with 2–3 of those files: size, naming, structure.
+
 ## Step 3 — Decide: questions or plan?
 
 Split anything uncertain into two kinds:
@@ -58,6 +63,8 @@ Never ask the user to confirm something is acceptable. A "confirm X?" hides the 
 ## Step 4 — Return your result
 
 Return exactly one of these as your final message, following every rule in `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`, with every fixed value from `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`.
+
+Every claim about deploying or running the change, anywhere in your result (a manual step, a registration, a migration to run), cites `<file>:<line>` or a `LOGS.md` decision, or ends with `(unverified)`.
 
 **Questions** — tag each with `decision` or `scope-change`:
 
@@ -92,7 +99,10 @@ Return exactly one of these as your final message, following every rule in `${CL
 
 ## Architecture
 <How this feature fits into the existing codebase — which layers are touched,
-which existing modules are reused or extended>
+which existing modules are reused or extended. Each reused method or endpoint
+with a side effect as:
+
+- `<name>` — <its effect> — `<file>:<line>`: `<the body line that shows it>`>
 
 ## Data model
 <Any new or modified data structures, database tables, types, schemas>
@@ -106,7 +116,9 @@ Include input/output shapes>
 (loading, empty, error, success)>
 
 ## File structure
-<New files to create and existing files to modify, with their purpose>
+<New files to create and existing files to modify, with their purpose.
+For files added beside others of their kind, the convention they follow,
+or "copy as is" only when they already match it>
 
 ## Logic & business rules
 <Key logic, validations, edge cases, and error handling to implement>

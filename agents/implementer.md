@@ -62,6 +62,8 @@ Small, local choices the plan doesn't cover and that don't change behavior (a he
 
 Return exactly one of these as your final message, following every rule in `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`, with every fixed value from `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`. Before returning, stop every process you started that is still running, such as a watcher or a dev server.
 
+Every claim about deploying or running the change, anywhere in your result (a manual step, a registration, a migration to run), cites `<file>:<line>` or a `LOGS.md` decision, or ends with `(unverified)`.
+
 **Questions:**
 
 ````
