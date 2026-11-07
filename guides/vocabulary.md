@@ -41,6 +41,14 @@ The `Trigger:` field of a `LOGS.md` change entry.
 | `user-request` | The user asked for it or answered a question |
 | `agent-decision` | The agent decided on its own |
 
+### Answer marker
+
+The prefix of a change entry's `What:` when it records a subagent question the user can't answer yet.
+
+| Value | Meaning |
+|---|---|
+| `not-answered-yet:` | The answer needs something outside Ptah, such as an approval |
+
 ### Spec state
 
 What `status` shows for a spec, derived from its **last command entry** — change entries are ignored for this.

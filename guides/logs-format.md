@@ -60,7 +60,7 @@ These two have the same fields whichever command wrote them.
 - Files touched (comma-separated paths, or `none`)
 - Next step (`answer the open questions, then re-run /ptah:<command> <id>`)
 
-Written by `/plan` and `/implement` when their subagent returns `needs-input`. The user's answers follow as `decision` / `deviation` / `scope-change` change entries, and a re-run picks up from there.
+Written by `/plan` and `/implement` when their subagent returns `needs-input`. The user's answers follow as `decision` / `deviation` / `scope-change` change entries, and a re-run picks up from there. An answer the user can't give yet starts its `What:` with the `not-answered-yet:` marker.
 
 ### `/<command> failed`
 - Reason (one line)
