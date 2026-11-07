@@ -6,10 +6,10 @@ The project's hook config is a standard too: `.claude/settings.json`, `.claude/s
 
 ## Recorded knowledge
 
-The project may also record what it learned the hard way: post-mortems, lessons files, KB entries, known traps, non-obvious facts. It may keep that in files or in a server. Read only the files; never query an MCP server for it, the ticket server included. If the project points to knowledge kept in a server, report it like a configured path that doesn't exist.
+The project may also record what it learned the hard way: post-mortems, lessons files, KB entries, known traps, non-obvious facts. It may keep that in files or in a server. Read only the files; never query an MCP server for it, the ticket server included. If the project points to knowledge kept in a server, report it (the architect in **Concerns**, the reviewer in the review Summary).
 
-The project points to recorded knowledge when an instruction file or skill above names where it lives or indexes it, or when `knowledge.paths` in `.ptah/ptah.yml` is set: a list of paths relative to the project root. Use every source it points to. A missing `.ptah/ptah.yml` or `knowledge.paths` means unset; it's not an error. If `knowledge.paths` isn't a list of paths, return `error` with the reason "Invalid `knowledge.paths` value `<value>` in `.ptah/ptah.yml`." Report a configured path that doesn't exist (the architect in **Concerns**, the reviewer in the review Summary). Look for docs that hold it only when the project points nowhere.
+The project points to recorded knowledge when an instruction file or skill above names where it lives or indexes it. Use every source it points to, and report a path it points to that doesn't exist the same way. Look for docs that hold it only when the project points nowhere.
 
-Search those files for the paths, components and features the change touches, and read only the matches.
+Search those files for the paths, components and features the change touches, and read only the matches. Entries may be free-form; don't require any format.
 
 Recorded knowledge is evidence, not a standard: the code an entry describes may since have changed. Before acting on an entry, check that it still applies to the current code, and cite it as `<file>:<line>`.

@@ -19,7 +19,7 @@ Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, f
   - `vocabulary.md` — every fixed value: command/result statuses, spec states, change types and triggers, severities and finding codes, verdicts, fix modes.
   - `result-format.md` — the subagent result (`===RESULT===` … `===<ARTIFACT>.md===` … `===END===`), malformed-result rules, and the user-facing hand-off.
   - `logs-format.md` — the `LOGS.md` entry schema, per-command fields in order, change entries.
-  - `config.md` — every `.ptah/ptah.yml` key, whether it's required, which command or agent reads or writes it, and the required-keys check.
+  - `config.md` — every `.ptah/ptah.yml` key, whether it's required, which command reads or writes it, and the required-keys check.
   - `spec-identifiers.md` — spec folder names, resolving a spec id and the omitted-id fallbacks, switching to and creating the spec's branch, the display id. Only the skills read it.
   - `delegated-work.md` — the folder-path-only prompt, the `needs-input` loop, and handling a subagent's result. Read by `plan`, `implement`, `review`.
   - `project-standards.md` — how a subagent finds the target project's standards, hook config included, and its recorded knowledge (post-mortems, lessons, known traps). Read by all three agents.
