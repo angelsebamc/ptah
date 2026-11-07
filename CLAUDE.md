@@ -22,7 +22,7 @@ Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, f
   - `config.md` — every `.ptah/ptah.yml` key, whether it's required, which command reads or writes it, and the required-keys check.
   - `spec-identifiers.md` — spec folder names, resolving a spec id and the omitted-id fallbacks, switching to and creating the spec's branch, the display id. Only the skills read it.
   - `delegated-work.md` — the folder-path-only prompt, the `needs-input` loop, and handling a subagent's result. Read by `plan`, `implement`, `review`.
-  - `project-standards.md` — how a subagent finds the target project's standards, hook config included. Read by all three agents.
+  - `project-standards.md` — how a subagent finds the target project's standards, hook config included, and its recorded knowledge (post-mortems, lessons, known traps). Read by all three agents.
   - `project-hooks.md` — what to do when a hook blocks, asks about, or rewrites a tool call: comply, never route around it, ask only when complying needs a person. Read by the implementer and `fix`.
 - `skills/<command>/SKILL.md` — one user-invoked command each: `init`, `spec`, `plan`, `implement`, `review`, `fix`, `resume`.
 - `agents/` — `architect` (plans), `implementer` (writes code), `reviewer` (read-only: `Read, Grep, Glob, Skill`, and `Bash` for git).

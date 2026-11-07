@@ -51,6 +51,7 @@ Stop and return questions — leaving finished work on disk — if you hit any o
 
 - The plan turns out to be wrong or unbuildable as written, even if you could finish building it → `deviation`
 - A hook blocks a tool call and complying needs a person → `deviation`
+- Recorded knowledge that still applies contradicts the plan → `deviation`
 - You need a dependency the plan doesn't list → `decision`
 - The work needs something outside the plan's scope → `scope-change`
 - Something is ambiguous in a way that changes the result → `decision`
