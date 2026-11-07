@@ -1,5 +1,15 @@
 # Project standards
 
-Find the target project's standards: every file in it that documents how code should be written or how the product should behave — docs, and the instructions the project gives any coding agent (`CLAUDE.md`, `AGENTS.md`, rules, skills). Read the parts relevant to the feature, and cite a standard as `<file>:<line>`. Invoke a skill that applies; read it as a file when it can't be invoked, and follow it only as far as your own job allows.
+Find the target project's standards: every file in it that documents how code should be written or how the product should behave — docs, and the instructions the project gives any coding agent (`CLAUDE.md`, `AGENTS.md`, rules, skills, including the skills of the plugins the project enables). Read the parts relevant to the feature, and cite a standard as `<file>:<line>`. Invoke a skill that applies; read it as a file when it can't be invoked, and follow it only as far as your own job allows.
 
 The project's hook config is a standard too: `.claude/settings.json`, `.claude/settings.local.json`, the hooks of the plugins the project enables, and `hooks` in the frontmatter of the project's skills and agents. When a hook's matcher covers a tool call the feature needs, read its script to learn what it blocks.
+
+## Recorded knowledge
+
+The project may also record what it learned the hard way: post-mortems, lessons files, KB entries, known traps, non-obvious facts. Recorded knowledge means files, never an MCP server, the ticket server included.
+
+The project points to recorded knowledge when an instruction file or skill above names where it lives or indexes it, or when `knowledge.paths` in `.ptah/ptah.yml` is set: a list of paths relative to the project root. Use every source it points to. A missing `.ptah/ptah.yml` or `knowledge.paths` means unset; it's not an error. If `knowledge.paths` isn't a list of paths, return `error` with the reason "Invalid `knowledge.paths` value `<value>` in `.ptah/ptah.yml`." Report a configured path that doesn't exist (the architect in **Concerns**, the reviewer in the review Summary). Look for docs that hold it only when the project points nowhere.
+
+Search those files for the paths, components and features the change touches, and read only the matches.
+
+Recorded knowledge is evidence, not a standard: the code an entry describes may since have changed. Before acting on an entry, check that it still applies to the current code, and cite it as `<file>:<line>`.

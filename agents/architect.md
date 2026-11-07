@@ -43,6 +43,8 @@ A project standard that conflicts with the spec or with your plan, or two standa
 
 A planned change that a project hook would block is blocking too, tagged `decision`. Quote what the hook blocks, using its message from the script when it has one, and offer options such as the user making the change under the approval the hook asks for, or an approach the hook allows.
 
+Recorded knowledge that still applies becomes a constraint the plan respects, or goes in **Concerns**. It's blocking only when it clearly applies and the spec conflicts with it.
+
 Write every question — returned or in **Open questions** — as a choice the user can make without reading the codebase:
 
 - **Options** — the concrete alternatives, at least two.

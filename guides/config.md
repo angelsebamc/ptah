@@ -21,6 +21,7 @@ tickets:
 | `commands.fix.mode` | yes | `/ptah:init` | `/ptah:fix` | Fix mode, one of the fix modes in [`vocabulary`](./vocabulary.md). A flag overrides it for one run. |
 | `commands.fix.include_minor` | yes | `/ptah:init` | `/ptah:fix` | Whether `/ptah:fix` also fixes minor findings. |
 | `tickets.server` | no | `/ptah:init` | `/ptah:spec` | Full name of the MCP server that `/ptah:spec <ticket-id>` fetches tickets from. Unset, `/ptah:spec <ticket-id>` stops and asks for `/ptah:init`. |
+| `knowledge.paths` | no | none — set by hand | the architect, implementer and reviewer agents | List of paths, relative to the project root, to the files or folders that hold the project's recorded knowledge. How the agents use it, unset or invalid, is in **Recorded knowledge** in [`project-standards`](./project-standards.md). |
 
 A command changes only the keys it writes and leaves every other key exactly as it was.
 
