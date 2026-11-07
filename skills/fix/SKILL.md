@@ -103,6 +103,12 @@ Check every code from the command arguments against the findings being fixed. A 
 
 ## Step 4 — Apply fixes (mode-specific)
 
+### Applying a finding
+
+Apply a finding's `Fix:` at its own `file:line` and at every location on its `Also at:` line.
+
+When a fix removes one failure mode but creates another, flag the trade where the templates below show it. It doesn't stop the run, even in `auto`.
+
 ### Directives by code
 
 In `plan` and `interactive` modes, the user can steer individual findings by code in a free-form reply, several per message — e.g. "B2: use the existing validator instead. ignore M2. N3 is already fixed."
@@ -112,6 +118,7 @@ In `plan` and `interactive` modes, the user can steer individual findings by cod
 | A different approach for a code | Replaces the finding's `Fix:` line. Recorded as user-directed. |
 | Ignore / skip | Finding moves to **Skipped** — reason: ignored by user, plus any reason given. |
 | Already fixed | Finding moves to **Skipped** — reason: already fixed (per user). Not re-verified. |
+| Drop instances — e.g. "N5: leave `api/b.ts:40`" | Those locations aren't fixed. The rest of the finding is applied and noted as dropped by user. |
 | Code not mentioned | Handled as planned. |
 
 - Match codes case-insensitively — `b2` is `B2`.
@@ -133,10 +140,11 @@ B1 — <title>
    Change: <one-line summary of intended change>
    Files:  <comma-separated list of files to be modified>
 
-M1 — <title>
-   Change: <one-line summary>
+M1 — <title> (+<n> instances)
+   Change: <one-line summary> — trades <old failure mode> for <new>
    Files:  <files>
 
+(+<n> instances only when the finding's `Also at:` isn't "none")
 (N findings included only if include_minor is true; N and S findings named by code always included)
 
 Not in this run: <out-of-scope codes, or "none">
@@ -157,7 +165,7 @@ Once confirmed, apply all fixes in one pass without further narration.
 Work through in-scope findings one at a time. For each:
 
 1. State the finding (code, title, `file:line`)
-2. Describe the intended change in one or two lines
+2. Describe the intended change in one or two lines, with the number of `Also at:` instances and any traded failure mode
 3. Ask: "Apply this fix? (yes / skip / or tell me a different approach)"
 4. Wait for the reply — any directive by code applies, including ones for findings later in the list
 5. Apply, briefly note the result
@@ -193,12 +201,13 @@ Append a **Fix Summary** to the findings file `REVIEW.md`.
 ### Fixed
 - [x] B1 — <title> — <brief note on how it was fixed>
 - [x] B2 — <title> — <brief note> (user-directed: <the approach given>)
-- [x] M1 — <title> — <brief note>
+- [x] M1 — <title> — <brief note> (trades <old failure mode> for <new>)
+- [x] M2 — <title> — <brief note> (dropped by user: <file:line>, …)
 - [x] N1 — <title> — <brief note> (only if in scope this run; "(named by the user)" if pulled in by code)
 - [x] S2 — <title> — <brief note> (named by the user)
 
 ### Skipped
-- [ ] M2 — <title> — ignored by user<: reason, if given>
+- [ ] M3 — <title> — ignored by user<: reason, if given>
 - [ ] N3 — <title> — already fixed (per user)
 - [ ] B3 — <title> — blocked by a hook: <the hook's message>
 <"None" if every in-scope finding was applied.>

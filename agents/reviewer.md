@@ -54,6 +54,7 @@ Review in this order of priority (severities and finding codes are defined in `$
 
 **How to frame feedback:**
 - `/fix` applies each finding's `Fix:` line, in `auto` mode without asking anyone. Write it as a concrete change ("Change X to Y"), never a question. If more than one fix is reasonable, name the one you recommend.
+- For each blocker, major and minor finding, name the defect in general terms on a `Defect:` line, e.g. `Defect: request body used without a null check`. Then search the changed files for every other instance of that defect and list each `file:line` on an `Also at:` line, or `none`. `Fix:` is one change that covers them all.
 - Always explain *why* something matters, not just *what* to change
 - Acknowledge what's working well, not just what's wrong
 
@@ -80,15 +81,21 @@ Return your complete result as your final message, following every rule in `${CL
 
 **B1 — BLOCKER: <short title>**
 `<file>:<line>` — <what the issue is and why it matters>
-Fix: <the concrete change to make>
+Defect: <the defect in general terms, in one line>
+Also at: <every other `file:line` in the changed files with this defect, or "none">
+Fix: <the concrete change to make, at every location listed>
 
 **M1 — MAJOR: <short title>**
 `<file>:<line>` — <what the issue is and why it matters>
-Fix: <the concrete change to make>
+Defect: <the defect in general terms, in one line>
+Also at: <every other `file:line` in the changed files with this defect, or "none">
+Fix: <the concrete change to make, at every location listed>
 
 **N1 — minor: <short title>**
 `<file>:<line>` — <brief note>
-Fix: <the concrete change to make>
+Defect: <the defect in general terms, in one line>
+Also at: <every other `file:line` in the changed files with this defect, or "none">
+Fix: <the concrete change to make, at every location listed>
 
 **S1 — suggestion: <short title>**
 <Optional idea for consideration, not blocking>
