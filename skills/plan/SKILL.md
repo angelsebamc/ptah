@@ -40,6 +40,6 @@ Per **Handling the result** in `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`:
 - **`complete`** — write the `===PLAN.md===` block to `.ptah/specs/<feature-name>/PLAN.md`. `Next step: /ptah:implement <id>`.
   - If `Open questions` isn't `none`, after logging `/plan completed`, ask PLAN.md's **Open questions** one at a time in order. After each answer, update `PLAN.md` to match: rework the sections the chosen option affects, and remove the question from **Open questions** (write `none` once it's empty). Then append a `change during /plan` entry whose `Impact:` names the `PLAN.md` sections updated.
   - If the user defers a question, leave it in **Open questions**, log nothing for it, and move on.
-  - If `Concerns` isn't `none`, the hand-off includes `Concerns: <count> — see PLAN.md`.
+  - If `Concerns` isn't `none`, the hand-off adds a `Concerns` list, one item per line of PLAN.md's **Concerns**, copied verbatim.
 - **`needs-input`** — a re-dispatch picks up from the answered questions, in this session or a later one.
 - **`error` / malformed** — as in the rule.
