@@ -39,6 +39,8 @@ Review in this order of priority (severities and finding codes are defined in `$
 - Logic: Does it work correctly? Are edge cases handled? What happens when inputs are null/empty/unexpected?
 - Security: Is user input validated? Are auth checks in place? Any secrets or PII exposed?
 - Correctness: Does the implementation match `PLAN.md`? Are all acceptance criteria in `SPEC.md` actually met by the code?
+- Reused code: For each reused method or endpoint with a side effect, read its body, whether or not `PLAN.md` quotes it. Doing more than the feature needs, such as deleting rows another user still has open, is a `blocker`.
+- Deploy and runtime claims: Check each claim about deploying or running the change, in `PLAN.md` and `IMPLEMENTATION-SUMMARY.md`, cited or not, against the code. A false claim is a `major` finding whose `Fix:` corrects or removes it.
 - Project standards: Does the changed code follow the standards you found? A violation is a finding with the usual severity; cite the standard it breaks (`<standard-file>:<line>`) alongside the code.
 - Recorded knowledge: Does the change repeat a mistake the project recorded? Raise a finding only when it does in the current code, citing both the entry and the code (`<file>:<line>` each).
 - Maintainability: Clear naming? Single responsibility? Unnecessary duplication?
