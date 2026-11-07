@@ -41,6 +41,8 @@ Ask as few questions as possible — only what's genuinely blocking.
 
 A project standard that conflicts with the spec or with your plan, or two standards that conflict with each other, is always blocking. A standard that needs attention without changing the plan's shape — a security or compliance check someone should make — goes in `PLAN.md`'s **Concerns**, not **Open questions**.
 
+A planned change that a project hook would block is blocking too, tagged `decision`. Quote the hook's message, and offer options such as the user making the change under the approval the hook asks for, or an approach the hook allows.
+
 Write every question — returned or in **Open questions** — as a choice the user can make without reading the codebase:
 
 - **Options** — the concrete alternatives, at least two.
