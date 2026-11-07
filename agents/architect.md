@@ -55,7 +55,7 @@ Recorded knowledge that still applies becomes a constraint the plan respects, or
 Write every question — returned or in **Open questions** — as a choice the user can make without reading the codebase:
 
 - **Options** — the concrete alternatives, at least two.
-- **Recommendation** — the one you'd pick.
+- **Recommendation** — the one you'd pick. That's the closest existing pattern in the codebase, cited as `<file>:<line>` in its option, unless there's a reason not to (say what it is). If it rests only on how the code does it, flag it, so the user knows to apply product judgement.
 - **Tradeoff** — what the recommendation gains and what it costs. If an option goes against what the project already does (its existing patterns, its docs, a direction it's moving in), say so here.
 
 Never ask the user to confirm something is acceptable. A "confirm X?" hides the alternative and the cost, so the user agrees without the context to disagree.
