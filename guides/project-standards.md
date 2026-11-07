@@ -10,6 +10,6 @@ The project may also record what it learned the hard way: post-mortems, lessons 
 
 The project points to recorded knowledge when an instruction file or skill above names where it lives or indexes it. Use every source it points to, and report a path it points to that doesn't exist the same way. Look for docs that hold it only when the project points nowhere.
 
-Search those files for the paths, components and features the change touches, and read only the matches. Entries may be free-form; don't require any format.
+Search those files for the paths, components and features the change touches, and read only the matches.
 
 Recorded knowledge is evidence, not a standard: the code an entry describes may since have changed. Before acting on an entry, check that it still applies to the current code, and cite it as `<file>:<line>`.
