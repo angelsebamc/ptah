@@ -6,7 +6,7 @@ The project's hook config is a standard too: `.claude/settings.json`, `.claude/s
 
 ## Recorded knowledge
 
-The project may also record what it learned the hard way: post-mortems, lessons files, KB entries, known traps, non-obvious facts. Recorded knowledge means files, never an MCP server, the ticket server included.
+The project may also record what it learned the hard way: post-mortems, lessons files, KB entries, known traps, non-obvious facts. It may keep that in files or in a server. Read only the files; never query an MCP server for it, the ticket server included. If the project points to knowledge kept in a server, report it like a configured path that doesn't exist.
 
 The project points to recorded knowledge when an instruction file or skill above names where it lives or indexes it, or when `knowledge.paths` in `.ptah/ptah.yml` is set: a list of paths relative to the project root. Use every source it points to. A missing `.ptah/ptah.yml` or `knowledge.paths` means unset; it's not an error. If `knowledge.paths` isn't a list of paths, return `error` with the reason "Invalid `knowledge.paths` value `<value>` in `.ptah/ptah.yml`." Report a configured path that doesn't exist (the architect in **Concerns**, the reviewer in the review Summary). Look for docs that hold it only when the project points nowhere.
 
