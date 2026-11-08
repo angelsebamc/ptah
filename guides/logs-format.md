@@ -139,10 +139,10 @@ Heading uses `change` instead of `/<command> <status>`:
 - What: <one-line description>
 - Why: <reason>
 - Impact: <files, decisions, or downstream steps affected; or "none">
-- Corrects: <#<n> | timestamp | none>
+- Corrects: <#<n> | <timestamp> | none>
 ```
 
-All fields are required, in the order shown, except `Corrects:`, which every `correction` has and no other type does: the id of the entry it corrects, or `none` when it corrects something done rather than something logged. `Next step:` is **not** included — change entries record what happened, they don't move the workflow forward.
+All fields are required, in the order shown, except `Corrects:`, which every `correction` has and no other type does: the id of the entry it corrects (its timestamp for an entry written before ids), or `none` when it corrects something done rather than something logged. `Next step:` is **not** included — change entries record what happened, they don't move the workflow forward.
 
 ---
 
