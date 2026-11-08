@@ -47,12 +47,12 @@ Otherwise, identify:
 Print exactly two lines, with a blank line between them:
 
 ```
-Last entry: <timestamp> <type> — <what>
+Last entry: #<n> <timestamp> <type> — <what>
 
 Where you are: <one-line synthesis>
 ```
 
-`<timestamp>` is the last entry's heading timestamp, as written. `<type>` and `<what>` depend on the entry:
+`#<n>` and `<timestamp>` are the last entry's heading id and timestamp, as written. Leave out `#<n>` for an entry without an id. `<type>` and `<what>` depend on the entry:
 
 | Last entry | `<type>` | `<what>` |
 |---|---|---|
