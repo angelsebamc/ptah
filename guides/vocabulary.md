@@ -12,7 +12,7 @@ Values written in `LOGS.md` entries, and the spec state derived from them.
 
 ### Command status
 
-The `<status>` in a `LOGS.md` command entry heading: `## <timestamp> — /<command> <status>`.
+The `<status>` in a `LOGS.md` command entry heading: `## #<n> — <timestamp> — /<command> <status>`.
 
 | Value | Meaning | Written when |
 |---|---|---|
