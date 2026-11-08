@@ -118,7 +118,7 @@ Written when a subagent returns `error` or a malformed result. No artifact is wr
 
 Between command entries, the agent appends **change entries** whenever a meaningful event happens mid-session: decisions, deviations from the plan, scope changes, blockers, or corrections. They are the canonical record of in-flow events — completion entries reference them rather than restating them.
 
-Heading uses `change during /<command>` instead of `<command> <status>`:
+Heading uses `change during /<command>` instead of `<command> <status>`. Between commands, `<command>` is the command of the spec's last command entry:
 
 ```markdown
 ## <YYYY-MM-DD HH:MM:SS> — change during /<command>
@@ -127,9 +127,10 @@ Heading uses `change during /<command>` instead of `<command> <status>`:
 - What: <one-line description>
 - Why: <reason>
 - Impact: <files, decisions, or downstream steps affected; or "none">
+- Corrects: <timestamp | none>
 ```
 
-All five fields are required, in the order shown. `Next step:` is **not** included — change entries record what happened, they don't move the workflow forward.
+All fields are required, in the order shown, except `Corrects:`, which every `correction` has and no other type does: the heading timestamp of the entry it corrects, or `none` when it corrects something done rather than something logged. `Next step:` is **not** included — change entries record what happened, they don't move the workflow forward.
 
 ---
 
@@ -169,4 +170,12 @@ All five fields are required, in the order shown. `Next step:` is **not** includ
 - Deviations from plan: yes — see change entries above
 - Known issues: no
 - Next step: /ptah:review PROJ-42
+
+## 2026-04-23 16:40:12 — change during /implement
+- Trigger: user-request
+- Type: correction
+- What: archived accounts stay visible in the account list and are only excluded from net worth
+- Why: the user wants to see archived accounts; hiding them was never intended
+- Impact: src/accounts/AccountList.tsx, IMPLEMENTATION-SUMMARY.md under Changes after implementation
+- Corrects: 2026-04-23 14:25:40
 ```
