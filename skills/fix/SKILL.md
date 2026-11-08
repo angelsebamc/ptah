@@ -237,5 +237,9 @@ Hand off per `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`.
 Artifact: `.ptah/specs/<feature-name>/REVIEW.md` (fix summary appended)
 Mode: <mode> — fixed: <codes> · skipped: <codes, or "none"> · deferred: <codes, or "none">
 New issues found: <"no", or "yes — <note>">
+Manual steps:
+- <step>
 Next: /ptah:review <id>
 ```
+
+The `Manual steps` list appears only when the entry has `Manual steps:`.

@@ -59,6 +59,7 @@ This guide defines the schema. The discipline (when to log, when not to) lives i
 | `Verdict` | a verdict from `vocabulary.md` that is valid for the command |
 | `Minor fixed` | a count, or `skipped — not in scope` |
 | `Suggestions fixed`, `Skipped by user` | a count, or `none` |
+| `Manual steps` | comma-separated, each item one action the user takes before the next command, such as restarting a local service or renaming a file before handing it on |
 
 ---
 
@@ -83,6 +84,8 @@ Written when a subagent returns `error` or a malformed result. No artifact is wr
 ---
 
 ## `completed` — per-command fields (required, in order)
+
+Any `completed` entry may add `Manual steps:` right before `Next step:`. Leave it out when there are none.
 
 ### `/spec completed`
 - Feature
