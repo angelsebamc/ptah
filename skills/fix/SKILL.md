@@ -99,7 +99,7 @@ Check every code from the command arguments against the findings being fixed. A 
 
 > "`<code>` isn't a finding in `REVIEW.md` for `<id>`. Findings: `<codes>`."
 
-Then find the project's standards per `${CLAUDE_PLUGIN_ROOT}/guides/project-standards.md`, reading only the parts that apply to the findings being fixed. Follow them.
+Then find the project's standards per `${CLAUDE_PLUGIN_ROOT}/guides/project-standards.md`, reading only the parts that apply to the findings being fixed. Follow them, and cite a standard that shaped a fix on that finding's Fix Summary line.
 
 ---
 
@@ -208,7 +208,7 @@ Append a **Fix Summary** to the findings file `REVIEW.md`.
 - [x] B2 — <title> — <brief note> (user-directed: <the approach given>)
 - [x] M1 — <title> — <brief note> (trades <old failure mode> for <new>)
 - [x] M2 — <title> — <brief note> (dropped by user: <file:line>, …)
-- [x] M4 — <title> — <brief note> (per <file>:<line>: <the standard that shaped the fix>)
+- [x] M4 — <title> — <brief note> (per <file>:<line>: <the standard>)
 - [x] N1 — <title> — <brief note> (only if in scope this run; "(named by the user)" if pulled in by code)
 - [x] S2 — <title> — <brief note> (named by the user)
 
