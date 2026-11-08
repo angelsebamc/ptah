@@ -142,7 +142,7 @@ Heading uses `change` instead of `/<command> <status>`:
 - Corrects: <#<n> | <timestamp> | none>
 ```
 
-All fields are required, in the order shown, except `Corrects:`, which every `correction` has and no other type does: the id of the entry it corrects (its timestamp for an entry written before ids), or `none` when it corrects something done rather than something logged. `Next step:` is **not** included — change entries record what happened, they don't move the workflow forward.
+All fields are required, in the order shown, except `Corrects:`, which every `correction` has and no other type does: the id of the entry it corrects (its timestamp for an entry written before ids), or `none` when it corrects something done rather than something logged. The correction restates whatever in the corrected entry still holds. `Next step:` is **not** included — change entries record what happened, they don't move the workflow forward.
 
 ---
 
@@ -188,6 +188,6 @@ All fields are required, in the order shown, except `Corrects:`, which every `co
 - Type: correction
 - What: archived accounts stay visible in the account list and are only excluded from net worth
 - Why: the user wants to see archived accounts; hiding them was never intended
-- Impact: src/accounts/AccountList.tsx, IMPLEMENTATION-SUMMARY.md under Changes after implementation
+- Impact: src/accounts/AccountList.tsx, PLAN.md (archived accounts visible), IMPLEMENTATION-SUMMARY.md under Changes after implementation
 - Corrects: #4
 ```
