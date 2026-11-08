@@ -25,7 +25,7 @@ Every finding carries a code assigned by the reviewer — `B1`, `B2` for blocker
 
 | Mode | Flag | Behavior |
 |------|------|----------|
-| `auto` | `-a` | Apply all in-scope fixes silently. Report at the end. Takes no directives. |
+| `auto` | `-a` | Apply all in-scope fixes without asking. Report at the end. Takes no directives. |
 | `plan` | `-p` | Show a one-line-per-finding plan, wait for one reply — "yes" or directives by code — then apply all in one pass. |
 | `interactive` | `-i` | Ask per finding before applying. Directives by code work at every prompt. |
 
@@ -41,7 +41,7 @@ The command takes one source — an optional positional spec identifier (see `${
 
 Examples:
 - `/fix k3f9` — uses mode from `ptah.yml`
-- `/fix k3f9 -a` — applies all fixes silently this run
+- `/fix k3f9 -a` — applies all fixes this run without asking
 - `/fix k3f9 -i` — asks per finding before applying it
 - `/fix k3f9 n1,n2` — also fixes minors N1 and N2 this run
 - `/fix k3f9 S1 -p` — also fixes suggestion S1, in plan mode
@@ -109,6 +109,8 @@ Apply a finding's `Fix:` at its own `file:line` and at every location on its `Al
 
 When a fix removes one failure mode but creates another, flag the trade where the templates below show it. It doesn't stop the run, even in `auto`.
 
+While applying, post at most one short progress line per finding, such as `M1 done, running tests for M2…`, with no explanations.
+
 ### Directives by code
 
 In `plan` and `interactive` modes, the user can steer individual findings by code in a free-form reply, several per message — e.g. "B2: use the existing validator instead. ignore M2. N3 is already fixed."
@@ -128,7 +130,7 @@ In `plan` and `interactive` modes, the user can steer individual findings by cod
 `auto` mode shows no prompt, so it takes no directives.
 
 ### `auto` mode
-Apply every in-scope fix without asking. Do not narrate each fix as it happens — produce the Fix Summary at the end. The only interruption is the stop-and-ask rule for genuinely ambiguous fixes.
+Apply every in-scope fix without asking. The only interruption is the stop-and-ask rule for genuinely ambiguous fixes.
 
 ### `plan` mode
 Before touching any code, present a fix plan:
@@ -159,7 +161,7 @@ Apply all of these? Reply "yes", or steer by code — e.g. "B2: do X instead, sk
 - **Directives** → apply the plan with the directives folded in. A reply made of directives is itself the confirmation; don't re-prompt unless something needs clarifying.
 - **A plain decline** → stop and ask what to do differently.
 
-Once confirmed, apply all fixes in one pass without further narration.
+Once confirmed, apply all fixes in one pass.
 
 ### `interactive` mode
 Work through in-scope findings one at a time. For each:
