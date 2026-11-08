@@ -42,6 +42,7 @@ Per **Handling the result** in `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`.
   | Verdict | `Next step:` |
   |---|---|
   | `fix-needed` | `/ptah:fix <id>` |
-  | `approved` | `none — review clean` |
+  | `approved`, `Minor: 0` | `none — review clean` |
+  | `approved`, any other `Minor:` | `none — review clean; optional: /ptah:fix <id> <codes>`, with `<codes>` per **Review verdict** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md` |
 
 - **`error` / malformed** — as in the rule.

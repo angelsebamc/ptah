@@ -226,7 +226,7 @@ The Fix Summary is structurally identical across all three modes. Every finding 
 
 ### 6b. LOGS.md entry
 
-Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`, with `Next step: /ptah:review <id>`.
+Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`, with `Next step:` per **Fix next step** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`: `none — no re-review needed; optional: /ptah:review <id>` when the verdict in `REVIEW.md` is `approved` and no new issues were found, `/ptah:review <id>` otherwise.
 
 ---
 
@@ -241,7 +241,7 @@ Mode: <mode> — fixed: <codes> · skipped: <codes, or "none"> · deferred: <cod
 New issues found: <"no", or "yes — <note>">
 Manual steps:
 - <step>
-Next: /ptah:review <id>
+Next: <the entry's Next step:>
 ```
 
 The `Manual steps` list appears only when the entry has `Manual steps:`.

@@ -71,6 +71,8 @@ The `Where you are:` line is the only piece of original prose in the response. B
 - `"Code review done with 2 blockers, 1 major. Next step: /ptah:fix k3f9."`
 - `"Spec written. Next step: /ptah:plan k3f9."`
 
+If the `Next step:` starts with `none`, say nothing is open and name the optional command, if any, per **Next step** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`. E.g. `"Review clean, nothing open. Optional: /ptah:fix k3f9 N1,N2."`
+
 If the last command entry has `Manual steps:`, name them before the next command, e.g. `"Implementation finished. Restart the local API, then /ptah:review k3f9."`
 
 If the last command entry is `paused`, name what it's blocked on and how to pick it back up. The change entries after it are the user's answers so far. An answer whose `What:` starts with `not-answered-yet:` doesn't count until a later entry answers the same question: name the question and what the user needs to do before re-running. E.g. `"Paused during /ptah:implement, blocked on: <Blocked on: value> — 2 answers logged. Re-run /ptah:implement k3f9 to continue."`
