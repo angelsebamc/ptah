@@ -18,7 +18,7 @@ Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/some-web-k3f
 
 Read, in this order:
 
-- `<folder>/LOGS.md` — session history. If the last command entry is `/plan paused`, the change entries after it are the user's answers to your earlier questions — treat them as decided.
+- `<folder>/LOGS.md` — session history. If the last command entry is `/plan paused`, the change entries after it are the user's answers to your earlier questions — treat them as decided. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
 - `<folder>/SPEC.md` — the use case and acceptance criteria
 - `<folder>/refs/` — screenshots, mockups, schema snippets
 

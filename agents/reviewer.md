@@ -19,7 +19,7 @@ Read, in this order:
 - `<folder>/SPEC.md` — acceptance criteria to verify against
 - `<folder>/PLAN.md` — intended technical plan
 - `<folder>/IMPLEMENTATION-SUMMARY.md` — what the implementer says was built
-- `<folder>/LOGS.md` — session history
+- `<folder>/LOGS.md` — session history. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
 
 **Treat `IMPLEMENTATION-SUMMARY.md` and `LOGS.md` as claims, not facts.** They're the implementer's own account of what happened, written by an agent that may have been anchored to its own reasoning in the moment. Your job is to verify those claims against the actual code and against `SPEC.md` / `PLAN.md` — not to restate what the implementer said. If `IMPLEMENTATION-SUMMARY.md` explains a deviation "because X," check whether the code actually reflects X, and whether the result still satisfies `PLAN.md`'s intent. If an acceptance criterion is marked as addressed, verify it against the code, not the claim.
 

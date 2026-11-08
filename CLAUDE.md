@@ -14,7 +14,7 @@ Ptah is a Claude Code **plugin**: a spec-driven workflow for AI coding agents, f
 ## Layout
 
 - `.claude-plugin/plugin.json` — manifest. Its name `ptah` namespaces everything: skills are `/ptah:<command>`, agents are `ptah:<agent>`.
-- `RULES.md` — cross-cutting rules every command follows: read `LOGS.md` first, stop and ask one question at a time, steps the user does in a tool, wait for the user, logging discipline, reports and vocabulary, path conventions. Every skill reads it before its Step 1. Agents don't read it: their own prompts and the guides they read cover what they need.
+- `RULES.md` — cross-cutting rules every command follows: read `LOGS.md` first, stop and ask one question at a time, steps the user does in a tool, wait for the user, changes between commands, logging discipline, reports and vocabulary, path conventions. Every skill reads it before its Step 1. Agents don't read it: their own prompts and the guides they read cover what they need.
 - `guides/` — single sources of truth:
   - `vocabulary.md` — every fixed value: command/result statuses, spec states, change types and triggers, severities and finding codes, verdicts, fix modes.
   - `result-format.md` — the subagent result (`===RESULT===` … `===<ARTIFACT>.md===` … `===END===`), malformed-result rules, and the user-facing hand-off.

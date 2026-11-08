@@ -6,7 +6,7 @@ Cross-cutting rules the agent applies regardless of which command is running. Th
 
 ## Always read LOGS.md first
 
-When working on any feature, read `LOGS.md` in the relevant spec folder before doing anything else. It is the single source of truth for current state — what's been done, what was decided, what's next. Never skip it, even when "just looking" at one specific file.
+When working on any feature, read `LOGS.md` in the relevant spec folder before doing anything else. It is the single source of truth for current state — what's been done, what was decided, what's next. Never skip it, even when "just looking" at one specific file. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
 
 ---
 
@@ -31,6 +31,15 @@ When the user makes a change themselves in a tool, give the target state as chec
 ## Wait for the user
 
 Never continue into the next command's work. Hand off and wait for the user to run it.
+
+---
+
+## Changes between commands
+
+Outside `/implement` and `/fix`, don't edit source files on your own. When the user asks for a change between commands:
+
+- **A change that needs planning** (a design decision, a change to the plan's architecture, work across many files), or any change before `IMPLEMENTATION-SUMMARY.md` exists: update the artifact that owns it (`PLAN.md`; for scope, `SPEC.md` and `PLAN.md` if it exists), log a change entry, and hand off to `/ptah:plan <id>` if there's no `PLAN.md` yet, otherwise to `/ptah:implement <id>`.
+- **Any other change**: make it in this session and log a change entry. Add each file it touches to `IMPLEMENTATION-SUMMARY.md` under **Changes after implementation** (replacing its `None`) as `` - `<path>` — <what changed> (see change entry <timestamp>) ``, then hand off to `/ptah:review <id>`.
 
 ---
 
