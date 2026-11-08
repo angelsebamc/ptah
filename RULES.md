@@ -34,12 +34,20 @@ Never continue into the next command's work. Hand off and wait for the user to r
 
 ---
 
+## Artifact ownership
+
+- **Living: `SPEC.md`, `PLAN.md`.** They state what should be true now. An edit rewrites the affected sections and never narrates what they replaced. A decision may cite the change entry behind it (`LOGS.md #<n>`). Every edit has a change entry whose `Impact:` names the file and the sections updated.
+- **Who updates living artifacts.** Any step that makes the work contradict `SPEC.md` or `PLAN.md` updates it in that step. A `scope-change` updates `SPEC.md`, and `PLAN.md` if it exists.
+- **Records: `IMPLEMENTATION-SUMMARY.md`, `REVIEW.md`.** `/implement` writes `IMPLEMENTATION-SUMMARY.md` and `/review` writes `REVIEW.md`; later commands only append to them. `/fix` appending its Fix Summary to `REVIEW.md` is such an append. `/fix` and changes between commands add each file they touch to `IMPLEMENTATION-SUMMARY.md` under **Changes after implementation** (replacing its `None`) as `` - `<path>` — <what changed> (<source>) ``, where `<source>` is `see change entry #<n>` or `fix <codes>`.
+
+---
+
 ## Changes between commands
 
 Outside `/implement` and `/fix`, don't edit source files on your own. When the user asks for a change between commands:
 
-- **A change that needs planning** (a design decision, a change to the plan's architecture, work across many files), or any change before `IMPLEMENTATION-SUMMARY.md` exists: update the artifact that owns it (`PLAN.md`; for scope, `SPEC.md` and `PLAN.md` if it exists), log a change entry, and hand off to `/ptah:plan <id>` if there's no `PLAN.md` yet, otherwise to `/ptah:implement <id>`.
-- **Any other change**: make it in this session, update `PLAN.md` if the change contradicts it, and log a change entry whose `Impact:` names `PLAN.md` when it was updated. Add each file it touches to `IMPLEMENTATION-SUMMARY.md` under **Changes after implementation** (replacing its `None`) as `` - `<path>` — <what changed> (see change entry #<n>) ``, then hand off to `/ptah:review <id>`.
+- **A change that needs planning** (a design decision, a change to the plan's architecture, work across many files), or any change before `IMPLEMENTATION-SUMMARY.md` exists: update `SPEC.md` or `PLAN.md` per **Artifact ownership**, and hand off to `/ptah:plan <id>` if there's no `PLAN.md` yet, otherwise to `/ptah:implement <id>`.
+- **Any other change**: make it in this session, update `PLAN.md` per **Artifact ownership** if the change contradicts it, and log a change entry. Add each file it touches to `IMPLEMENTATION-SUMMARY.md` per **Artifact ownership**, citing that entry, then hand off to `/ptah:review <id>`.
 
 ---
 
