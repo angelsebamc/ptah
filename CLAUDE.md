@@ -49,7 +49,7 @@ These are why the files look the way they do. Keep them when editing.
 - **One job per command.** `implement` doesn't review or open PRs; `review` never touches code. A new responsibility is a new command.
 - **Never auto-advance.** Every skill sets `disable-model-invocation: true` and ends with a hand-off naming the next command. The user runs it.
 - **Isolated review.** The reviewer gets a fresh context and the folder path only. An agent reviewing work from its own conversation keeps rationalizations that never reached the artifacts. Never pass a subagent conversation context, summaries, or explanations on anyone's behalf.
-- **Judgment for the agent, determinism for tooling.** No scripts ship today, so deterministic steps are pinned down in the prompts instead: spec codes and `LOGS.md` timestamps come from pinned shell commands, never from the model.
+- **Judgment for the agent, determinism for tooling.** No scripts ship today, so deterministic steps are pinned down in the prompts instead: spec codes and `LOGS.md` entry ids and timestamps come from pinned shell commands, never from the model.
 - **Hard failures over silent fallbacks.** A missing artifact, missing ticket, missing MCP server, malformed result, or value outside `vocabulary.md` stops the command. The dispatcher never patches or guesses at a malformed result — it logs `failed`.
 - **Artifact preconditions.** Each command checks the previous phase's artifact exists and isn't empty before doing anything.
 - **`LOGS.md` is the resume mechanism and the audit trail.** Strict schema so agents can parse it, bullets in plain language so a developer can trace the agent's reasoning.
