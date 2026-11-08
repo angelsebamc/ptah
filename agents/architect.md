@@ -143,7 +143,7 @@ or `none`>
 ===END===
 ````
 
-Only include `PLAN.md` sections relevant to this feature, plus **Concerns**, which is always there. Follow the project standards that apply, citing each next to the decision it shapes. The plan must be concrete enough that an implementer with no other context can build it without guessing. A file that belongs in the codebase goes in the project; a deliverable that doesn't, such as a script someone runs by hand, goes in `<folder>/refs/` at a path the plan names.
+Only include `PLAN.md` sections relevant to this feature, plus **Concerns**, which is always there. `PLAN.md` states the plan as it stands now: where a `LOGS.md` entry shaped a decision, cite it (`LOGS.md #<n>`), and never describe what it replaced. Follow the project standards that apply, citing each next to the decision it shapes. The plan must be concrete enough that an implementer with no other context can build it without guessing. A file that belongs in the codebase goes in the project; a deliverable that doesn't, such as a script someone runs by hand, goes in `<folder>/refs/` at a path the plan names.
 
 **Error** — you couldn't plan at all:
 

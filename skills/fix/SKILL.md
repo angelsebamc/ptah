@@ -224,7 +224,14 @@ Append a **Fix Summary** to the findings file `REVIEW.md`.
 
 The Fix Summary is structurally identical across all three modes. Every finding of the fixed pass appears exactly once — under Fixed, Skipped, or Deferred.
 
-### 6b. LOGS.md entry
+### 6b. Living artifacts and summary
+
+Per **Artifact ownership** in `RULES.md`:
+
+- If a fix changed behavior that `SPEC.md` or `PLAN.md` states, update that file.
+- Add each file the fixes touched to `IMPLEMENTATION-SUMMARY.md` under **Changes after implementation**, with `fix <codes>` as the source.
+
+### 6c. LOGS.md entry
 
 Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`, with `Next step:` per **Fix next step** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`: `none — no re-review needed; optional: /ptah:review <id>` when the verdict in `REVIEW.md` is `approved` and no new issues were found, `/ptah:review <id>` otherwise.
 
