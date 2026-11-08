@@ -99,6 +99,8 @@ Check every code from the command arguments against the findings being fixed. A 
 
 > "`<code>` isn't a finding in `REVIEW.md` for `<id>`. Findings: `<codes>`."
 
+Then find the project's standards per `${CLAUDE_PLUGIN_ROOT}/guides/project-standards.md`, reading only the parts that apply to the findings being fixed. Follow them.
+
 ---
 
 ## Step 4 — Apply fixes (mode-specific)
@@ -183,6 +185,7 @@ These apply regardless of mode. Any of them hitting is a **Stop and ask** from `
 
 - Fix only what is documented in the findings being fixed — do not refactor unrelated code
 - If a fix requires a design change, stop and ask the user before proceeding
+- A project standard conflicts with a finding's `Fix:` line
 - If a fix introduces a new dependency not in the original design, ask first
 - Keep fixes minimal and focused — don't improve things that aren't broken
 - A hook blocks a tool call and complying needs a person. Handle every hook per `${CLAUDE_PLUGIN_ROOT}/guides/project-hooks.md`
@@ -205,6 +208,7 @@ Append a **Fix Summary** to the findings file `REVIEW.md`.
 - [x] B2 — <title> — <brief note> (user-directed: <the approach given>)
 - [x] M1 — <title> — <brief note> (trades <old failure mode> for <new>)
 - [x] M2 — <title> — <brief note> (dropped by user: <file:line>, …)
+- [x] M4 — <title> — <brief note> (per <file>:<line>: <the standard that shaped the fix>)
 - [x] N1 — <title> — <brief note> (only if in scope this run; "(named by the user)" if pulled in by code)
 - [x] S2 — <title> — <brief note> (named by the user)
 
