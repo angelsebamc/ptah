@@ -115,7 +115,7 @@ Any `completed` entry may add `Manual steps:` right before `Next step:`. Leave i
 - Suggestions (count)
 - Acceptance criteria (`X of Y met`)
 - Verdict (`fix-needed` or `approved`)
-- Next step (`/ptah:fix <id>`, or `none — review clean`)
+- Next step (per **Review verdict** in `vocabulary.md`)
 
 ### `/fix completed`
 - Mode (`auto`, `plan`, or `interactive`)
@@ -125,7 +125,7 @@ Any `completed` entry may add `Manual steps:` right before `Next step:`. Leave i
 - Suggestions fixed (count, or `none`)
 - Skipped by user (count, or `none` — includes findings marked already fixed)
 - New issues found (`yes — <note>` or `no`)
-- Next step (`/ptah:review <id>`)
+- Next step (per **Fix next step** in `vocabulary.md`)
 
 ---
 

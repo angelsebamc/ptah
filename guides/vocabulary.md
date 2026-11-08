@@ -49,6 +49,10 @@ The prefix of a change entry's `What:` when it records a subagent question the u
 |---|---|
 | `not-answered-yet:` | The answer needs something outside Ptah, such as an approval |
 
+### Next step
+
+A command entry's `Next step:` that starts with `none` means nothing is open. Anything after `; optional: ` is a command the user may run, not work left to do.
+
 ### Spec state
 
 What `status` shows for a spec, derived from its **last command entry** — change entries are ignored for this.
@@ -56,10 +60,10 @@ What `status` shows for a spec, derived from its **last command entry** — chan
 | Value | Last command entry |
 |---|---|
 | `just-started` | none yet |
-| `active` | any `completed`, other than an `approved` review |
+| `active` | any `completed` whose `Next step:` doesn't start with `none` |
 | `paused` | any `paused` |
 | `failed` | any `failed` |
-| `completed` | `review completed` with `Verdict: approved` |
+| `completed` | any `completed` whose `Next step:` starts with `none` |
 
 ---
 
@@ -119,7 +123,16 @@ Every finding carries a code: the severity's letter plus a number, e.g. `B1`, `M
 | Value | Meaning | Next step |
 |---|---|---|
 | `fix-needed` | At least one blocker or major finding | `/ptah:fix <id>` |
-| `approved` | No blockers or major findings | none — review clean |
+| `approved` | No blockers or major findings | `none — review clean`, plus `; optional: /ptah:fix <id> <codes>` when there are minors |
+
+`<codes>` are the minors' codes, `N1` through `N<n>` from the `Minor:` count, comma-separated with no spaces: `N1,N2,N3`.
+
+### Fix next step
+
+| Fixed from | Next step |
+|---|---|
+| An `approved` review, with `New issues found: no` | `none — no re-review needed; optional: /ptah:review <id>` |
+| Anything else | `/ptah:review <id>` |
 
 ### Fix mode
 

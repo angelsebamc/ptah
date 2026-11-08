@@ -34,7 +34,7 @@ Run these inside Claude Code, in your project:
 | `/ptah:plan` | Writes the technical plan | `PLAN.md` |
 | `/ptah:implement` | Writes the code from the plan | code + `IMPLEMENTATION-SUMMARY.md` |
 | `/ptah:review` | Reviews the code in a fresh context | `REVIEW.md` |
-| `/ptah:fix` | Fixes the review findings, then run `/ptah:review` again | Fix Summary in `REVIEW.md` |
+| `/ptah:fix` | Fixes the review findings, then run `/ptah:review` again (optional after an `approved` review) | Fix Summary in `REVIEW.md` |
 | `/ptah:resume` | Shows where a spec stands | nothing |
 
 Ptah never moves on by itself: each command ends by telling you the next one to run. When a review comes back `approved`, the work is ready for a PR.
