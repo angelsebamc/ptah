@@ -85,3 +85,5 @@ A command's skill may name a list for its hand-off. It goes after the key facts 
 <Label>:
 - <item>
 ```
+
+When the command's `completed` entry has `Manual steps:`, the hand-off lists them in the same form under `Manual steps`, last before `Next:`.

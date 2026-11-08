@@ -125,6 +125,6 @@ Every finding carries a code: the severity's letter plus a number, e.g. `B1`, `M
 
 | Value | Behavior |
 |---|---|
-| `auto` | Apply all in-scope fixes silently, report at the end |
+| `auto` | Apply all in-scope fixes without asking, report at the end |
 | `plan` | Show a one-line-per-finding plan, wait for one confirmation, apply in one pass |
 | `interactive` | Ask per finding before applying |

@@ -71,6 +71,8 @@ The `Where you are:` line is the only piece of original prose in the response. B
 - `"Code review done with 2 blockers, 1 major. Next step: /ptah:fix k3f9."`
 - `"Spec written. Next step: /ptah:plan k3f9."`
 
+If the last command entry has `Manual steps:`, name them before the next command, e.g. `"Implementation finished. Restart the local API, then /ptah:review k3f9."`
+
 If the last command entry is `paused`, name what it's blocked on and how to pick it back up. The change entries after it are the user's answers so far. An answer whose `What:` starts with `not-answered-yet:` doesn't count until a later entry answers the same question: name the question and what the user needs to do before re-running. E.g. `"Paused during /ptah:implement, blocked on: <Blocked on: value> — 2 answers logged. Re-run /ptah:implement k3f9 to continue."`
 
 If the last command entry is `failed`, give the reason and the re-run, e.g. `"/ptah:review failed: <Reason: value>. Re-run /ptah:review k3f9."` For a failed `/ptah:implement`, add that code may have changed on disk.

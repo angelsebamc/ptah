@@ -27,7 +27,7 @@ For each question, show the current value when set. An empty reply keeps it. Whe
 
 1. **Fix mode**
    > "How should `/ptah:fix` apply review findings? A flag overrides this for one run.
-   > - `auto` — apply all in-scope fixes silently, report at the end
+   > - `auto` — apply all in-scope fixes without asking, report at the end
    > - `plan` — show a one-line-per-finding plan, wait for one confirmation (recommended)
    > - `interactive` — ask per finding"
 
