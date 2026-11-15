@@ -6,13 +6,13 @@ disable-model-invocation: true
 
 # /init
 
-Configure Ptah for this project. Every key is documented in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
+Configure Ptah for this project.
 
 `RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
 ## Step 1 — Read the current config
 
-Read `.ptah/ptah.yml` (relative to the project root, not the plugin folder).
+Read `.ptah/ptah.yml`.
 
 - **Missing** → start from an empty config.
 - **Present** → show the user the current `commands.fix` and `tickets.server` values, if any.
@@ -21,15 +21,14 @@ Read `.ptah/ptah.yml` (relative to the project root, not the plugin folder).
 
   Never overwrite a file you couldn't parse.
 
-## Step 2 — Ask, one question at a time
+## Step 2 — Ask
 
 For each question, show the current value when set. An empty reply keeps it. When it's unset, an empty reply takes the recommended answer.
 
 1. **Fix mode**
-   > "How should `/ptah:fix` apply review findings? A flag overrides this for one run.
-   > - `auto` — apply all in-scope fixes without asking, report at the end
-   > - `plan` — show a one-line-per-finding plan, wait for one confirmation (recommended)
-   > - `interactive` — ask per finding"
+   > "How should `/ptah:fix` apply review findings? A flag overrides this for one run."
+
+   List each value in **Fix mode** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md` with its behavior, and mark `plan` as recommended.
 
 2. **Include minor**
    > "Should `/ptah:fix` also fix minor findings? (yes / no — recommended no)"

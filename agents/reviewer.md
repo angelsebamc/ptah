@@ -112,9 +112,9 @@ Fix: <the concrete change to make, at every location listed>
 ===END===
 ````
 
-Number each severity's findings from 1, in the order they appear (`B1`, `B2`, … `M1`, …). `/fix` and the user refer to findings by these codes, so every finding gets exactly one, and a code is never reused within a review.
+Give every finding exactly one code per **Finding codes** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`, and never reuse a code within a review.
 
-`Verdict` is `fix-needed` if there's at least one blocker or major finding, `approved` otherwise. The counts must match the findings in `REVIEW.md` exactly.
+`Verdict` is per **Review verdict** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`. The counts must match the findings in `REVIEW.md` exactly.
 
 If you can't review at all — `SPEC.md`, `PLAN.md`, or `IMPLEMENTATION-SUMMARY.md` missing or empty — return:
 

@@ -11,33 +11,13 @@ Read review findings and fix all blocker and major issues. Record what was chang
 
 `RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
-`/fix` works from:
-
-- **A spec** — `/fix [<spec-id>] [codes…]` — fixes findings from `.ptah/specs/<feature-name>/REVIEW.md`. This is the feature track.
-
-Every finding carries a code assigned by the reviewer — `B1`, `B2` for blockers, `M1` for major, `N1` for minor, `S1` for suggestions.
-
-`/fix` supports three modes that control how much the agent asks before applying fixes.
-
-## Modes & config
-
-`/fix` has three modes:
-
-| Mode | Flag | Behavior |
-|------|------|----------|
-| `auto` | `-a` | Apply all in-scope fixes without asking. Report at the end. Takes no directives. |
-| `plan` | `-p` | Show a one-line-per-finding plan, wait for one reply — "yes" or directives by code — then apply all in one pass. |
-| `interactive` | `-i` | Ask per finding before applying. Directives by code work at every prompt. |
-
-Mode is resolved with precedence **flag > config**. The config keys, `commands.fix.mode` and `commands.fix.include_minor`, are documented in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
-
 ## Step 1 — Parse command arguments
 
 The command takes one source — an optional positional spec identifier (see `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`) — then optional finding codes and flags.
 
 - If the first positional is shaped like a finding code, or a comma-separated list of them, the spec identifier was omitted and every positional is a finding code. Otherwise the first positional is the spec identifier and every positional after it is a finding code.
 - Codes are separated by commas, spaces, or both — `n1,n2`, `n1 n2`, and `n1, n2` are the same. Match them case-insensitively and drop duplicates.
-- Codes pull the named minors and suggestions into scope for this run. They add to the default scope, never narrow it.
+- `-a`, `-p`, `-i` pick the mode for this run: `auto`, `plan`, `interactive`, per **Fix mode** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`.
 
 Examples:
 - `/fix k3f9` — uses mode from `ptah.yml`
@@ -64,7 +44,7 @@ A positional after the spec identifier that isn't shaped like a code (`B`, `M`, 
 
 ## Step 2 — Resolve mode and scope
 
-Determine the effective mode and scope for this run. Precedence is **flag > config**.
+Determine the effective mode and scope for this run. Precedence is **flag > `commands.fix.mode`**.
 
 ### Load Ptah config
 
@@ -73,16 +53,14 @@ Check the config per **Required keys** in `${CLAUDE_PLUGIN_ROOT}/guides/config.m
 The config file is never modified by `/fix`. Flags only affect the current run.
 
 ### Compute in-scope findings
-- Always in scope: blocker (`B`) and major (`M`) findings
-- Minor (`N`) findings: in scope only when `commands.fix.include_minor` is `true`
-- Any minor or suggestion (`S`) the user names by code — as a command argument or in a directive: pulled into scope for this run.
+- In scope: each severity's `fix` default in **Finding severity** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md` (`include_minor` is `commands.fix.include_minor`), plus every finding the user names by code, as an argument or in a directive. Codes add to that scope, never narrow it.
 - Everything else is deferred and listed under **Not in this run**
 
 ---
 
 ## Step 3 — Resolve the spec and read context
 
-Resolve `<spec-id>` per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`, including when it's omitted.
+Resolve `<spec-id>` per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`.
 
 Read:
 
@@ -149,7 +127,6 @@ M1 — <title> (+<n> instances)
    Files:  <files>
 
 (+<n> instances only when the finding's `Also at:` isn't "none")
-(N findings included only if include_minor is true; N and S findings named by code always included)
 
 Not in this run: <out-of-scope codes, or "none">
 
@@ -230,14 +207,11 @@ The Fix Summary is structurally identical across all three modes. Every finding 
 
 ### 6b. Living artifacts and summary
 
-Per **Artifact ownership** in `RULES.md`:
-
-- If a fix changed behavior that `SPEC.md` or `PLAN.md` states, update that file.
-- Add each file the fixes touched to `IMPLEMENTATION-SUMMARY.md` under **Changes after implementation**, with `fix <codes>` as the source.
+Update `SPEC.md`, `PLAN.md` and `IMPLEMENTATION-SUMMARY.md` per **Artifact ownership** in `RULES.md`.
 
 ### 6c. LOGS.md entry
 
-Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`, with `Next step:` per **Fix next step** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`: `none — no re-review needed; optional: /ptah:review <id>` when the verdict in `REVIEW.md` is `approved` and no new issues were found, `/ptah:review <id>` otherwise.
+Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`, with `Next step:` per **Fix next step** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`.
 
 ---
 
