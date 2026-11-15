@@ -37,8 +37,16 @@ Run these inside Claude Code, in your project:
 | `/ptah:fix` | Fixes the review findings, then run `/ptah:review` again (optional after an `approved` review) | Fix Summary in `REVIEW.md` |
 | `/ptah:resume` | Shows where a spec stands | nothing |
 
-Ptah never moves on by itself: each command ends by telling you the next one to run. When a review comes back `approved`, the work is ready for a PR.
+When a review comes back `approved`, the work is ready for a PR.
 
 You can leave out the spec id: Ptah takes it from your git branch, or asks you to pick one. If you're not on the spec's branch, Ptah offers to switch to it, or to create it when it doesn't exist yet.
 
 Everything that happens is logged in the spec's `LOGS.md`. Starting a new session? Run `/ptah:resume`.
+
+## Principles
+
+- **Every step leaves a file.** The ticket, `SPEC.md`, `PLAN.md`, the code with `IMPLEMENTATION-SUMMARY.md`, and `REVIEW.md` are the audit trail, tied together by `LOGS.md`. Steps share nothing but the spec folder and the code, so you can read exactly what each one worked from.
+- **One job per command.** `implement` doesn't review or open PRs; `review` never touches code.
+- **You decide when to move on.** No command runs the next one; each ends by naming it.
+- **Reviews start fresh.** The reviewer sees only the spec folder and the code, never the conversation that wrote it, so it can't inherit the reasons the code was written that way.
+- **Fail loudly.** A command stops when something it needs is missing (the previous step's file, the ticket, the ticket server, a valid result from its agent) instead of guessing past it.
