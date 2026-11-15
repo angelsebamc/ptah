@@ -72,7 +72,7 @@ Routine work creates noise — do not log it:
 
 ## Reports and vocabulary
 
-Every fixed value in Ptah — command statuses, result statuses, spec states, change types and triggers, severities, verdicts, fix modes — is defined once, in [`vocabulary`](./guides/vocabulary.md). Commands use those values exactly; a value that isn't on its list is an error, never something to coerce.
+Every fixed value in Ptah — command statuses, result statuses, change types and triggers, severities, verdicts, fix modes — is defined once, in [`vocabulary`](./guides/vocabulary.md). Commands use those values exactly; a value that isn't on its list is an error, never something to coerce.
 
 Every final report follows [`the result format`](./guides/result-format.md), in markdown.
 

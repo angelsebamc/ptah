@@ -132,7 +132,7 @@ In `plan` and `interactive` modes, the user can steer individual findings by cod
 `auto` mode shows no prompt, so it takes no directives.
 
 ### `auto` mode
-Apply every in-scope fix without asking. The only interruption is the stop-and-ask rule for genuinely ambiguous fixes.
+Apply every in-scope fix without asking. Only the rules in Step 5 interrupt it.
 
 ### `plan` mode
 Before touching any code, present a fix plan:

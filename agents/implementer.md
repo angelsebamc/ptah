@@ -36,13 +36,13 @@ Then find the project's standards per `${CLAUDE_PLUGIN_ROOT}/guides/project-stan
 
 ## Step 2 — Check for work in progress
 
-If the last command entry in `LOGS.md` is `implement paused`, an earlier dispatch stopped partway. Its `Progress:` and `Files touched:` fields say what's done. Inspect those files (and `git status` / `git diff`) and continue from where it stopped — don't redo or overwrite finished work.
+If the last command entry in `LOGS.md` is `/implement paused`, an earlier dispatch stopped partway. Its `Progress:` and `Files touched:` fields say what's done. Inspect those files (and `git status` / `git diff`) and continue from where it stopped — don't redo or overwrite finished work.
 
 ## Step 3 — Clarify before writing code
 
 If anything in the plan is ambiguous or contradictory, or asks for something this file or a project standard forbids, return questions now (Step 5), before touching code.
 
-Every question in `PLAN.md`'s **Open questions** needs a decision in `LOGS.md` before you write code. Return each one that has none as a `decision` question, with its options and recommendation. Never settle one yourself.
+Every question in `PLAN.md`'s **Open questions** needs a decision in `LOGS.md` before you write code. Return each one that has none as a `decision` question, with its options and recommendation copied from `PLAN.md`. Never settle one yourself.
 
 ## Step 4 — Implement
 
@@ -75,7 +75,7 @@ Every claim about deploying or running the change, anywhere in your result (a ma
 - Files touched: <comma-separated paths created or modified so far, or "none">
 
 ### Questions
-- [<decision | deviation | scope-change>] <question> — <why: what you found and what it blocks>
+- [<decision | deviation | scope-change>] <question> — <why: what you found and what it blocks><for an Open question from PLAN.md: . Options: (a) <option>; (b) <option>. Recommended: (<letter>) — <tradeoff>>
 ===END===
 ````
 

@@ -116,7 +116,7 @@ Number each severity's findings from 1, in the order they appear (`B1`, `B2`, �
 
 `Verdict` is `fix-needed` if there's at least one blocker or major finding, `approved` otherwise. The counts must match the findings in `REVIEW.md` exactly.
 
-If you can't review at all — `SPEC.md`, `PLAN.md`, or `IMPLEMENTATION-SUMMARY.md` missing or empty, or a listed file that doesn't exist — return:
+If you can't review at all — `SPEC.md`, `PLAN.md`, or `IMPLEMENTATION-SUMMARY.md` missing or empty — return:
 
 ````
 ===RESULT===

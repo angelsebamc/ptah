@@ -103,7 +103,7 @@ For sections without a mapping, ask normally.
    > "How do we know this feature is done? List the conditions that must be true for it to be considered complete."
 
 5. **References**
-   > "Are there any screenshots, mockups, or other files I should put in `/refs`? If so, describe them or share them now."
+   > "Are there any screenshots, mockups, or other files I should put in `refs/`? If so, describe them or share them now."
 
 6. **Out of scope**
    > "Is something explicitly NOT part of this feature?"
@@ -134,17 +134,17 @@ For sections without a mapping, ask normally.
 - **From a ticket** — `<feature-name>` = the ticket's title.
 - **Without a ticket** — infer `<feature-name>` from the Description and Problem answers: a short phrase naming what the feature does, e.g. `user login`. Don't ask the user for it.
 
-### 4c. Build the slug
+### 4c. Build the folder name
 `<kebab>` is `<feature-name>` in kebab-case, per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`. If `<kebab>` is longer than 50 characters, cut it at the last `-` before the 50th character.
 
-- **From a ticket** — `slug` = `<ticket-id>-<kebab>`, e.g. `PROJ-45-add-csv-export`
-- **Without a ticket** — `slug` = `<repo>-<code>-<kebab>`, e.g. `some-web-k3f9-user-login`
+- **From a ticket** — `<folder>` = `<ticket-id>-<kebab>`, e.g. `PROJ-45-add-csv-export`
+- **Without a ticket** — `<folder>` = `<repo>-<code>-<kebab>`, e.g. `some-web-k3f9-user-login`
 
 ### 4d. Create the folder
-Create the following structure at `.ptah/specs/<slug>/`:
+Create the following structure at `.ptah/specs/<folder>/`:
 
 ```
-.ptah/specs/<slug>/
+.ptah/specs/<folder>/
   LOGS.md
   SPEC.md
   refs/
@@ -178,7 +178,7 @@ For a ticket spec, include the `Source:` line linking back to the ticket. Omit i
 - ...
 
 ## References
-<list of files in /refs, or "none">
+<list of files in refs/, or "none">
 
 ## Out of scope
 - <item 1>
@@ -190,7 +190,7 @@ For a ticket spec, include the `Source:` line linking back to the ticket. Omit i
 
 ## Step 6 — Append to LOGS.md
 
-After writing SPEC.md, append a `/spec completed` entry to `.ptah/specs/<slug>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`
+After writing SPEC.md, append a `/spec completed` entry to `.ptah/specs/<folder>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`
 
 ---
 

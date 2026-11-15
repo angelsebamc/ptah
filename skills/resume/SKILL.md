@@ -79,8 +79,6 @@ If the last command entry is `paused`, name what it's blocked on and how to pick
 
 If the last command entry is `failed`, give the reason and the re-run, e.g. `"/ptah:review failed: <Reason: value>. Re-run /ptah:review k3f9."` For a failed `/ptah:implement`, add that code may have changed on disk.
 
-Command statuses and spec states are defined in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`.
-
 ---
 
 ## What `/resume` is and isn't
