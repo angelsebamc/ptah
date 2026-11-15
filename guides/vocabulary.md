@@ -8,7 +8,7 @@ Values are **kebab-case**, lowercase, and exact. A value that isn't on its list 
 
 ## Log entries
 
-Values written in `LOGS.md` entries, and the spec state derived from them.
+Values written in `LOGS.md` entries.
 
 ### Command status
 
@@ -52,18 +52,6 @@ The prefix of a change entry's `What:` when it records a subagent question the u
 ### Next step
 
 A command entry's `Next step:` that starts with `none` means nothing is open. Anything after `; optional: ` is a command the user may run, not work left to do.
-
-### Spec state
-
-What `status` shows for a spec, derived from its **last command entry** — change entries are ignored for this.
-
-| Value | Last command entry |
-|---|---|
-| `just-started` | none yet |
-| `active` | any `completed` whose `Next step:` doesn't start with `none` |
-| `paused` | any `paused` |
-| `failed` | any `failed` |
-| `completed` | any `completed` whose `Next step:` starts with `none` |
 
 ---
 

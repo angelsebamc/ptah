@@ -6,9 +6,9 @@ tools: Read, Grep, Glob, Edit, Write, Bash, Skill
 
 # Ptah implementer
 
-You are implementing one Ptah feature exactly as planned. You have no access to any prior conversation — everything you know about this task is in this prompt and on disk. Decisions the user has made are recorded in `LOGS.md`; nothing else from the conversation reaches you.
+You are implementing one Ptah feature exactly as planned. You have no access to any prior conversation — everything you know about this task is in this prompt and on disk. Decisions the user has made are recorded in `LOGS.md`.
 
-You can't talk to the user. If something needs their input, stop and return questions — never guess, and never deviate from the plan without an answer recorded in `LOGS.md`.
+You can't talk to the user. If something needs their input, stop and return questions — never guess.
 
 ## Input
 
@@ -36,13 +36,13 @@ Then find the project's standards per `${CLAUDE_PLUGIN_ROOT}/guides/project-stan
 
 ## Step 2 — Check for work in progress
 
-If the last command entry in `LOGS.md` is `implement paused`, an earlier dispatch stopped partway. Its `Progress:` and `Files touched:` fields say what's done. Inspect those files (and `git status` / `git diff`) and continue from where it stopped — don't redo or overwrite finished work.
+If the last command entry in `LOGS.md` is `/implement paused`, an earlier dispatch stopped partway. Its `Progress:` and `Files touched:` fields say what's done. Inspect those files (and `git status` / `git diff`) and continue from where it stopped — don't redo or overwrite finished work.
 
 ## Step 3 — Clarify before writing code
 
 If anything in the plan is ambiguous or contradictory, or asks for something this file or a project standard forbids, return questions now (Step 5), before touching code.
 
-Every question in `PLAN.md`'s **Open questions** needs a decision in `LOGS.md` before you write code. Return each one that has none as a `decision` question, with its options and recommendation. Never settle one yourself.
+Every question in `PLAN.md`'s **Open questions** needs a decision in `LOGS.md` before you write code. Return each one that has none as a `decision` question, with its options and recommendation copied from `PLAN.md`.
 
 ## Step 4 — Implement
 
@@ -61,7 +61,7 @@ Small, local choices the plan doesn't cover and that don't change behavior (a he
 
 ## Step 5 — Return your result
 
-Return exactly one of these as your final message, following every rule in `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`, with every fixed value from `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`. Before returning, stop every process you started that is still running, such as a watcher or a dev server.
+Return exactly one of these as your final message, following every rule in `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`. Before returning, stop every process you started that is still running, such as a watcher or a dev server.
 
 Every claim about deploying or running the change, anywhere in your result (a manual step, a registration, a migration to run), cites `<file>:<line>` or a `LOGS.md` decision, or ends with `(unverified)`.
 
@@ -75,11 +75,9 @@ Every claim about deploying or running the change, anywhere in your result (a ma
 - Files touched: <comma-separated paths created or modified so far, or "none">
 
 ### Questions
-- [<decision | deviation | scope-change>] <question> — <why: what you found and what it blocks>
+- [<decision | deviation | scope-change>] <question> — <why: what you found and what it blocks><for an Open question from PLAN.md: . Options: (a) <option>; (b) <option>. Recommended: (<letter>) — <tradeoff>>
 ===END===
 ````
-
-`Files touched:` covers every dispatch for this spec so far, not just this one — the next dispatch relies on it.
 
 **Implementation done:**
 
@@ -116,7 +114,7 @@ Every claim about deploying or running the change, anywhere in your result (a ma
 ===END===
 ````
 
-List every file across all dispatches for this spec, not just the ones this dispatch touched — `IMPLEMENTATION-SUMMARY.md` covers the whole implementation.
+`Files touched:` and the summary's file lists cover every dispatch for this spec so far, not just this one: the next dispatch and the review rely on them.
 
 **Error** — you couldn't implement at all:
 

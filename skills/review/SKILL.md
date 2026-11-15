@@ -35,14 +35,6 @@ Review the Ptah spec at .ptah/specs/<feature-name>/
 
 ## Step 3 — Handle the result
 
-Per **Handling the result** in `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`. The reviewer never returns `needs-input`.
+Per **Handling the result** in `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`.
 
-- **`complete`** — write the `===REVIEW.md===` block to `.ptah/specs/<feature-name>/REVIEW.md`. Take `Next step:` from the verdict:
-
-  | Verdict | `Next step:` |
-  |---|---|
-  | `fix-needed` | `/ptah:fix <id>` |
-  | `approved`, `Minor: 0` | `none — review clean` |
-  | `approved`, any other `Minor:` | `none — review clean; optional: /ptah:fix <id> <codes>`, with `<codes>` per **Review verdict** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md` |
-
-- **`error` / malformed** — as in the rule.
+- **`complete`** — write the `===REVIEW.md===` block to `.ptah/specs/<feature-name>/REVIEW.md`. Take `Next step:` per **Review verdict** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`.

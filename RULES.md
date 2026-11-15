@@ -36,7 +36,7 @@ Never continue into the next command's work. Hand off and wait for the user to r
 
 ## Artifact ownership
 
-- **Living: `SPEC.md`, `PLAN.md`.** They state what should be true now. An edit rewrites the affected sections and never narrates what they replaced. A decision may cite the change entry behind it (`LOGS.md #<n>`). Every edit has a change entry whose `Impact:` names the file and the sections updated (the step's own change entry counts).
+- **Living: `SPEC.md`, `PLAN.md`.** They state what should be true now. An edit rewrites the affected sections and never narrates what they replaced. A decision may cite the change entry behind it (`LOGS.md #<n>`). Every edit has a change entry whose `Impact:` names the file and the sections updated (the step's own change entry counts). Once one of `PLAN.md`'s **Open questions** is answered, remove it from there (write `none` once it's empty).
 - **Who updates living artifacts.** Any step that makes the work contradict `SPEC.md` or `PLAN.md` updates it in that step. A `scope-change` updates `SPEC.md`, and `PLAN.md` if it exists.
 - **Records: `IMPLEMENTATION-SUMMARY.md`, `REVIEW.md`.** `/implement` writes `IMPLEMENTATION-SUMMARY.md` and `/review` writes `REVIEW.md` on each pass; other commands only append to them. `/fix` appending its Fix Summary to `REVIEW.md` is such an append. `/fix` and changes between commands add each file they touch to `IMPLEMENTATION-SUMMARY.md` under **Changes after implementation** (replacing its `None`) as `` - `<path>` — <what changed> (<source>) ``, where `<source>` is `see change entry #<n>` or `fix <codes>`.
 
@@ -72,7 +72,7 @@ Routine work creates noise — do not log it:
 
 ## Reports and vocabulary
 
-Every fixed value in Ptah — command statuses, result statuses, spec states, change types and triggers, severities, verdicts, fix modes — is defined once, in [`vocabulary`](./guides/vocabulary.md). Commands use those values exactly; a value that isn't on its list is an error, never something to coerce.
+Every fixed value in Ptah — command statuses, result statuses, change types and triggers, severities, verdicts, fix modes — is defined once, in [`vocabulary`](./guides/vocabulary.md). Commands use those values exactly; a value that isn't on its list is an error, never something to coerce.
 
 Every final report follows [`the result format`](./guides/result-format.md), in markdown.
 
