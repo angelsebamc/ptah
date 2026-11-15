@@ -11,7 +11,7 @@ Implement a spec's plan, and document what was built in `IMPLEMENTATION-SUMMARY.
 
 `RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
-`/implement` is a thin dispatcher: the implementation — reading the plan, writing the code — happens in the `implementer` subagent's own context. This session only relays questions, writes `IMPLEMENTATION-SUMMARY.md`, and logs. See `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`.
+`/implement` is a thin dispatcher: the implementation happens in the `implementer` subagent's own context. See `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`.
 
 ## Step 1 — Resolve the spec
 
@@ -38,5 +38,5 @@ Implement the Ptah spec at .ptah/specs/<feature-name>/
 Per **Handling the result** in `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`:
 
 - **`complete`** — write the `===IMPLEMENTATION-SUMMARY.md===` block to `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md`. `Next step: /ptah:review <id>`.
-- **`needs-input`** — work the subagent already finished is on disk. If an answered question is one of `PLAN.md`'s **Open questions**, remove it per **Artifact ownership** in `RULES.md`.
+- **`needs-input`** — if an answered question is one of `PLAN.md`'s **Open questions**, remove it per **Artifact ownership** in `RULES.md`.
 - **`error` / malformed** — when handing off, add that code may have changed on disk.
