@@ -16,14 +16,10 @@ Read review findings and fix all blocker and major issues. Record what was chang
 The command takes one source — an optional positional spec identifier (see `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`) — then optional finding codes and flags.
 
 - If the first positional is shaped like a finding code, or a comma-separated list of them, the spec identifier was omitted and every positional is a finding code. Otherwise the first positional is the spec identifier and every positional after it is a finding code.
-- Codes are separated by commas, spaces, or both — `n1,n2`, `n1 n2`, and `n1, n2` are the same. Match them case-insensitively and drop duplicates.
+- Codes are separated by commas, spaces, or both — `n1,n2`, `n1 n2`, and `n1, n2` are the same. Match codes case-insensitively everywhere, and drop duplicates.
 - `-a`, `-p`, `-i` pick the mode for this run: `auto`, `plan`, `interactive`, per **Fix mode** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`.
 
 Examples:
-- `/fix k3f9` — uses mode from `ptah.yml`
-- `/fix k3f9 -a` — applies all fixes this run without asking
-- `/fix k3f9 -i` — asks per finding before applying it
-- `/fix k3f9 n1,n2` — also fixes minors N1 and N2 this run
 - `/fix k3f9 S1 -p` — also fixes suggestion S1, in plan mode
 - `/fix n1,n2` — the spec comes from the branch or this session; also fixes minors N1 and N2
 
@@ -31,8 +27,7 @@ A positional after the spec identifier that isn't shaped like a code (`B`, `M`, 
 
 > "`<arg>` isn't a finding code. Codes look like `B1`, `M2`, `N1`, `S3`."
 
-**Mutually-exclusive flag pairs** produce an error and stop:
-- `-a`, `-p`, `-i` (pick one)
+More than one of `-a`, `-p`, `-i` stops the command:
 
 > "Conflicting flags: `<flag1>` and `<flag2>`. Pick one."
 
@@ -50,11 +45,9 @@ Determine the effective mode and scope for this run. Precedence is **flag > `com
 
 Check the config per **Required keys** in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
 
-The config file is never modified by `/fix`. Flags only affect the current run.
-
 ### Compute in-scope findings
 - In scope: each severity's `fix` default in **Finding severity** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md` (`include_minor` is `commands.fix.include_minor`), plus every finding the user names by code, as an argument or in a directive. Codes add to that scope, never narrow it.
-- Everything else is deferred and listed under **Not in this run**
+- Everything else is deferred and listed under **Deferred**
 
 ---
 
@@ -67,13 +60,12 @@ Read:
 - `.ptah/specs/<feature-name>/REVIEW.md` — the findings to fix
 - `.ptah/specs/<feature-name>/PLAN.md` — the technical plan
 - `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md` — what was built
-- `.ptah/specs/<feature-name>/LOGS.md` — session history, to understand current state
 
 If `REVIEW.md` is empty or missing, stop:
 
 > "No review found for `<spec-id>`. Run `/ptah:review <id>` first."
 
-Check every code from the command arguments against the findings being fixed. A code that isn't there stops the command — don't guess which finding was meant:
+Check every code from the command arguments against the findings being fixed. A code that isn't there stops the command:
 
 > "`<code>` isn't a finding in `REVIEW.md` for `<id>`. Findings: `<codes>`."
 
@@ -101,13 +93,9 @@ In `plan` and `interactive` modes, the user can steer individual findings by cod
 | Ignore / skip | Finding moves to **Skipped** — reason: ignored by user, plus any reason given. |
 | Already fixed | Finding moves to **Skipped** — reason: already fixed (per user). Not re-verified. |
 | Drop instances — e.g. "N5: leave `api/b.ts:40`" | Those locations aren't fixed. The rest of the finding is applied and noted as dropped by user. |
-| Code not mentioned | Handled as planned. |
 
-- Match codes case-insensitively — `b2` is `B2`.
-- A code that doesn't exist in the findings being fixed → stop and ask. Don't guess which finding was meant.
+- A code that doesn't exist in the findings being fixed → stop and ask.
 - A directive that's ambiguous about what to do → stop and ask.
-
-`auto` mode shows no prompt, so it takes no directives.
 
 ### `auto` mode
 Apply every in-scope fix without asking. Only the rules in Step 5 interrupt it.
@@ -128,10 +116,10 @@ M1 — <title> (+<n> instances)
 
 (+<n> instances only when the finding's `Also at:` isn't "none")
 
-Not in this run: <out-of-scope codes, or "none">
+Deferred: <out-of-scope codes, or "none">
 
 Mode: plan
-Total: <X> blockers, <Y> major<, Z minor if included>
+Total: <count per in-scope severity, e.g. 2 blockers, 1 major, 1 suggestion>
 
 Apply all of these? Reply "yes", or steer by code — e.g. "B2: do X instead, skip M1".
 ```
@@ -139,8 +127,6 @@ Apply all of these? Reply "yes", or steer by code — e.g. "B2: do X instead, sk
 - **"yes" (or similar)** → apply the plan as shown.
 - **Directives** → apply the plan with the directives folded in. A reply made of directives is itself the confirmation; don't re-prompt unless something needs clarifying.
 - **A plain decline** → stop and ask what to do differently.
-
-Once confirmed, apply all fixes in one pass.
 
 ### `interactive` mode
 Work through in-scope findings one at a time. For each:
@@ -150,21 +136,18 @@ Work through in-scope findings one at a time. For each:
 3. Ask: "Apply this fix? (yes / skip / or tell me a different approach)"
 4. Wait for the reply — any directive by code applies, including ones for findings later in the list
 5. Apply, briefly note the result
-6. Move to the next finding
-
-The user can pause the loop or change direction at any point.
 
 ---
 
 ## Step 5 — Rules while fixing
 
-These apply regardless of mode. Any of them hitting is a **Stop and ask** from `RULES.md`, even in `auto`:
+In every mode, change only what the findings being fixed document: don't refactor unrelated code or improve what isn't broken.
 
-- Fix only what is documented in the findings being fixed — do not refactor unrelated code
-- If a fix requires a design change, stop and ask the user before proceeding
+Each of these is a **Stop and ask** from `RULES.md`, even in `auto`:
+
+- A fix needs a design change
+- A fix adds a dependency `PLAN.md` doesn't list
 - A project standard conflicts with a finding's `Fix:` line
-- If a fix introduces a new dependency not in the original design, ask first
-- Keep fixes minimal and focused — don't improve things that aren't broken
 - A hook blocks a tool call and complying needs a person. Handle every hook per `${CLAUDE_PLUGIN_ROOT}/guides/project-hooks.md`
 
 ---
@@ -203,7 +186,7 @@ Append a **Fix Summary** to the findings file `REVIEW.md`.
 <Any new issues discovered while fixing. "None" if clean.>
 ```
 
-The Fix Summary is structurally identical across all three modes. Every finding of the fixed pass appears exactly once — under Fixed, Skipped, or Deferred.
+Every finding of the fixed pass appears exactly once — under Fixed, Skipped, or Deferred.
 
 ### 6b. Living artifacts and summary
 
@@ -228,5 +211,3 @@ Manual steps:
 - <step>
 Next: <the entry's Next step:>
 ```
-
-The `Manual steps` list appears only when the entry has `Manual steps:`.

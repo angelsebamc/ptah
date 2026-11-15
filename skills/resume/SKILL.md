@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # /resume
 
-Orient the agent on a spec's current state at the start of a new session. Run this before continuing any in-flight work.
+Orient the agent on a spec's current state at the start of a new session.
 
 `RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
@@ -31,7 +31,7 @@ Then stop.
 
 Otherwise, identify:
 - **The last entry** in the file, command or change.
-- **The last command entry** (`/<command> completed | paused | failed`) and the change entries after it. The `Where you are:` line is built from these, even when the last entry is a change entry.
+- **The last command entry** (`/<command> completed | paused | failed`) and the change entries after it. These drive `Where you are:`, even when the last entry is a change entry.
 
 ### Do not
 
@@ -39,6 +39,8 @@ Otherwise, identify:
 - Read anything in `refs/`
 - Read any source file, including files listed in `IMPLEMENTATION-SUMMARY.md`
 - Write or edit any file, including `LOGS.md`
+
+Artifacts, refs and code are loaded by the workflow command that needs them.
 
 ---
 
@@ -61,11 +63,9 @@ Where you are: <one-line synthesis>
 | `paused` command entry | `/<command> paused` | its `Blocked on:` |
 | `failed` command entry | `/<command> failed` | its `Reason:` |
 
-Show nothing else from `LOGS.md` — no other entries, counts, artifacts, or refs.
-
 ### Rules for the synthesis line
 
-The `Where you are:` line is the only piece of original prose in the response. Base it on the last command entry's `Next step:`. Keep it to one sentence, and reference the next command by the spec's display id. Examples:
+Base it on the last command entry's `Next step:`, in one sentence. Examples:
 
 - `"Implementation finished. Next step: /ptah:review k3f9."`
 - `"Code review done with 2 blockers, 1 major. Next step: /ptah:fix k3f9."`
@@ -78,18 +78,3 @@ If the last command entry has `Manual steps:`, name them before the next command
 If the last command entry is `paused`, name what it's blocked on and how to pick it back up. The change entries after it are the user's answers so far. An answer whose `What:` starts with `not-answered-yet:` doesn't count until a later entry answers the same question: name the question and what the user needs to do before re-running. E.g. `"Paused during /ptah:implement, blocked on: <Blocked on: value> — 2 answers logged. Re-run /ptah:implement k3f9 to continue."`
 
 If the last command entry is `failed`, give the reason and the re-run, e.g. `"/ptah:review failed: <Reason: value>. Re-run /ptah:review k3f9."` For a failed `/ptah:implement`, add that code may have changed on disk.
-
----
-
-## What `/resume` is and isn't
-
-**It is:** an orientation command. It reads `LOGS.md` and reports where the work stands, so you and the agent agree on the next step before running it.
-
-**It isn't:** a context preloader. Artifacts, refs, and code are loaded by the workflow command that needs them, when it runs. Isn't a workflow command.
-
----
-
-Use `/resume` when:
-- Starting a new session and continuing work from a previous one
-- Switching between two in-flight specs (run `/ptah:resume <other-id>` to swap)
-- Briefing a fresh agent (or a teammate) on the current state of a feature

@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # /spec
 
-If the spec comes from a ticket (e.g. JIRA, Linear, GitHub), pre-fill parts of it through the project's ticket server. Config keys are documented in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
+If the spec comes from a ticket (e.g. JIRA, Linear, GitHub), pre-fill parts of it through the project's ticket server.
 
 `RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
@@ -15,7 +15,7 @@ If the spec comes from a ticket (e.g. JIRA, Linear, GitHub), pre-fill parts of i
 
 Raw arguments: `$ARGUMENTS`, trimmed.
 
-- **Empty** → a spec without a ticket. Its name is inferred from the spec conversation in Step 4.
+- **Empty** → a spec without a ticket.
 - **A single token shaped like a ticket id** — a letter, then letters or digits, a `-`, then digits, e.g. `PROJ-1234` → a ticket spec. `<ticket-id>` = the argument, keeping its casing.
 - **A single URL naming one ticket** — a token starting with `http://` or `https://` whose whole path segments and query-parameter values contain exactly one id shaped like a ticket id (case-insensitive) → a ticket spec. `<ticket-id>` = that id, keeping its casing:
   - `https://some-org.atlassian.net/jira/software/projects/PROJ/boards/12?selectedIssue=PROJ-1234` → `PROJ-1234`
@@ -26,8 +26,6 @@ Examples:
 - `/ptah:spec`: plain feature, no external ticket. The name comes from your answers
 - `/ptah:spec PROJ-1234`: pulls context from ticket PROJ-1234 through the project's ticket server
 - `/ptah:spec https://some-org.atlassian.net/browse/PROJ-1234`: the same, with the ticket id taken from the URL
-
-Neither the inferred name nor the ticket title is used as the folder name directly. Each is kebab-cased into a slug. A ticket spec's folder starts with the ticket id; any other spec's folder starts with the repository name and a random 4-character code.
 
 ---
 
@@ -43,8 +41,6 @@ For a ticket spec:
   > "No ticket server is set for this project. Run `/ptah:init` to choose one."
 - If no MCP server named `<server>` is available in this session, stop, listing the MCP servers that are available:
   > "MCP server `<server>` isn't available. Available servers: <list>. Install or enable it, or run `/ptah:init` to choose another."
-
-  Do not guess or fall back to another server.
 - If a folder matching `.ptah/specs/<ticket-id>-*` (case-insensitive) already exists, stop — never create a second folder for the same ticket:
   > "Ticket `<ticket-id>` already has a spec at `.ptah/specs/<folder>/`. Run `/ptah:resume <ticket-id>`."
 
@@ -52,7 +48,9 @@ For a ticket spec:
 
 Otherwise, fetch the ticket with id `<ticket-id>` using that server's MCP tools.
 
-DO NOT silently fall back if the ticket does not exist. Inform the user that the ticket does not exist and stop.
+If the ticket doesn't exist, stop:
+
+> "Ticket `<ticket-id>` wasn't found on `<server>`."
 
 Report back to the user what was pulled in:
 
@@ -69,26 +67,22 @@ Report back to the user what was pulled in:
 
 ## Step 3 — Start the spec conversation
 
-Nothing is written to disk until every question is answered. An interrupted conversation leaves no trace and starts over.
+Nothing is written to disk until every question is answered.
 
 Tell the user:
 
 > "Let's build out the spec together — I'll ask you a few questions to define a solid use case before moving to design."
 
-Then guide the user through the following sections **one at a time**. Wait for their answer before asking the next question.
+Then ask the following questions **one at a time**, in order.
 
-### If external context was loaded (Step 2):
+### For a ticket spec
 For any question whose answer is pre-filled from the ticket, present the pre-filled value and ask for confirmation:
 
 > "From the ticket: _<mapped value>_.
 >
 > Keep as-is, or rewrite?"
 
-Accept edits. Don't force the user to retype something that's already good.
-
-For sections without a mapping, ask normally.
-
-### Questions to ask (in order):
+### Questions to ask
 
 1. **Description**
    > "In one sentence — what is this feature?"
@@ -115,7 +109,7 @@ For sections without a mapping, ask normally.
 `<id>` is the spec's display id per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`.
 
 ### 4a. Get the id
-- **From a ticket** — `<id>` = `<ticket-id>`. Ticket specs take no code.
+- **From a ticket** — no code; go to 4b.
 - **Without a ticket** — generate `<code>` by running, in a POSIX shell:
 
   ```sh
@@ -128,7 +122,7 @@ For sections without a mapping, ask normally.
   -join (1..4 | ForEach-Object { 'abcdefghijklmnopqrstuvwxyz0123456789'.ToCharArray() | Get-Random })
   ```
 
-  If any folder in `.ptah/specs/` starts with `<repo>-<code>-`, run it again. `<id>` = `<code>`. Never make up a code or pick one yourself.
+  If any folder in `.ptah/specs/` starts with `<repo>-<code>-`, run it again. Never make up a code or pick one yourself.
 
 ### 4b. Name the feature
 - **From a ticket** — `<feature-name>` = the ticket's title.
@@ -137,8 +131,8 @@ For sections without a mapping, ask normally.
 ### 4c. Build the folder name
 `<kebab>` is `<feature-name>` in kebab-case, per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`. If `<kebab>` is longer than 50 characters, cut it at the last `-` before the 50th character.
 
-- **From a ticket** — `<folder>` = `<ticket-id>-<kebab>`, e.g. `PROJ-45-add-csv-export`
-- **Without a ticket** — `<folder>` = `<repo>-<code>-<kebab>`, e.g. `some-web-k3f9-user-login`
+- **From a ticket** — `<folder>` = `<ticket-id>-<kebab>`
+- **Without a ticket** — `<folder>` = `<repo>-<code>-<kebab>`
 
 ### 4d. Create the folder
 Create the following structure at `.ptah/specs/<folder>/`:
@@ -190,10 +184,10 @@ For a ticket spec, include the `Source:` line linking back to the ticket. Omit i
 
 ## Step 6 — Append to LOGS.md
 
-After writing SPEC.md, append a `/spec completed` entry to `.ptah/specs/<folder>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`
+Append a `/spec completed` entry to `.ptah/specs/<folder>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`.
 
 ---
 
 ## Step 7 — Hand off to user
 
-After writing both files, hand off to the user per `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`. For a spec without a ticket, include the inferred name among the key facts, e.g. `Feature: user login`.
+Hand off to the user per `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`. For a spec without a ticket, include the inferred name among the key facts, e.g. `Feature: user login`.
