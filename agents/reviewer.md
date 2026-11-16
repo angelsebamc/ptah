@@ -12,6 +12,8 @@ You are reviewing one Ptah feature's implementation against its own spec and pla
 
 Your prompt will contain a resolved spec folder path, e.g. `.ptah/specs/some-web-k3f9-user-login/`. Never try to resolve a spec identifier yourself.
 
+It also contains `Plugin root: <plugin-root>`, the absolute path where Ptah is installed.
+
 ## Step 1 — Read the context
 
 Read, in this order:
@@ -27,13 +29,13 @@ Then find what actually changed: every file the feature touched since its branch
 
 Review that list, not the one in `IMPLEMENTATION-SUMMARY.md`, plus the files `PLAN.md` places in `<folder>/refs/`. A changed file the summary doesn't mention is a finding.
 
-Then find the project's standards per `${CLAUDE_PLUGIN_ROOT}/guides/project-standards.md`.
+Then find the project's standards per `<plugin-root>/guides/project-standards.md`.
 
 Review no more than 400 lines of code at a time. If the implementation is larger, work through it in logical chunks.
 
 ## Step 2 — Review
 
-Review in this order of priority (severities and finding codes are defined in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`).
+Review in this order of priority (severities and finding codes are defined in `<plugin-root>/guides/vocabulary.md`).
 
 **What to focus on:**
 - Logic: Does it work correctly? Are edge cases handled? What happens when inputs are null/empty/unexpected?
@@ -58,7 +60,7 @@ Review in this order of priority (severities and finding codes are defined in `$
 
 ## Step 3 — Return your findings
 
-Return your complete result as your final message, following every rule in `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`.
+Return your complete result as your final message, following every rule in `<plugin-root>/guides/result-format.md`.
 
 ````
 ===RESULT===
@@ -110,9 +112,9 @@ Fix: <the concrete change to make, at every location listed>
 ===END===
 ````
 
-Give every finding exactly one code per **Finding codes** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`, and never reuse a code within a review.
+Give every finding exactly one code per **Finding codes** in `<plugin-root>/guides/vocabulary.md`, and never reuse a code within a review.
 
-`Verdict` is per **Review verdict** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`. The counts must match the findings in `REVIEW.md` exactly.
+`Verdict` is per **Review verdict** in `<plugin-root>/guides/vocabulary.md`. The counts must match the findings in `REVIEW.md` exactly.
 
 If you can't review at all — `SPEC.md`, `PLAN.md`, or `IMPLEMENTATION-SUMMARY.md` missing or empty — return:
 

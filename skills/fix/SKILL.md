@@ -9,15 +9,15 @@ disable-model-invocation: true
 
 Read review findings and fix all blocker and major issues. Record what was changed next to the findings.
 
-`RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
+`RULES.md` is `../../RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
 ## Step 1 — Parse command arguments
 
-The command takes one source — an optional positional spec identifier (see `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`) — then optional finding codes and flags.
+The command takes one source — an optional positional spec identifier (see `../../guides/spec-identifiers.md`) — then optional finding codes and flags.
 
 - If the first positional is shaped like a finding code, or a comma-separated list of them, the spec identifier was omitted and every positional is a finding code. Otherwise the first positional is the spec identifier and every positional after it is a finding code.
 - Codes are separated by commas, spaces, or both — `n1,n2`, `n1 n2`, and `n1, n2` are the same. Match codes case-insensitively everywhere, and drop duplicates.
-- `-a`, `-p`, `-i` pick the mode for this run: `auto`, `plan`, `interactive`, per **Fix mode** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`.
+- `-a`, `-p`, `-i` pick the mode for this run: `auto`, `plan`, `interactive`, per **Fix mode** in `../../guides/vocabulary.md`.
 
 Examples:
 - `/fix k3f9 S1 -p` — also fixes suggestion S1, in plan mode
@@ -43,17 +43,17 @@ Determine the effective mode and scope for this run. Precedence is **flag > `com
 
 ### Load Ptah config
 
-Check the config per **Required keys** in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
+Check the config per **Required keys** in `../../guides/config.md`.
 
 ### Compute in-scope findings
-- In scope: each severity's `fix` default in **Finding severity** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md` (`include_minor` is `commands.fix.include_minor`), plus every finding the user names by code, as an argument or in a directive. Codes add to that scope, never narrow it.
+- In scope: each severity's `fix` default in **Finding severity** in `../../guides/vocabulary.md` (`include_minor` is `commands.fix.include_minor`), plus every finding the user names by code, as an argument or in a directive. Codes add to that scope, never narrow it.
 - Everything else is deferred and listed under **Deferred**
 
 ---
 
 ## Step 3 — Resolve the spec and read context
 
-Resolve `<spec-id>` per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`.
+Resolve `<spec-id>` per `../../guides/spec-identifiers.md`.
 
 Read:
 
@@ -69,7 +69,7 @@ Check every code from the command arguments against the findings being fixed. A 
 
 > "`<code>` isn't a finding in `REVIEW.md` for `<id>`. Findings: `<codes>`."
 
-Then find the project's standards per `${CLAUDE_PLUGIN_ROOT}/guides/project-standards.md`, reading only the parts that apply to the findings being fixed. Follow them, and cite a standard that shaped a fix on that finding's Fix Summary line.
+Then find the project's standards per `../../guides/project-standards.md`, reading only the parts that apply to the findings being fixed. Follow them, and cite a standard that shaped a fix on that finding's Fix Summary line.
 
 ---
 
@@ -148,7 +148,7 @@ Each of these is a **Stop and ask** from `RULES.md`, even in `auto`:
 - A fix needs a design change
 - A fix adds a dependency `PLAN.md` doesn't list
 - A project standard conflicts with a finding's `Fix:` line
-- A hook blocks a tool call and complying needs a person. Handle every hook per `${CLAUDE_PLUGIN_ROOT}/guides/project-hooks.md`
+- A hook blocks a tool call and complying needs a person. Handle every hook per `../../guides/project-hooks.md`
 
 ---
 
@@ -194,13 +194,13 @@ Update `SPEC.md`, `PLAN.md` and `IMPLEMENTATION-SUMMARY.md` per **Artifact owner
 
 ### 6c. LOGS.md entry
 
-Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`, with `Next step:` per **Fix next step** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`.
+Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `../../guides/logs-format.md`, with `Next step:` per **Fix next step** in `../../guides/vocabulary.md`.
 
 ---
 
 ## Step 7 — Hand off to user
 
-Hand off per `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`.
+Hand off per `../../guides/result-format.md`.
 
 ```
 /fix <id> completed

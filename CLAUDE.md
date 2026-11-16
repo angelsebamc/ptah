@@ -21,8 +21,8 @@ The principles in `README.md` → **Principles** bind every edit. Building the p
 
 ## Claude Code constraints
 
-- `${CLAUDE_PLUGIN_ROOT}` is expanded in skill and agent content, not in files read at runtime such as `RULES.md` and the guides. The agent resolves those links against the expanded path it read the file from.
-- Keep Claude Code specifics confined to frontmatter, `${CLAUDE_PLUGIN_ROOT}`, and `$ARGUMENTS`, so the prompt bodies stay portable to other harnesses.
+- **No `${CLAUDE_PLUGIN_ROOT}`.** Skills reference plugin files as `../../` from their own directory, which the harness tells the model when it loads a skill. Agents aren't told where they live, so they get the plugin root in their prompt, per `guides/delegated-work.md`. `RULES.md` and the guides link with paths relative to themselves.
+- Keep Claude Code specifics confined to frontmatter and `$ARGUMENTS`, so the prompt bodies stay portable to other harnesses.
 
 ## Editing conventions
 
