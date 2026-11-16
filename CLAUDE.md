@@ -1,6 +1,6 @@
 ## What this is
 
-Ptah is a Claude Code plugin. The repo has no application code and no build, lint, or test tooling — it's Markdown prompts only. Editing Ptah means editing the instructions an agent follows. This repo does not use Ptah on itself.
+Ptah is a Claude Code plugin. The repo has no application code and no build, lint, or test tooling — it's Markdown prompts only. This repo does not use Ptah on itself.
 
 `README.md` lists the commands. `RULES.md` holds the cross-cutting rules and its **Path conventions** maps the plugin's files; each guide in `guides/` opens with what it defines.
 
@@ -13,21 +13,20 @@ Ptah is a Claude Code plugin. The repo has no application code and no build, lin
 
 The principles in `README.md` → **Principles** bind every edit. Building the prompts also follows these:
 
-- **Every skill sets `disable-model-invocation: true`** and ends with a hand-off naming the next command.
+- **Every skill sets `disable-model-invocation: true`.**
 - **Skill or subagent.** A new command dispatches a subagent when it must be isolated from the conversation (the reviewer), or when it explores heavily enough to fill the main context (the architect, the implementer). It runs as a skill in the main session when it needs the conversation or the user (questions, approvals, things that never reached `LOGS.md`), or when it mostly reads a few files in the spec folder.
-- **A new responsibility is a new command**, not an extra step in an existing one.
 - **Judgment for the agent, determinism for tooling.** Deterministic values (spec codes, `LOGS.md` entry ids and timestamps) come from shell commands pinned in the prompts, never from the model.
 - **Project-agnostic.** No project names, ticket prefixes, or machine paths in prompts. Project-specific values belong in `.ptah/ptah.yml` or the target project's own `CLAUDE.md`.
 
 ## Claude Code constraints
 
-- **No `${CLAUDE_PLUGIN_ROOT}`.** Skills reference plugin files as `../../` from their own directory, which the harness tells the model when it loads a skill. Agents aren't told where they live, so they get the plugin root in their prompt, per `guides/delegated-work.md`. `RULES.md` and the guides link with paths relative to themselves.
-- Keep Claude Code specifics confined to frontmatter and `$ARGUMENTS`, so the prompt bodies stay portable to other harnesses.
+- **Plugin paths.** Skills reference plugin files as `../../` from their own directory, which the harness tells the model when it loads a skill. Agents aren't told where they live, so they get the plugin root in their prompt, per `guides/delegated-work.md`. `RULES.md` and the guides link with paths relative to themselves.
+- Keep Claude Code specifics confined to frontmatter, `$ARGUMENTS`, and the lines that dispatch a subagent, so the prompt bodies stay portable to other harnesses.
 
 ## Editing conventions
 
 - **Change a field, status, or value everywhere at once.** Update `vocabulary.md` first, then `logs-format.md` (per-command fields), `result-format.md` (per-command table), the agent's result template, and the dispatching skill.
-- **Define once, reference by name.** A fixed value lives only in `vocabulary.md`; a cross-cutting rule lives only in `RULES.md`; a paragraph two skills need goes in `RULES.md` or a guide. Skills point to sections by name ("per **Stop and ask** in `RULES.md`") instead of restating them. Renaming a `RULES.md` section means grepping `skills/` and `agents/` for it.
+- **Define once, reference by name.** A fixed value lives only in `vocabulary.md`; a cross-cutting rule lives only in `RULES.md`; a paragraph two skills need goes in `RULES.md` or a guide. Skills point to sections by name ("per **Stop and ask** in `RULES.md`") instead of restating them. Renaming a `RULES.md` section means grepping `skills/` and `guides/` for it.
 - **Agents don't read `RULES.md`.** What an agent needs goes in its own prompt or a guide it reads.
 - **State current facts only.** Prompts and guides describe how Ptah works now — no "previously", "renamed from", or design history.
 
