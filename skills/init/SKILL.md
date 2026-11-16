@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Configure Ptah for this project.
 
-`RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
+`RULES.md` is `../../RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
 ## Step 1 — Read the current config
 
@@ -26,7 +26,7 @@ For each question, show the current value when set. An empty reply keeps it. Whe
 1. **Fix mode**
    > "How should `/ptah:fix` apply review findings? A flag overrides this for one run."
 
-   List each value in **Fix mode** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md` with its behavior, and mark `plan` as recommended.
+   List each value in **Fix mode** in `../../guides/vocabulary.md` with its behavior, and mark `plan` as recommended.
 
 2. **Include minor**
    > "Should `/ptah:fix` also fix minor findings? (yes / no — recommended no)"

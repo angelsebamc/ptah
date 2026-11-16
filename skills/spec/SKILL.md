@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 If the spec comes from a ticket (e.g. JIRA, Linear, GitHub), pre-fill parts of it through the project's ticket server.
 
-`RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
+`RULES.md` is `../../RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
 ## Step 1 — Parse command arguments
 
@@ -31,9 +31,9 @@ Examples:
 
 ## Step 2 — Check the config and fetch the ticket (if any)
 
-Check the config per **Required keys** in `${CLAUDE_PLUGIN_ROOT}/guides/config.md`.
+Check the config per **Required keys** in `../../guides/config.md`.
 
-For a spec without a ticket, get `<repo>` now, per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`, so a missing git repository stops the command before the conversation.
+For a spec without a ticket, get `<repo>` now, per `../../guides/spec-identifiers.md`, so a missing git repository stops the command before the conversation.
 
 For a ticket spec:
 
@@ -106,7 +106,7 @@ For any question whose answer is pre-filled from the ticket, present the pre-fil
 
 ## Step 4 — Create the folder structure
 
-`<id>` is the spec's display id per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`.
+`<id>` is the spec's display id per `../../guides/spec-identifiers.md`.
 
 ### 4a. Get the id
 - **From a ticket** — no code; go to 4b.
@@ -129,7 +129,7 @@ For any question whose answer is pre-filled from the ticket, present the pre-fil
 - **Without a ticket** — infer `<feature-name>` from the Description and Problem answers: a short phrase naming what the feature does, e.g. `user login`. Don't ask the user for it.
 
 ### 4c. Build the folder name
-`<kebab>` is `<feature-name>` in kebab-case, per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`. If `<kebab>` is longer than 50 characters, cut it at the last `-` before the 50th character.
+`<kebab>` is `<feature-name>` in kebab-case, per `../../guides/spec-identifiers.md`. If `<kebab>` is longer than 50 characters, cut it at the last `-` before the 50th character.
 
 - **From a ticket** — `<folder>` = `<ticket-id>-<kebab>`
 - **Without a ticket** — `<folder>` = `<repo>-<code>-<kebab>`
@@ -184,10 +184,10 @@ For a ticket spec, include the `Source:` line linking back to the ticket. Omit i
 
 ## Step 6 — Append to LOGS.md
 
-Append a `/spec completed` entry to `.ptah/specs/<folder>/LOGS.md` per `${CLAUDE_PLUGIN_ROOT}/guides/logs-format.md`.
+Append a `/spec completed` entry to `.ptah/specs/<folder>/LOGS.md` per `../../guides/logs-format.md`.
 
 ---
 
 ## Step 7 — Hand off to user
 
-Hand off to the user per `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`. For a spec without a ticket, include the inferred name among the key facts, e.g. `Feature: user login`.
+Hand off to the user per `../../guides/result-format.md`. For a spec without a ticket, include the inferred name among the key facts, e.g. `Feature: user login`.

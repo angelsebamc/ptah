@@ -9,13 +9,13 @@ disable-model-invocation: true
 
 Write the technical plan for a spec in `PLAN.md`.
 
-`RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
+`RULES.md` is `../../RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
-`/plan` is a thin dispatcher: the planning happens in the `architect` subagent's own context. See `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`.
+`/plan` is a thin dispatcher: the planning happens in the `architect` subagent's own context. See `../../guides/delegated-work.md`.
 
 ## Step 1 — Resolve the spec
 
-Resolve `<spec-id>` per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`.
+Resolve `<spec-id>` per `../../guides/spec-identifiers.md`.
 
 If `.ptah/specs/<feature-name>/SPEC.md` is empty or missing, stop and tell the user:
 
@@ -25,17 +25,18 @@ If `.ptah/specs/<feature-name>/SPEC.md` is empty or missing, stop and tell the u
 
 ## Step 2 — Dispatch to the architect subagent
 
-Invoke the `ptah:architect` subagent. Its prompt must contain **only**:
+Invoke the `ptah:architect` subagent. Its prompt must contain **only** these lines, with `<plugin-root>` per `../../guides/delegated-work.md`:
 
 ```
 Plan the Ptah spec at .ptah/specs/<feature-name>/
+Plugin root: <plugin-root>
 ```
 
 ---
 
 ## Step 3 — Handle the result
 
-Per **Handling the result** in `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`:
+Per **Handling the result** in `../../guides/delegated-work.md`:
 
 - **`complete`** — write the `===PLAN.md===` block to `.ptah/specs/<feature-name>/PLAN.md`. `Next step: /ptah:implement <id>`.
   - If `Open questions` isn't `none`, after logging `/plan completed`, ask PLAN.md's **Open questions** one at a time in order. After each answer, update `PLAN.md` to match, per **Artifact ownership** in `RULES.md`.

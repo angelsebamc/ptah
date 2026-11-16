@@ -9,13 +9,13 @@ disable-model-invocation: true
 
 Orient the agent on a spec's current state at the start of a new session.
 
-`RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
+`RULES.md` is `../../RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
 ## Step 1 — Locate the spec
 
 `<spec-id>` = `$ARGUMENTS[0]`, if given.
 
-Resolve `<spec-id>` per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`.
+Resolve `<spec-id>` per `../../guides/spec-identifiers.md`.
 
 ---
 
@@ -71,7 +71,7 @@ Base it on the last command entry's `Next step:`, in one sentence. Examples:
 - `"Code review done with 2 blockers, 1 major. Next step: /ptah:fix k3f9."`
 - `"Spec written. Next step: /ptah:plan k3f9."`
 
-If the `Next step:` starts with `none`, say nothing is open and name the optional command, if any, per **Next step** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`. E.g. `"Review clean, nothing open. Optional: /ptah:fix k3f9 N1,N2."`
+If the `Next step:` starts with `none`, say nothing is open and name the optional command, if any, per **Next step** in `../../guides/vocabulary.md`. E.g. `"Review clean, nothing open. Optional: /ptah:fix k3f9 N1,N2."`
 
 If the last command entry has `Manual steps:`, name them before the next command, e.g. `"Implementation finished. Restart the local API, then /ptah:review k3f9."`
 

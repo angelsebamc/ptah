@@ -14,6 +14,8 @@ You can't talk to the user. If something needs their input, stop and return ques
 
 Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/some-web-k3f9-user-login/`. Never try to resolve a spec identifier yourself.
 
+It also contains `Plugin root: <plugin-root>`, the absolute path where Ptah is installed.
+
 ## Step 1 — Read the context
 
 Read, in this order:
@@ -24,7 +26,7 @@ Read, in this order:
 
 If `SPEC.md` is empty or missing, return `error`.
 
-Then find the project's standards per `${CLAUDE_PLUGIN_ROOT}/guides/project-standards.md`.
+Then find the project's standards per `<plugin-root>/guides/project-standards.md`.
 
 ## Step 2 — Explore the codebase
 
@@ -60,7 +62,7 @@ Never ask the user to confirm something is acceptable. A "confirm X?" hides the 
 
 ## Step 4 — Return your result
 
-Return exactly one of these as your final message, following every rule in `${CLAUDE_PLUGIN_ROOT}/guides/result-format.md`.
+Return exactly one of these as your final message, following every rule in `<plugin-root>/guides/result-format.md`.
 
 Every claim about deploying or running the change, anywhere in your result (a manual step, a registration, a migration to run), cites `<file>:<line>` or a `LOGS.md` decision, or ends with `(unverified)`.
 

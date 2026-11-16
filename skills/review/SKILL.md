@@ -9,13 +9,13 @@ disable-model-invocation: true
 
 Review the implemented code against the plan, the spec, and the project's own standards.
 
-`RULES.md` is `${CLAUDE_PLUGIN_ROOT}/RULES.md`. Read it before Step 1 unless its full text is already in your context.
+`RULES.md` is `../../RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
-`/review` is a thin dispatcher: the review happens in the isolated `reviewer` subagent's own context. See `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`. Passing it anything beyond the folder path defeats the point of isolating it.
+`/review` is a thin dispatcher: the review happens in the isolated `reviewer` subagent's own context. See `../../guides/delegated-work.md`. Passing it anything beyond Step 2's prompt defeats the point of isolating it.
 
 ## Step 1 — Resolve the spec
 
-Resolve `<spec-id>` per `${CLAUDE_PLUGIN_ROOT}/guides/spec-identifiers.md`.
+Resolve `<spec-id>` per `../../guides/spec-identifiers.md`.
 
 If `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md` is empty or missing, stop and tell the user:
 
@@ -25,16 +25,17 @@ If `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md` is empty or missing, s
 
 ## Step 2 — Dispatch to the reviewer subagent
 
-Invoke the `ptah:reviewer` subagent. Its prompt must contain **only**:
+Invoke the `ptah:reviewer` subagent. Its prompt must contain **only** these lines, with `<plugin-root>` per `../../guides/delegated-work.md`:
 
 ```
 Review the Ptah spec at .ptah/specs/<feature-name>/
+Plugin root: <plugin-root>
 ```
 
 ---
 
 ## Step 3 — Handle the result
 
-Per **Handling the result** in `${CLAUDE_PLUGIN_ROOT}/guides/delegated-work.md`.
+Per **Handling the result** in `../../guides/delegated-work.md`.
 
-- **`complete`** — write the `===REVIEW.md===` block to `.ptah/specs/<feature-name>/REVIEW.md`. Take `Next step:` per **Review verdict** in `${CLAUDE_PLUGIN_ROOT}/guides/vocabulary.md`.
+- **`complete`** — write the `===REVIEW.md===` block to `.ptah/specs/<feature-name>/REVIEW.md`. Take `Next step:` per **Review verdict** in `../../guides/vocabulary.md`.

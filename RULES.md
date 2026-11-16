@@ -84,14 +84,14 @@ Every final report follows [`the result format`](./guides/result-format.md), in 
 
 Two roots, never mixed.
 
-**Plugin files** ship with Ptah:
+**Plugin files** ship with Ptah, relative to the plugin root:
 
 | Location | Purpose |
 |----------|---------|
-| `${CLAUDE_PLUGIN_ROOT}/RULES.md` | This file |
-| `${CLAUDE_PLUGIN_ROOT}/guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md`, `spec-identifiers.md`, `delegated-work.md`, `project-standards.md`, `project-hooks.md` |
-| `${CLAUDE_PLUGIN_ROOT}/skills/<command>/` | One skill per command, invoked as `/ptah:<command>` |
-| `${CLAUDE_PLUGIN_ROOT}/agents/` | Subagents, dispatched as `ptah:architect`, `ptah:implementer`, `ptah:reviewer`. See [`delegated work`](./guides/delegated-work.md) |
+| `RULES.md` | This file |
+| `guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md`, `spec-identifiers.md`, `delegated-work.md`, `project-standards.md`, `project-hooks.md` |
+| `skills/<command>/` | One skill per command, invoked as `/ptah:<command>` |
+| `agents/` | Subagents, dispatched as `ptah:architect`, `ptah:implementer`, `ptah:reviewer`. See [`delegated work`](./guides/delegated-work.md) |
 
 **Project files** are the work product, relative to the project root (the session's working directory):
 
