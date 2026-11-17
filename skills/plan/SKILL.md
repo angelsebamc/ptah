@@ -39,6 +39,6 @@ Plugin root: <plugin-root>
 Per **Handling the result** in `../../guides/delegated-work.md`:
 
 - **`complete`** — write the `===PLAN.md===` block to `.ptah/specs/<feature-name>/PLAN.md`. `Next step: /ptah:implement <id>`.
-  - If `Open questions` isn't `none`, after logging `/plan completed`, ask PLAN.md's **Open questions** one at a time in order. After each answer, update `PLAN.md` to match, per **Artifact ownership** in `RULES.md`.
+  - If `Open questions` isn't `none`, after logging `/plan completed`, ask PLAN.md's **Open questions** in order. Then update `PLAN.md` to match each answer, per **Artifact ownership** in `RULES.md`.
   - If the user defers a question, leave it in **Open questions**, log nothing for it, and move on.
   - If `Concerns` isn't `none`, the hand-off adds a `Concerns` list of PLAN.md's **Concerns**, copied verbatim.

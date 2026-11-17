@@ -21,7 +21,7 @@ It also contains `Plugin root: <plugin-root>`, the absolute path where Ptah is i
 Read, in this order:
 
 - `<folder>/LOGS.md` — session history. If the last command entry is `/plan paused`, the change entries after it are the user's answers to your earlier questions — treat them as decided. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
-- `<folder>/SPEC.md` — the use case and acceptance criteria
+- `<folder>/SPEC.md` — the user stories, use cases and acceptance criteria
 - `<folder>/refs/` — screenshots, mockups, schema snippets
 
 If `SPEC.md` is empty or missing, return `error`.

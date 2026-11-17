@@ -1,13 +1,13 @@
 ---
 name: spec
-description: 'Starts a new Ptah feature spec: creates the spec folder (<TICKET-ID>-<slug> from a ticket, <repo>-<code>-<slug> otherwise) and fills SPEC.md through a one-question-at-a-time conversation, optionally pre-filled from a ticket through the project''s ticket server'
+description: 'Starts a new Ptah feature spec: creates the spec folder (<TICKET-ID>-<slug> from a ticket, <repo>-<code>-<slug> otherwise) and fills SPEC.md by grilling the developer in rounds of questions, looking facts up in the codebase instead of asking, optionally starting from a ticket fetched through the project''s ticket server'
 argument-hint: '[<ticket-id> | <ticket-url>]'
 disable-model-invocation: true
 ---
 
 # /spec
 
-If the spec comes from a ticket (e.g. JIRA, Linear, GitHub), pre-fill parts of it through the project's ticket server.
+If the spec comes from a ticket (e.g. JIRA, Linear, GitHub), start from it through the project's ticket server.
 
 `RULES.md` is `../../RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
@@ -52,55 +52,82 @@ If the ticket doesn't exist, stop:
 
 > "Ticket `<ticket-id>` wasn't found on `<server>`."
 
-Report back to the user what was pulled in:
+Report back to the user what the ticket settles:
 
-> "Loaded `<ticket-id>` ticket:
+> "Loaded `<ticket-id>`: <ticket title>.
 >
-> The following spec fields will be pre-filled from the ticket:
-> - Description ← ticket summary
-> - Problem ← ticket description
-> - Acceptance criteria ← ticket acceptance criteria
+> The ticket settles:
+> - <each thing it decides: what the feature is, why it matters, any acceptance criteria or flows it states>
 >
-> I'll show each one during the spec conversation so you can confirm or edit."
+> I'll treat those as decided and ask about what it leaves open."
 
 ---
 
-## Step 3 — Start the spec conversation
+## Step 3 — Grill the developer
 
-Nothing is written to disk until every question is answered.
+Grill the developer relentlessly on what the feature must do. How to build it belongs to `/ptah:plan`.
 
-Tell the user:
+### What the spec holds
 
-> "Let's build out the spec together — I'll ask you a few questions to define a solid use case before moving to design."
+The grill fills this template. Write one user story per actor and need. End each acceptance criterion with the id of the story it proves. For a ticket spec, include the `Source:` line linking back to the ticket. Omit it for a spec without a ticket.
 
-Then ask the following questions **one at a time**, in order.
+```markdown
+# SPEC — <feature-name>
 
-### For a ticket spec
-For any question whose answer is pre-filled from the ticket, present the pre-filled value and ask for confirmation:
+> **Source:** [<ticket-id>](<ticket-url>) — <ticket-title>
 
-> "From the ticket: _<mapped value>_.
->
-> Keep as-is, or rewrite?"
+## Description
+<the feature in one sentence>
 
-### Questions to ask
+## Problem
+<the problem it solves, from the user's perspective>
 
-1. **Description**
-   > "In one sentence — what is this feature?"
+## User stories
+- US1: As a <actor>, I want <need>, so that <benefit>.
 
-2. **Problem**
-   > "What problem does this solve for the user?"
+## Use cases
+<the main flow step by step (what the actor does, what the app does, the end result), then each alternate and error flow with the condition that triggers it>
 
-3. **Use case**
-   > "Walk me through the user flow step by step. What does the user do, what does the app do, what's the end result?"
+## Acceptance criteria
+- <a testable condition> (US1)
 
-4. **Acceptance criteria**
-   > "How do we know this feature is done? List the conditions that must be true for it to be considered complete."
+## References
+<the files in refs/ and what each shows, or "none">
 
-5. **References**
-   > "Are there any screenshots, mockups, or other files I should put in `refs/`? If so, describe them or share them now."
+## Out of scope
+<what the feature deliberately leaves out>
+```
 
-6. **Out of scope**
-   > "Is something explicitly NOT part of this feature?"
+### Design tree
+
+The open decisions form a **design tree**. Its branches reach every section of the spec, plus the existing features, data and APIs the feature touches; probe each flow for empty states, failures and edge cases. Ask only what changes the spec.
+
+### Facts are yours, decisions are the user's
+
+Look facts up per **Stop and ask** in `RULES.md`: read the files, or dispatch an Explore subagent for a wide search. A running lookup holds back only the questions that depend on it; ask the rest now.
+
+For a ticket spec, what the ticket settles is decided. Ask only about what it leaves open or gets wrong against the code.
+
+### Rounds
+
+Work the tree in rounds. The **frontier** is every decision whose prerequisites are settled (error flows wait on the main flow, criteria on the stories). Ask the whole frontier, then wait for the reply:
+
+```
+**1. <short title>**
+<the question, with options when there are a few clear ones>
+Recommended: <your answer, and why in a few words>
+```
+
+Word each question so "yes" accepts the recommendation. Separate rounds with `---`.
+
+Each reply moves the frontier: recompute it and ask the next round.
+
+### Done
+
+The grill is done when the frontier is empty: every branch visited, nothing in the spec silently assumed. Then:
+
+1. Check that every story has at least one acceptance criterion and every criterion proves a story. Ask about any gap as another round.
+2. Show the user a summary of the spec, and ask them to confirm or correct it.
 
 ---
 
@@ -126,7 +153,7 @@ For any question whose answer is pre-filled from the ticket, present the pre-fil
 
 ### 4b. Name the feature
 - **From a ticket** — `<feature-name>` = the ticket's title.
-- **Without a ticket** — infer `<feature-name>` from the Description and Problem answers: a short phrase naming what the feature does, e.g. `user login`. Don't ask the user for it.
+- **Without a ticket** — infer `<feature-name>` from the Description and Problem the grill settled: a short phrase naming what the feature does, e.g. `user login`. Don't ask the user for it.
 
 ### 4c. Build the folder name
 `<kebab>` is `<feature-name>` in kebab-case, per `../../guides/spec-identifiers.md`. If `<kebab>` is longer than 50 characters, cut it at the last `-` before the 50th character.
@@ -148,37 +175,7 @@ Create the following structure at `.ptah/specs/<folder>/`:
 
 ## Step 5 — Write SPEC.md
 
-Write the following to `SPEC.md`.
-
-For a ticket spec, include the `Source:` line linking back to the ticket. Omit it for a spec without a ticket.
-
-```markdown
-# SPEC — <feature-name>
-
-> **Source:** [<ticket-id>](<ticket-url>) — <ticket-title>
-
-## Description
-<one-line description>
-
-## Problem
-<why this feature matters>
-
-## Use case
-<step-by-step user flow>
-
-## Acceptance criteria
-- <criterion 1>
-- <criterion 2>
-- ...
-
-## References
-<list of files in refs/, or "none">
-
-## Out of scope
-- <item 1>
-- <item 2>
-- ...
-```
+Write the spec the user confirmed to `SPEC.md`
 
 ---
 
