@@ -28,6 +28,7 @@ The principles in `README.md` → **Principles** bind every edit. Building the p
 - **Change a field, status, or value everywhere at once.** Update `vocabulary.md` first, then `logs-format.md` (per-command fields), `result-format.md` (per-command table), the agent's result template, and the dispatching skill.
 - **Define once, reference by name.** A fixed value lives only in `vocabulary.md`; a cross-cutting rule lives only in `RULES.md`; a paragraph two skills need goes in `RULES.md` or a guide. Skills point to sections by name ("per **Stop and ask** in `RULES.md`") instead of restating them. Renaming a `RULES.md` section means grepping `skills/` and `guides/` for it.
 - **Agents don't read `RULES.md`.** What an agent needs goes in its own prompt or a guide it reads.
+- **Read top to bottom.** A step never points ahead to a later step's content. Define what a step needs before or inside it; later steps may point back.
 - **State current facts only.** Prompts and guides describe how Ptah works now — no "previously", "renamed from", or design history.
 
 ## Working on this repo
