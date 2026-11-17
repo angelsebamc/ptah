@@ -21,21 +21,21 @@ Resolve `<spec-id>` per `../../guides/spec-identifiers.md`.
 
 ## Step 2 — Read the session history
 
-Apply the **Always read LOGS.md first** rule from `RULES.md`: read the full `LOGS.md` for the resolved spec folder.
+Apply the **Always read LOGS.md first** rule from `RULES.md`: read the full `LOGS.md` for the resolved spec folder. If the folder has a `slices/` folder, also read the `LOGS.md` of every slice folder in it, and treat all the logs as one timeline, ordered by timestamp.
 
-If `LOGS.md` is empty or missing, the folder wasn't produced by `/ptah:spec`. Tell the user:
+If the spec folder's `LOGS.md` is empty or missing, the folder wasn't produced by `/ptah:spec`. Tell the user:
 
 > "Spec `<id>` has no LOGS.md at `.ptah/specs/<folder>/`. Ptah can't resume it."
 
 Then stop.
 
 Otherwise, identify:
-- **The last entry** in the file, command or change.
-- **The last command entry** (`/<command> completed | paused | failed`) and the change entries after it. These drive `Where you are:`, even when the last entry is a change entry.
+- **The last entry** of each log, command or change.
+- **The last command entry** (`/<command> completed | paused | failed`) across all the logs, the log it's in, and the change entries after it in that log. These drive `Where you are:`, even when the last entry is a change entry.
 
 ### Do not
 
-- Read any artifact
+- Read any artifact, including `SLICES.md`
 - Read anything in `refs/`
 - Read any source file, including files listed in `IMPLEMENTATION-SUMMARY.md`
 - Write or edit any file, including `LOGS.md`
@@ -46,15 +46,25 @@ Artifacts, refs and code are loaded by the workflow command that needs them.
 
 ## Step 3 — Print the summary
 
-Print exactly two lines, with a blank line between them:
+On a spec without `slices/`, print exactly two lines, with a blank line between them:
 
 ```
-Last entry: #<n> <timestamp> <type> — <what>
+Last entry: #<id> <timestamp> <type> — <what>
 
 Where you are: <one-line synthesis>
 ```
 
-`#<n>` and `<timestamp>` are the last entry's heading id and timestamp, as written. Leave out `#<n>` for an entry without an id. `<type>` and `<what>` depend on the entry:
+On a spec with `slices/`, print the last entry of each log, the spec folder's first, then each slice by its folder name, and the synthesis:
+
+```
+Last entries:
+- spec: #<id> <timestamp> <type> — <what>
+- <nn>-<slug>: #<id> <timestamp> <type> — <what>
+
+Where you are: <one-line synthesis>
+```
+
+`#<id>` and `<timestamp>` are the entry's heading id and timestamp, as written. Leave out `#<id>` for an entry without an id. `<type>` and `<what>` depend on the entry:
 
 | Last entry | `<type>` | `<what>` |
 |---|---|---|
@@ -65,11 +75,12 @@ Where you are: <one-line synthesis>
 
 ### Rules for the synthesis line
 
-Base it on the last command entry's `Next step:`, in one sentence. Examples:
+Base it on the last command entry's `Next step:`, in one sentence. When that entry is in a slice's log, name the slice. Examples:
 
 - `"Implementation finished. Next step: /ptah:review k3f9."`
 - `"Code review done with 2 blockers, 1 major. Next step: /ptah:fix k3f9."`
 - `"Spec written. Next step: /ptah:plan k3f9."`
+- `"Slice 2 reviewed and approved. Look at the result, then /ptah:accept k3f9 2."`
 
 If the `Next step:` starts with `none`, say nothing is open and name the optional command, if any, per **Next step** in `../../guides/vocabulary.md`. E.g. `"Review clean, nothing open. Optional: /ptah:fix k3f9 N1,N2."`
 

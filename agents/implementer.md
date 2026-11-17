@@ -16,21 +16,24 @@ Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/some-web-k3f
 
 It also contains `Plugin root: <plugin-root>`, the absolute path where Ptah is installed.
 
+It may contain `Slice: <slice-folder>`. Then you're implementing that one slice of a sliced spec: read `<plugin-root>/guides/slices.md` first. Your **work folder** is `<slice-folder>`; otherwise it's `<folder>`.
+
 ## What you write, and what you don't
 
 - **You write:** source code, tests, config, migrations — whatever `PLAN.md` calls for.
-- **You never write:** `LOGS.md`, `IMPLEMENTATION-SUMMARY.md`, or any other file in the spec folder, except the files `PLAN.md` places in `<folder>/refs/`.
+- **You never write:** `LOGS.md`, `IMPLEMENTATION-SUMMARY.md`, or any other file in the spec folder or a slice folder, except the files `PLAN.md` places in `<folder>/refs/`.
 - **You never** commit, push, or change git branches.
 
 ## Step 1 — Read the context
 
 Read, in this order:
 
-- `<folder>/LOGS.md` — session history. Every change entry after the last `/plan completed` is decided — the user's answers to `PLAN.md`'s open questions, and to your earlier questions after an `/implement paused`, including approved deviations. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
-- `<folder>/PLAN.md` — what to build
+- `<work folder>/LOGS.md` — session history. On a slice, the logs **Which logs to read** in `slices.md` names, as one timeline. Every change entry after the last `/plan completed` is decided — the user's answers to `PLAN.md`'s open questions, and to your earlier questions after an `/implement paused`, including approved deviations. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
+- `<work folder>/PLAN.md` — what to build. On a slice, also every section of another slice's plan it links to.
 - `<folder>/SPEC.md` — user stories, use cases and acceptance criteria
+- On a slice: `<folder>/SLICES.md` — this slice's **Delivers** and **Criteria**
 - `<folder>/refs/` — screenshots, mockups, schema snippets
-- `<folder>/IMPLEMENTATION-SUMMARY.md`, if it exists — the summary of an earlier run, for the template's **Changes after implementation**
+- `<work folder>/IMPLEMENTATION-SUMMARY.md`, if it exists — the summary of an earlier run, for the template's **Changes after implementation**
 
 If `PLAN.md` is empty or missing, return `error` (Step 5).
 
@@ -38,7 +41,7 @@ Then find the project's standards per `<plugin-root>/guides/project-standards.md
 
 ## Step 2 — Check for work in progress
 
-If the last command entry in `LOGS.md` is `/implement paused`, an earlier dispatch stopped partway. Its `Progress:` and `Files touched:` fields say what's done. Inspect those files (and `git status` / `git diff`) and continue from where it stopped — don't redo or overwrite finished work.
+If the last command entry in `<work folder>/LOGS.md` is `/implement paused`, an earlier dispatch stopped partway. Its `Progress:` and `Files touched:` fields say what's done. Inspect those files (and `git status` / `git diff`) and continue from where it stopped — don't redo or overwrite finished work.
 
 ## Step 3 — Clarify before writing code
 
@@ -116,7 +119,7 @@ Every claim about deploying or running the change, anywhere in your result (a ma
 ===END===
 ````
 
-`Files touched:` and the summary's file lists cover every dispatch for this spec so far, not just this one: the next dispatch and the review rely on them.
+`Files touched:` and the summary's file lists cover every dispatch for this spec (on a slice, for this slice) so far, not just this one: the next dispatch and the review rely on them.
 
 **Error** — you couldn't implement at all:
 

@@ -6,7 +6,7 @@ Cross-cutting rules the agent applies regardless of which command is running. Th
 
 ## Always read LOGS.md first
 
-When working on any feature, read `LOGS.md` in the relevant spec folder before doing anything else. It is the single source of truth for current state — what's been done, what was decided, what's next. Never skip it, even when "just looking" at one specific file. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
+When working on any feature, read `LOGS.md` in the relevant spec folder before doing anything else. On a sliced spec, read the logs **Which logs to read** in [`slices`](./guides/slices.md) names, as one timeline. They are the single source of truth for current state — what's been done, what was decided, what's next. Never skip them, even when "just looking" at one specific file. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
 
 ---
 
@@ -36,15 +36,15 @@ Never continue into the next command's work. Hand off and wait for the user to r
 
 ## Artifact ownership
 
-- **Living: `SPEC.md`, `PLAN.md`.** They state what should be true now. An edit rewrites the affected sections and never narrates what they replaced. A decision may cite the change entry behind it (`LOGS.md #<n>`). Every edit has a change entry whose `Impact:` names the file and the sections updated (the step's own change entry counts). Once one of `PLAN.md`'s **Open questions** is answered, remove it from there (write `none` once it's empty).
-- **Who updates living artifacts.** Any step that makes the work contradict `SPEC.md` or `PLAN.md` updates it in that step. A `scope-change` updates `SPEC.md`, and `PLAN.md` if it exists.
-- **Records: `IMPLEMENTATION-SUMMARY.md`, `REVIEW.md`.** `/implement` writes `IMPLEMENTATION-SUMMARY.md` and `/review` writes `REVIEW.md` on each pass; other commands only append to them. `/fix` appending its Fix Summary to `REVIEW.md` is such an append. `/fix` and changes between commands add each file they touch to `IMPLEMENTATION-SUMMARY.md` under **Changes after implementation** (replacing its `None`) as `` - `<path>` — <what changed> (<source>) ``, where `<source>` is `see change entry #<n>` or `fix <codes>`.
+- **Living: `SPEC.md`, `SLICES.md`, `PLAN.md`.** They state what should be true now. An edit rewrites the affected sections and never narrates what they replaced. A decision may cite the change entry behind it (`LOGS.md #<id>`). Every edit has a change entry whose `Impact:` names the file and the sections updated (the step's own change entry counts). Once one of `PLAN.md`'s **Open questions** is answered, remove it from there (write `none` once it's empty).
+- **Who updates living artifacts.** Any step that makes the work contradict `SPEC.md`, `SLICES.md` or `PLAN.md` updates it in that step. A `scope-change` updates `SPEC.md`, and `SLICES.md` and `PLAN.md` if they exist.
+- **Records: `IMPLEMENTATION-SUMMARY.md`, `REVIEW.md`.** `/implement` writes `IMPLEMENTATION-SUMMARY.md` and `/review` writes `REVIEW.md` on each pass; other commands only append to them. `/fix` appending its Fix Summary to `REVIEW.md` is such an append. `/fix` and changes between commands add each file they touch to `IMPLEMENTATION-SUMMARY.md` under **Changes after implementation** (replacing its `None`) as `` - `<path>` — <what changed> (<source>) ``, where `<source>` is `see change entry #<id>` or `fix <codes>`.
 
 ---
 
 ## Changes between commands
 
-Outside `/implement` and `/fix`, don't edit source files on your own. When the user asks for a change between commands:
+Outside `/implement` and `/fix`, don't edit source files on your own. On a sliced spec, a change belongs to the slice it changes; a change to an accepted slice first reopens it, per **Reopening** in [`slices`](./guides/slices.md). When the user asks for a change between commands:
 
 - **A change that needs planning** (a design decision, a change to the plan's architecture, work across many files), or any change before `IMPLEMENTATION-SUMMARY.md` exists: update `SPEC.md` or `PLAN.md` per **Artifact ownership**, and hand off to `/ptah:plan <id>` if there's no `PLAN.md` yet, otherwise to `/ptah:implement <id>`.
 - **Any other change**: make it in this session, update `SPEC.md` or `PLAN.md` per **Artifact ownership** if the change contradicts them, and log a change entry. Add each file it touches to `IMPLEMENTATION-SUMMARY.md` per **Artifact ownership**, citing that entry, then hand off to `/ptah:review <id>`.
@@ -53,7 +53,7 @@ Outside `/implement` and `/fix`, don't edit source files on your own. When the u
 
 ## Logging discipline
 
-While working on any spec, append **change entries** to the corresponding `LOGS.md` whenever a meaningful event happens mid-session — not just when a command completes.
+While working on any spec, append **change entries** to the corresponding `LOGS.md` whenever a meaningful event happens mid-session — not just when a command completes. On a sliced spec, that's the work folder's `LOGS.md`, per **Work folder** in [`slices`](./guides/slices.md).
 
 ### When to log
 
@@ -89,7 +89,7 @@ Two roots, never mixed.
 | Location | Purpose |
 |----------|---------|
 | `RULES.md` | This file |
-| `guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md`, `spec-identifiers.md`, `delegated-work.md`, `project-standards.md`, `project-hooks.md` |
+| `guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md`, `spec-identifiers.md`, `slices.md`, `delegated-work.md`, `project-standards.md`, `project-hooks.md` |
 | `skills/<command>/` | One skill per command, invoked as `/ptah:<command>` |
 | `agents/` | Subagents, dispatched as `ptah:architect`, `ptah:implementer`, `ptah:reviewer`. See [`delegated work`](./guides/delegated-work.md) |
 
@@ -99,3 +99,4 @@ Two roots, never mixed.
 |----------|---------|
 | `.ptah/ptah.yml` | Project config, created by `/ptah:init`. Every key is documented in [`config`](./guides/config.md) |
 | `.ptah/specs/<TICKET-ID>-<slug>/`, `.ptah/specs/<repo>-<code>-<slug>/` | Per-feature work product (created by `/ptah:spec`) |
+| `.ptah/specs/<spec>/SLICES.md`, `.ptah/specs/<spec>/slices/<nn>-<slug>/` | A sliced spec's slice list (`/ptah:slice`) and per-slice work product (`/ptah:plan` creates the folder). See [`slices`](./guides/slices.md) |

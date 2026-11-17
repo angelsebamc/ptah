@@ -31,10 +31,12 @@ Run these inside Claude Code, in your project:
 |---------|--------------|--------|
 | `/ptah:init` | One-time setup: fix defaults and your ticket server (optional) | `.ptah/ptah.yml` |
 | `/ptah:spec [ticket]` | Grills you about the feature, looking facts up in the code, then writes the spec. Pass a ticket id or URL to start from it. | `SPEC.md` |
+| `/ptah:slice` | Splits a large spec into vertical slices, with you (optional) | `SLICES.md` |
 | `/ptah:plan` | Writes the technical plan | `PLAN.md` |
 | `/ptah:implement` | Writes the code from the plan | code + `IMPLEMENTATION-SUMMARY.md` |
 | `/ptah:review` | Reviews the code in a fresh context | `REVIEW.md` |
 | `/ptah:fix` | Fixes the review findings, then run `/ptah:review` again (optional after an `approved` review) | Fix Summary in `REVIEW.md` |
+| `/ptah:accept` | Accepts a slice once you've looked at the result, and commits it | a commit |
 | `/ptah:resume` | Shows where a spec stands | nothing |
 
 When a review comes back `approved`, the work is ready for a PR.
@@ -42,6 +44,10 @@ When a review comes back `approved`, the work is ready for a PR.
 You can leave out the spec id: Ptah takes it from your git branch, or asks you to pick one. If you're not on the spec's branch, Ptah offers to switch to it, or to create it when it doesn't exist yet.
 
 Everything that happens is logged in the spec's `LOGS.md`. Starting a new session? Run `/ptah:resume`.
+
+### Slices
+
+For a large feature, run `/ptah:slice` after `/ptah:spec` to split the spec into vertical slices, each a behavior that works end to end. Each slice then runs `/ptah:plan` → `/ptah:implement` → `/ptah:review` → `/ptah:fix` → `/ptah:accept`, which commits it. Pass the slice number after the spec id (`/ptah:plan k3f9 2`), or leave it out to take the next ready slice. Once every slice is accepted, `/ptah:review` reviews the whole feature, and an `approved` final review means it's ready for a PR.
 
 ## Principles
 

@@ -29,7 +29,7 @@ Commands refer to the resolved folder as `<feature-name>`.
 A command that takes a `<spec-id>` and gets none picks the spec in this order, stopping at the first that gives one:
 
 1. **The git branch.** Take the part of `git branch --show-current` after the last `/`. It names a spec when, case-insensitive, it is the spec's id — `<repo>-<code>` for a spec without a ticket, the ticket id for a ticket spec — or starts with that id followed by `-`. E.g. `user/PROJ-45-csv-export` names `PROJ-45-add-csv-export`; `PROJ-4-fix` doesn't. If more than one spec matches, stop, list them, and ask for the full folder name.
-2. **This session's last hand-off.** Take the `<id>` from the first line of the most recent Ptah hand-off in this conversation — `/<command> <id> <status>`, e.g. `/review PROJ-45 completed` — and use it as `<spec-id>`.
+2. **This session's last hand-off.** Take the `<id>` from the first line of the most recent Ptah hand-off in this conversation — `/<command> <id> <status>`, e.g. `/review PROJ-45 completed` — and use it as `<spec-id>`. A slice number after it (`/review PROJ-45 2 completed`) isn't part of the id.
 3. **The user picks.** Ask, listing every spec in `.ptah/specs/` by its display id and the rest of its folder name — specs without a ticket first, then ticket specs — and wait for the reply:
    > "Which spec? Reply with its id.
    >

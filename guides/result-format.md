@@ -79,6 +79,8 @@ Artifact: `<path to the artifact the user should review>`
 Next: <`/<next-command> <id>`, or what the user needs to do>
 ```
 
+On a slice, `<id>` carries the slice number, per **Slices in hand-offs** in [`slices.md`](./slices.md).
+
 A command's skill may name a list for its hand-off. It goes after the key facts and before `Next:`, one line per item:
 
 ```

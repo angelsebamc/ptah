@@ -1,6 +1,6 @@
 # Delegated work
 
-- **The prompt is the folder path and the plugin root, nothing else.** The subagent reads `SPEC.md`, `PLAN.md`, `LOGS.md`, `refs/`. The dispatcher never summarizes the conversation or explains anything on the user's behalf.
+- **The prompt is the folder path and the plugin root, nothing else**, plus a `Slice:` line with the slice folder's path when the command works on a slice ([`slices.md`](./slices.md)). The subagent reads `SPEC.md`, `PLAN.md`, `LOGS.md`, `refs/`, and on a sliced spec `SLICES.md` and the slice folders. The dispatcher never summarizes the conversation or explains anything on the user's behalf.
 - **The plugin root** is the absolute path of `../..`, resolved from the dispatching skill's directory. Nothing else tells the subagent where Ptah is installed.
 
 Subagents can't talk to the user, so **Stop and ask** in [`RULES.md`](../RULES.md) becomes a loop:
@@ -16,7 +16,7 @@ If the user can't answer a question yet because it needs something outside Ptah,
 
 First check the subagent's result against every rule in [`the result format`](./result-format.md).
 
-- **`complete`** — write the artifact block verbatim to the spec folder, then append `/<command> completed` per [`the logs format`](./logs-format.md), copying the result's fields and adding `Next step:`.
+- **`complete`** — write the artifact block verbatim to the work folder ([`slices.md`](./slices.md)), then append `/<command> completed` per [`the logs format`](./logs-format.md), copying the result's fields and adding `Next step:`.
 - **`needs-input`** — run the loop above: append `/<command> paused` copying the result's fields verbatim, ask the `### Questions` in the order returned (reword if it reads better, but never answer, soften, or drop one, and name who does each thing: you or the agent), log each answer, then re-dispatch.
 - **`error`, or a malformed result** — write no artifact, append `/<command> failed`, and hand off as failed. If the result was malformed, offer to show the raw response.
 

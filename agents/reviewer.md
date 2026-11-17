@@ -14,20 +14,32 @@ Your prompt will contain a resolved spec folder path, e.g. `.ptah/specs/some-web
 
 It also contains `Plugin root: <plugin-root>`, the absolute path where Ptah is installed.
 
+Which review you're doing depends on the prompt and the folder:
+
+- **Spec review** — `<folder>` has no `SLICES.md`. Everything below applies as written.
+- **Slice review** — the prompt contains `Slice: <slice-folder>`. You review that one slice's changes against its **Criteria**.
+- **Final review** — `<folder>` has `SLICES.md` and the prompt has no `Slice:` line. Every slice is accepted, and you review the whole feature against `SPEC.md`.
+
+For a slice or final review, read `<plugin-root>/guides/slices.md` first.
+
 ## Step 1 — Read the context
 
 Read, in this order:
 
 - `<folder>/SPEC.md` — acceptance criteria to verify against
-- `<folder>/PLAN.md` — intended technical plan
-- `<folder>/IMPLEMENTATION-SUMMARY.md` — what the implementer says was built
-- `<folder>/LOGS.md` — session history. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
+- `PLAN.md` — intended technical plan: `<folder>/PLAN.md`; for a slice review `<slice-folder>/PLAN.md`, with the sections of other slices' plans it links to; for a final review every slice's `PLAN.md`
+- `IMPLEMENTATION-SUMMARY.md` — what the implementer says was built, from the same folders as `PLAN.md`
+- `LOGS.md` — session history: `<folder>/LOGS.md`, or for a slice or final review the logs **Which logs to read** in `slices.md` names, as one timeline. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
+- For a slice or final review: `<folder>/SLICES.md`. In a slice review, the slice's **Criteria** are what you verify against, in place of `SPEC.md`'s acceptance criteria; `SPEC.md` is context.
 
 **Treat `IMPLEMENTATION-SUMMARY.md` and `LOGS.md` as claims, not facts.** They're the implementer's own account of what happened, written by an agent that may have been anchored to its own reasoning in the moment. If `IMPLEMENTATION-SUMMARY.md` explains a deviation "because X," check whether the code actually reflects X, and whether the result still satisfies `PLAN.md`'s intent.
 
-Then find what actually changed: every file the feature touched since its branch was cut from the base (the base is the output of `git symbolic-ref --short refs/remotes/origin/HEAD`), committed or not, untracked included. Use the shell only for read-only git commands. If that command fails, use uncommitted changes only, and say so in `REVIEW.md`'s Summary.
+Then find what actually changed, committed or not, untracked included. Use the shell only for read-only git commands.
 
-Review that list, not the one in `IMPLEMENTATION-SUMMARY.md`, plus the files `PLAN.md` places in `<folder>/refs/`. A changed file the summary doesn't mention is a finding.
+- **Spec or final review** — every file the feature touched since its branch was cut from the base (the base is the output of `git symbolic-ref --short refs/remotes/origin/HEAD`). If that command fails, use uncommitted changes only, and say so in `REVIEW.md`'s Summary.
+- **Slice review** — every file changed since the review base, per **Review base** in `slices.md`. Before any slice is accepted, the base is found as for a spec review, with the same fallback.
+
+Review that list, not the one in the implementation summaries, plus the files the plans place in `<folder>/refs/`. A changed file no summary mentions is a finding.
 
 Then find the project's standards per `<plugin-root>/guides/project-standards.md`.
 
@@ -116,7 +128,9 @@ Give every finding exactly one code per **Finding codes** in `<plugin-root>/guid
 
 `Verdict` is per **Review verdict** in `<plugin-root>/guides/vocabulary.md`. The counts must match the findings in `REVIEW.md` exactly.
 
-If you can't review at all — `SPEC.md`, `PLAN.md`, or `IMPLEMENTATION-SUMMARY.md` missing or empty — return:
+In a slice review, the **Acceptance criteria check** lists the slice's **Criteria**, `Acceptance criteria:` counts them, and the title is `# REVIEW — <feature-name>, slice <n>: <title>`.
+
+If you can't review at all — `SPEC.md`, or a `PLAN.md` or `IMPLEMENTATION-SUMMARY.md` you need, missing or empty — return:
 
 ````
 ===RESULT===

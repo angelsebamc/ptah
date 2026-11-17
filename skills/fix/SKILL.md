@@ -1,7 +1,7 @@
 ---
 name: fix
 description: 'Applies findings from a Ptah REVIEW.md in auto, plan, or interactive mode, lets the user steer or pull in findings by code, and appends a Fix Summary.'
-argument-hint: '[<spec-id>] [codes…] [-a | -p | -i]'
+argument-hint: '[<spec-id>] [<slice>] [codes…] [-a | -p | -i]'
 disable-model-invocation: true
 ---
 
@@ -13,17 +13,21 @@ Read review findings and fix all blocker and major issues. Record what was chang
 
 ## Step 1 — Parse command arguments
 
-The command takes one source — an optional positional spec identifier (see `../../guides/spec-identifiers.md`) — then optional finding codes and flags.
+The command takes an optional positional spec identifier (see `../../guides/spec-identifiers.md`), then an optional slice number (one or two digits, per **Slice number argument** in `../../guides/slices.md`), then optional finding codes and flags.
 
-- If the first positional is shaped like a finding code, or a comma-separated list of them, the spec identifier was omitted and every positional is a finding code. Otherwise the first positional is the spec identifier and every positional after it is a finding code.
+- If the first positional is shaped like a finding code, or a comma-separated list of them, the spec identifier and slice number were omitted and every positional is a finding code.
+- Otherwise, if it is a slice number, the spec identifier was omitted.
+- Otherwise it is the spec identifier, and the positional after it is the slice number if it has one or two digits.
+- Every positional after those is a finding code.
 - Codes are separated by commas, spaces, or both — `n1,n2`, `n1 n2`, and `n1, n2` are the same. Match codes case-insensitively everywhere, and drop duplicates.
 - `-a`, `-p`, `-i` pick the mode for this run: `auto`, `plan`, `interactive`, per **Fix mode** in `../../guides/vocabulary.md`.
 
 Examples:
 - `/fix k3f9 S1 -p` — also fixes suggestion S1, in plan mode
+- `/fix k3f9 2 N1 -p` — fixes slice 2's review, also minor N1, in plan mode
 - `/fix n1,n2` — the spec comes from the branch or this session; also fixes minors N1 and N2
 
-A positional after the spec identifier that isn't shaped like a code (`B`, `M`, `N`, or `S` followed by digits) stops the command:
+A positional after the spec identifier and slice number that isn't shaped like a code (`B`, `M`, `N`, or `S` followed by digits) stops the command:
 
 > "`<arg>` isn't a finding code. Codes look like `B1`, `M2`, `N1`, `S3`."
 
@@ -53,17 +57,16 @@ Check the config per **Required keys** in `../../guides/config.md`.
 
 ## Step 3 — Resolve the spec and read context
 
-Resolve `<spec-id>` per `../../guides/spec-identifiers.md`.
+Resolve `<spec-id>` per `../../guides/spec-identifiers.md`. If the spec has `SLICES.md`, pick the slice per **Picking the slice** in `../../guides/slices.md`: a slice's review, or the final review once every slice is accepted. The work folder is per **Work folder** there.
 
 Read:
 
-- `.ptah/specs/<feature-name>/REVIEW.md` — the findings to fix
-- `.ptah/specs/<feature-name>/PLAN.md` — the technical plan
-- `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md` — what was built
+- `REVIEW.md` in the work folder — the findings to fix
+- `PLAN.md` and `IMPLEMENTATION-SUMMARY.md` in the work folder — the technical plan and what was built. For the final review, every slice's `PLAN.md` and `IMPLEMENTATION-SUMMARY.md` instead.
 
 If `REVIEW.md` is empty or missing, stop:
 
-> "No review found for `<spec-id>`. Run `/ptah:review <id>` first."
+> "No review found for `<id>`. Run `/ptah:review <id>` first."
 
 Check every code from the command arguments against the findings being fixed. A code that isn't there stops the command:
 
@@ -190,11 +193,11 @@ Every finding of the fixed pass appears exactly once — under Fixed, Skipped, o
 
 ### 6b. Living artifacts and summary
 
-Update `SPEC.md`, `PLAN.md` and `IMPLEMENTATION-SUMMARY.md` per **Artifact ownership** in `RULES.md`.
+Update `SPEC.md`, `PLAN.md` and `IMPLEMENTATION-SUMMARY.md` per **Artifact ownership** in `RULES.md`. For the final review, add each touched file to the `IMPLEMENTATION-SUMMARY.md` of the slice whose summary lists it, or of the highest-numbered slice when none does.
 
 ### 6c. LOGS.md entry
 
-Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `../../guides/logs-format.md`, with `Next step:` per **Fix next step** in `../../guides/vocabulary.md`.
+Append `/fix completed` to the work folder's `LOGS.md` per `../../guides/logs-format.md`, with `Next step:` per **Fix next step** in `../../guides/vocabulary.md`.
 
 ---
 
@@ -204,7 +207,7 @@ Hand off per `../../guides/result-format.md`.
 
 ```
 /fix <id> completed
-Artifact: `.ptah/specs/<feature-name>/REVIEW.md` (fix summary appended)
+Artifact: `<work folder>/REVIEW.md` (fix summary appended)
 Mode: <mode> — fixed: <codes> · skipped: <codes, or "none"> · deferred: <codes, or "none">
 New issues found: <"no", or "yes — <note>">
 Manual steps:

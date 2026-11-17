@@ -15,7 +15,7 @@ The principles in `README.md` → **Principles** bind every edit. Building the p
 
 - **Every skill sets `disable-model-invocation: true`.**
 - **Skill or subagent.** A new command dispatches a subagent when it must be isolated from the conversation (the reviewer), or when it explores heavily enough to fill the main context (the architect, the implementer). It runs as a skill in the main session when it needs the conversation or the user (questions, approvals, things that never reached `LOGS.md`), or when it mostly reads a few files in the spec folder.
-- **Judgment for the agent, determinism for tooling.** Deterministic values (spec codes, `LOGS.md` entry ids and timestamps) come from shell commands pinned in the prompts, never from the model.
+- **Judgment for the agent, determinism for tooling.** Deterministic values (spec codes, `LOGS.md` entry ids and timestamps, commit hashes) come from shell commands pinned in the prompts, never from the model.
 - **Project-agnostic.** No project names, ticket prefixes, or machine paths in prompts. Project-specific values belong in `.ptah/ptah.yml` or the target project's own `CLAUDE.md`.
 
 ## Claude Code constraints

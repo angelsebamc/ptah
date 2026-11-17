@@ -12,7 +12,7 @@ Values written in `LOGS.md` entries.
 
 ### Command status
 
-The `<status>` in a `LOGS.md` command entry heading: `## #<n> — <timestamp> — /<command> <status>`.
+The `<status>` in a `LOGS.md` command entry heading: `## #<id> — <timestamp> — /<command> <status>`.
 
 | Value | Meaning | Written when |
 |---|---|---|
@@ -31,6 +31,7 @@ The `Type:` field of a `LOGS.md` change entry.
 | `scope-change` | Something was added to, removed from, or moved out of scope mid-flow |
 | `blocker` | Hit something that needs resolving, outside a subagent question loop (those are `paused` command entries) |
 | `correction` | Something already done or logged was wrong, and it's being redone, reverted, or restored |
+| `reopen` | An accepted slice is reopened for a change, per **Reopening** in [`slices.md`](./slices.md) |
 
 ### Change trigger
 
@@ -49,9 +50,20 @@ The prefix of a change entry's `What:` when it records a subagent question the u
 |---|---|
 | `not-answered-yet:` | The answer needs something outside Ptah, such as an approval |
 
+### Committer
+
+The `Committed by:` field of an `/accept completed` entry.
+
+| Value | Meaning |
+|---|---|
+| `agent` | `/accept` committed with the message the user approved |
+| `user` | The user committed the changes themselves |
+
 ### Next step
 
 A command entry's `Next step:` that starts with `none` means nothing is open. Anything after `; optional: ` is a command the user may run, not work left to do.
+
+On a slice, every `<id>` in a next step below is the spec's display id followed by the slice number, per **Slices in hand-offs** in [`slices.md`](./slices.md).
 
 ---
 
@@ -111,7 +123,7 @@ Every finding carries a code: the severity's letter plus a number, e.g. `B1`, `M
 | Value | Meaning | Next step |
 |---|---|---|
 | `fix-needed` | At least one blocker or major finding | `/ptah:fix <id>` |
-| `approved` | No blockers or major findings | `none — review clean`, plus `; optional: /ptah:fix <id> <codes>` when there are minors |
+| `approved` | No blockers or major findings | On a slice, `look at the result, then /ptah:accept <id>`; otherwise `none — review clean`. Either way plus `; optional: /ptah:fix <id> <codes>` when there are minors |
 
 `<codes>` are the minors' codes, `N1` through `N<n>` from the `Minor:` count, comma-separated with no spaces: `N1,N2,N3`.
 
@@ -119,7 +131,7 @@ Every finding carries a code: the severity's letter plus a number, e.g. `B1`, `M
 
 | Fixed from | Next step |
 |---|---|
-| An `approved` review, with `New issues found: no` | `none — no re-review needed; optional: /ptah:review <id>` |
+| An `approved` review, with `New issues found: no` | On a slice, `look at the result, then /ptah:accept <id>; optional: /ptah:review <id>`; otherwise `none — no re-review needed; optional: /ptah:review <id>` |
 | Anything else | `/ptah:review <id>` |
 
 ### Fix mode
