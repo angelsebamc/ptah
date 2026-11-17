@@ -10,9 +10,9 @@ When working on any feature, read `LOGS.md` in the relevant spec folder before d
 
 ---
 
-## Stop and ask, one question at a time
+## Stop and ask
 
-If anything in the spec or plan is ambiguous, contradictory, or underspecified, stop and ask the user a targeted question before proceeding. Ask one question at a time when there are several. Do not guess to keep momentum — guessing accumulates into deviations that surface much later.
+If anything in the spec or plan is ambiguous, contradictory, or underspecified, stop and ask the user a targeted question before proceeding. When there are several, ask them all at once, numbered. Do not guess to keep momentum — guessing accumulates into deviations that surface much later.
 
 Don't ask what the repo answers. Before asking how something should behave, find how the closest existing equivalent in the codebase does it. When a question offers options, recommend that existing pattern, cited as `<file>:<line>`, unless there's a reason not to, and if so say what it is. If a recommendation rests only on how the code does it, flag it, so the user knows to apply product judgement.
 
