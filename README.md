@@ -30,7 +30,7 @@ Run these inside Claude Code, in your project:
 | Command | What it does | Writes |
 |---------|--------------|--------|
 | `/ptah:init` | One-time setup: fix defaults and your ticket server (optional) | `.ptah/ptah.yml` |
-| `/ptah:spec [ticket]` | Asks you questions, one at a time, to write the spec. Pass a ticket id or URL to pre-fill it. | `SPEC.md` |
+| `/ptah:spec [ticket]` | Grills you about the feature, looking facts up in the code, then writes the spec. Pass a ticket id or URL to start from it. | `SPEC.md` |
 | `/ptah:plan` | Writes the technical plan | `PLAN.md` |
 | `/ptah:implement` | Writes the code from the plan | code + `IMPLEMENTATION-SUMMARY.md` |
 | `/ptah:review` | Reviews the code in a fresh context | `REVIEW.md` |

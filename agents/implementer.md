@@ -28,7 +28,7 @@ Read, in this order:
 
 - `<folder>/LOGS.md` — session history. Every change entry after the last `/plan completed` is decided — the user's answers to `PLAN.md`'s open questions, and to your earlier questions after an `/implement paused`, including approved deviations. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
 - `<folder>/PLAN.md` — what to build
-- `<folder>/SPEC.md` — use case and acceptance criteria
+- `<folder>/SPEC.md` — user stories, use cases and acceptance criteria
 - `<folder>/refs/` — screenshots, mockups, schema snippets
 - `<folder>/IMPLEMENTATION-SUMMARY.md`, if it exists — the summary of an earlier run, for the template's **Changes after implementation**
 
