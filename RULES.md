@@ -36,8 +36,8 @@ Never continue into the next command's work. Hand off and wait for the user to r
 
 ## Artifact ownership
 
-- **Living: `SPEC.md`, `SLICES.md`, `PLAN.md`.** They state what should be true now. An edit rewrites the affected sections and never narrates what they replaced. A decision may cite the change entry behind it (`LOGS.md #<id>`). Every edit has a change entry whose `Impact:` names the file and the sections updated (the step's own change entry counts). Once one of `PLAN.md`'s **Open questions** is answered, remove it from there (write `none` once it's empty).
-- **Who updates living artifacts.** Any step that makes the work contradict `SPEC.md`, `SLICES.md` or `PLAN.md` updates it in that step. A `scope-change` updates `SPEC.md`, and `SLICES.md` and `PLAN.md` if they exist.
+- **Living: `SPEC.md`, `SLICE.md`, `PLAN.md`.** They state what should be true now. An edit rewrites the affected sections and never narrates what they replaced. A decision may cite the change entry behind it (`LOGS.md #<id>`). Every edit has a change entry whose `Impact:` names the file and the sections updated (the step's own change entry counts). Once one of `PLAN.md`'s **Open questions** is answered, remove it from there (write `none` once it's empty).
+- **Who updates living artifacts.** Any step that makes the work contradict `SPEC.md`, a slice's `SLICE.md` or `PLAN.md` updates it in that step. A `scope-change` updates `SPEC.md`, and the affected `SLICE.md` and `PLAN.md` files if they exist.
 - **Records: `IMPLEMENTATION-SUMMARY.md`, `REVIEW.md`.** `/implement` writes `IMPLEMENTATION-SUMMARY.md` and `/review` writes `REVIEW.md` on each pass; other commands only append to them. `/fix` appending its Fix Summary to `REVIEW.md` is such an append. `/fix` and changes between commands add each file they touch to `IMPLEMENTATION-SUMMARY.md` under **Changes after implementation** (replacing its `None`) as `` - `<path>` — <what changed> (<source>) ``, where `<source>` is `see change entry #<id>` or `fix <codes>`.
 
 ---
@@ -99,4 +99,4 @@ Two roots, never mixed.
 |----------|---------|
 | `.ptah/ptah.yml` | Project config, created by `/ptah:init`. Every key is documented in [`config`](./guides/config.md) |
 | `.ptah/specs/<TICKET-ID>-<slug>/`, `.ptah/specs/<repo>-<code>-<slug>/` | Per-feature work product (created by `/ptah:spec`) |
-| `.ptah/specs/<spec>/SLICES.md`, `.ptah/specs/<spec>/slices/<nn>-<slug>/` | A sliced spec's slice list (`/ptah:slice`) and per-slice work product (`/ptah:plan` creates the folder). See [`slices`](./guides/slices.md) |
+| `.ptah/specs/<spec>/slices/<nn>-<slug>/` | One slice of a sliced spec: its `SLICE.md` and per-slice work product (`/ptah:slice` creates the folder). See [`slices`](./guides/slices.md) |

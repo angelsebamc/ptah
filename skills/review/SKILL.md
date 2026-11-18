@@ -15,7 +15,7 @@ Review the implemented code against the plan, the spec, and the project's own st
 
 ## Step 1 — Resolve the spec and the slice
 
-Take the slice number, if any, per **Slice number argument** in `../../guides/slices.md`. Resolve `<spec-id>` per `../../guides/spec-identifiers.md`. If the spec has `SLICES.md`, pick the slice per **Picking the slice** in `../../guides/slices.md`: a slice review, or the final review once every slice is accepted. The work folder is per **Work folder** there.
+Take the slice number, if any, per **Slice number argument** in `../../guides/slices.md`. Resolve `<spec-id>` per `../../guides/spec-identifiers.md`. If the spec has a `slices/` folder, pick the slice per **Picking the slice** in `../../guides/slices.md`: a slice review, or the final review once every slice is accepted. The work folder is per **Work folder** there.
 
 Unless this is the final review, if `IMPLEMENTATION-SUMMARY.md` in the work folder is empty or missing, stop and tell the user:
 

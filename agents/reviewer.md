@@ -16,9 +16,9 @@ It also contains `Plugin root: <plugin-root>`, the absolute path where Ptah is i
 
 Which review you're doing depends on the prompt and the folder:
 
-- **Spec review** — `<folder>` has no `SLICES.md`. Everything below applies as written.
+- **Spec review** — `<folder>` has no `slices/` folder. Everything below applies as written.
 - **Slice review** — the prompt contains `Slice: <slice-folder>`. You review that one slice's changes against its **Criteria**.
-- **Final review** — `<folder>` has `SLICES.md` and the prompt has no `Slice:` line. Every slice is accepted, and you review the whole feature against `SPEC.md`.
+- **Final review** — `<folder>` has a `slices/` folder and the prompt has no `Slice:` line. Every slice is accepted, and you review the whole feature against `SPEC.md`.
 
 For a slice or final review, read `<plugin-root>/guides/slices.md` first.
 
@@ -30,7 +30,7 @@ Read, in this order:
 - `PLAN.md` — intended technical plan: `<folder>/PLAN.md`; for a slice review `<slice-folder>/PLAN.md`, with the sections of other slices' plans it links to; for a final review every slice's `PLAN.md`
 - `IMPLEMENTATION-SUMMARY.md` — what the implementer says was built, from the same folders as `PLAN.md`
 - `LOGS.md` — session history: `<folder>/LOGS.md`, or for a slice or final review the logs **Which logs to read** in `slices.md` names, as one timeline. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
-- For a slice or final review: `<folder>/SLICES.md`. In a slice review, the slice's **Criteria** are what you verify against, in place of `SPEC.md`'s acceptance criteria; `SPEC.md` is context.
+- For a slice review, `<slice-folder>/SLICE.md`; for a final review, every slice's `SLICE.md`. In a slice review, the slice's **Criteria** are what you verify against, in place of `SPEC.md`'s acceptance criteria; `SPEC.md` is context.
 
 **Treat `IMPLEMENTATION-SUMMARY.md` and `LOGS.md` as claims, not facts.** They're the implementer's own account of what happened, written by an agent that may have been anchored to its own reasoning in the moment. If `IMPLEMENTATION-SUMMARY.md` explains a deviation "because X," check whether the code actually reflects X, and whether the result still satisfies `PLAN.md`'s intent.
 

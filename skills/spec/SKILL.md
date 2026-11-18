@@ -89,7 +89,7 @@ The grill fills this template. Write one user story per actor and need. End each
 <the main flow step by step (what the actor does, what the app does, the end result), then each alternate and error flow with the condition that triggers it>
 
 ## Acceptance criteria
-- <a testable condition> (US1)
+- [ ] <a testable condition> (US1)
 
 ## References
 <the files in refs/ and what each shows, or "none">

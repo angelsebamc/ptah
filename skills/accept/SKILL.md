@@ -14,7 +14,7 @@ Accept a slice: the developer has looked at the result and it meets the slice's 
 
 Take the slice number, if any, per **Slice number argument** in `../../guides/slices.md`. Resolve `<spec-id>` per `../../guides/spec-identifiers.md`.
 
-If the spec has no `SLICES.md`, stop:
+If the spec has no `slices/` folder, stop:
 
 > "Spec `<id>` has no slices. `/ptah:accept` accepts a slice; a spec without slices is ready for a PR once its review is approved."
 
@@ -24,7 +24,7 @@ If a slice number was given and that slice is accepted, per **Slice state** in `
 
 Otherwise pick the slice per **Picking the slice** in `../../guides/slices.md`.
 
-Read `SLICES.md` and the slice's `LOGS.md`.
+Read the slice's `SLICE.md` and `LOGS.md`.
 
 ---
 
@@ -40,7 +40,7 @@ The slice's newest `/review completed` entry must have `Verdict: approved`, with
 
 Find the review base per **Review base** in `../../guides/slices.md`. Show:
 
-- The slice's **Delivers** and **Criteria**, from `SLICES.md`
+- The slice's **Delivers** and **Criteria**, from its `SLICE.md`
 - What changed since the review base: `git diff --stat <base>`, plus the untracked files `git status --porcelain` lists. Offer the full diff.
 
 ---

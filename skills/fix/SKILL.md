@@ -57,7 +57,7 @@ Check the config per **Required keys** in `../../guides/config.md`.
 
 ## Step 3 — Resolve the spec and read context
 
-Resolve `<spec-id>` per `../../guides/spec-identifiers.md`. If the spec has `SLICES.md`, pick the slice per **Picking the slice** in `../../guides/slices.md`: a slice's review, or the final review once every slice is accepted. The work folder is per **Work folder** there.
+Resolve `<spec-id>` per `../../guides/spec-identifiers.md`. If the spec has a `slices/` folder, pick the slice per **Picking the slice** in `../../guides/slices.md`: a slice's review, or the final review once every slice is accepted. The work folder is per **Work folder** there.
 
 Read:
 

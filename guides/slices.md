@@ -1,8 +1,8 @@
 # Slices
 
-Defines how a spec is split into slices: `SLICES.md`, slice folders, the slice number argument, slice state, reopening, picking a slice, the work folder, which logs a command reads, shared design, the slice review base, and slice numbers in hand-offs.
+Defines how a spec is split into slices: slice folders, `SLICE.md`, the slice number argument, slice state, reopening, picking a slice, the work folder, which logs a command reads, shared design, the slice review base, and slice numbers in hand-offs.
 
-A spec is **sliced** when its folder has `SLICES.md`, written by `/ptah:slice`. A spec without it is **flat**: one `PLAN.md`, `IMPLEMENTATION-SUMMARY.md` and `REVIEW.md` at the spec root, and nothing else in this guide applies to it.
+A spec is **sliced** when its folder has a `slices/` folder, created by `/ptah:slice`. A spec without one is **flat**: one `PLAN.md`, `IMPLEMENTATION-SUMMARY.md` and `REVIEW.md` at the spec root, and nothing else in this guide applies to it.
 
 `<folder>` is the spec folder, `.ptah/specs/<feature-name>/`.
 
@@ -11,12 +11,12 @@ A spec is **sliced** when its folder has `SLICES.md`, written by `/ptah:slice`. 
 ```
 <folder>/
 ├── SPEC.md                    the product contract
-├── SLICES.md                  slice list: order, blocked by, delivers, criteria
 ├── LOGS.md                    entries that belong to no slice: /spec, /slice, the final /review and /fix
 ├── REVIEW.md                  final review of the whole feature
 ├── refs/
 └── slices/
     ├── 01-root-batch/
+    │   ├── SLICE.md           blocked by, delivers, criteria
     │   ├── PLAN.md
     │   ├── IMPLEMENTATION-SUMMARY.md
     │   ├── REVIEW.md
@@ -24,24 +24,15 @@ A spec is **sliced** when its folder has `SLICES.md`, written by `/ptah:slice`. 
     └── 02-company-overrides/
 ```
 
-## SLICES.md
-
-```markdown
-# SLICES — <feature-name>
-
-## 1. <title>
-- Blocked by: <none, or the comma-separated numbers of the lower-numbered slices that gate it>
-- Delivers: <the behavior that works end to end once this slice is done> (<story ids, e.g. US1, US2>)
-- Criteria: <testable condition>; <testable condition>
-```
-
-Slices are numbered from 1. `SLICES.md` holds no status.
-
 ## Slice folder
 
 A slice's folder is `<folder>/slices/<nn>-<kebab>/`: `<nn>` is its number in two digits (`01`), `<kebab>` its title in kebab-case per `spec-identifiers.md`, cut at the last `-` before the 50th character when longer. A slice's folder is the one in `slices/` whose name starts with `<nn>-`, so a later title change doesn't rename it.
 
-`/ptah:plan` creates a slice's folder the first time it plans that slice. No other command creates, renames or removes one.
+Slices are numbered from 1. Only `/ptah:slice` creates, renames or removes a slice's folder.
+
+## SLICE.md
+
+A slice's `SLICE.md` opens with the slice's number and title as its heading. It then states what gates the slice, **Blocked by**: `none`, or the numbers of the lower-numbered slices it can't be built without. Next comes **Delivers**: the behavior that works end to end once the slice is done, followed by the ids of the stories it covers (US1, US2). Last come the **Criteria**, written as a checklist, never several conditions run together on one line. `SLICE.md` holds no status.
 
 ## Slice number argument
 
@@ -51,9 +42,9 @@ A slice number on a flat spec stops the command:
 
 > "Spec `<id>` has no slices. Leave out the slice number, or run `/ptah:slice <id>` first."
 
-A number that isn't in `SLICES.md` stops it:
+A number with no slice folder stops it:
 
-> "Slice `<n>` isn't in `SLICES.md` for `<id>`. Slices: <the numbers in SLICES.md>."
+> "Slice `<n>` isn't a slice of `<id>`. Slices: <the numbers of the folders in slices/>."
 
 ## Slice state
 

@@ -1,13 +1,13 @@
 ---
 name: slice
-description: 'Splits a Ptah spec into vertical slices, each a behavior that works end to end and fits one /implement run, with blockers and testable criteria. Iterates on the list with the developer until approved, then writes SLICES.md. A re-run revises SLICES.md.'
+description: 'Splits a Ptah spec into vertical slices, each a behavior that works end to end and fits one /implement run, with blockers and testable criteria. Iterates on the list with the developer until approved, then creates a folder with a SLICE.md for each slice. A re-run revises the slices.'
 argument-hint: '[<spec-id>]'
 disable-model-invocation: true
 ---
 
 # /slice
 
-Split a spec into vertical slices in `SLICES.md`, so each one is planned, built, reviewed and accepted on its own.
+Split a spec into vertical slices, each in its own folder under `slices/`, so each one is planned, built, reviewed and accepted on its own.
 `RULES.md` is `../../RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
 ## Step 1 — Resolve the spec
@@ -30,17 +30,16 @@ Read, per **Always read LOGS.md first** in `RULES.md`:
 
 - `LOGS.md` in the spec folder, and every slice's `LOGS.md` if `slices/` exists
 - `SPEC.md` — the user stories and use cases the slices are cut from
-- `SLICES.md`, if it exists
+- every slice's `SLICE.md`, if `slices/` exists
 - `refs/`
 
-Then read `../../guides/slices.md`: the **SLICES.md** format, **Slice folder** and **Slice state** shape the draft.
+Then read `../../guides/slices.md`: **Slice folder**, the **SLICE.md** format and **Slice state** shape the draft.
 
-If `SLICES.md` exists, this is a **re-run**, which revises it:
+If `slices/` exists, this is a **re-run**, which revises the slices:
 
-- A slice that has a folder keeps its number and stays in the list.
+- Only a slice whose folder holds nothing but `SLICE.md` may be renumbered, merged, split or dropped; any other keeps its number and its folder.
 - An accepted slice stays as it is. When the user asks to change one, tell them the change reopens it, per **Reopening** in `../../guides/slices.md`, through `/ptah:plan <id> <n>`.
 - New slices take numbers after the highest.
-- Slices without a folder may be renumbered, merged, split or dropped.
 
 Look up in the code only the facts the slicing needs, such as which modules a flow touches or whether something a slice relies on already exists.
 
@@ -62,7 +61,7 @@ The draft is done when every user story is covered by at least one slice, every 
 
 ## Step 4 — Get the list approved
 
-Show the draft in the **SLICES.md** format. On a re-run, mark each slice `new`, `changed` or `unchanged`.
+Show the draft, each slice in the **SLICE.md** format. On a re-run, mark each slice `new`, `changed` or `unchanged`.
 
 Then ask, all at once and numbered per **Stop and ask** in `RULES.md`, about anything you're unsure of: a slice that may be too large for one run, a blocker that may not be real, slices that may be better merged or split. Give your recommendation on each.
 
@@ -70,9 +69,9 @@ Revise the list with each reply and show it again. The step is done when the use
 
 ---
 
-## Step 5 — Write SLICES.md
+## Step 5 — Write the slices
 
-Write the approved list to `.ptah/specs/<feature-name>/SLICES.md`.
+Write each approved slice's `SLICE.md` in its folder, per **Slice folder** in `../../guides/slices.md`, creating the folder for a new slice. On a re-run, also rename the folder of each renumbered slice and remove the folder of each dropped or merged one.
 
 ---
 

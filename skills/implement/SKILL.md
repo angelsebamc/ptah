@@ -15,7 +15,7 @@ Implement a spec's plan, or one slice's, and document what was built in `IMPLEME
 
 ## Step 1 — Resolve the spec and the slice
 
-Take the slice number, if any, per **Slice number argument** in `../../guides/slices.md`. Resolve `<spec-id>` per `../../guides/spec-identifiers.md`. If the spec has `SLICES.md`, pick the slice per **Picking the slice** in `../../guides/slices.md`. The work folder is per **Work folder** there.
+Take the slice number, if any, per **Slice number argument** in `../../guides/slices.md`. Resolve `<spec-id>` per `../../guides/spec-identifiers.md`. If the spec has a `slices/` folder, pick the slice per **Picking the slice** in `../../guides/slices.md`. The work folder is per **Work folder** there.
 
 If `PLAN.md` in the work folder is empty or missing, stop and tell the user:
 

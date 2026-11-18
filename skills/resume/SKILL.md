@@ -35,7 +35,7 @@ Otherwise, identify:
 
 ### Do not
 
-- Read any artifact, including `SLICES.md`
+- Read any artifact, including `SLICE.md`
 - Read anything in `refs/`
 - Read any source file, including files listed in `IMPLEMENTATION-SUMMARY.md`
 - Write or edit any file, including `LOGS.md`

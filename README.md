@@ -31,7 +31,7 @@ Run these inside Claude Code, in your project:
 |---------|--------------|--------|
 | `/ptah:init` | One-time setup: fix defaults and your ticket server (optional) | `.ptah/ptah.yml` |
 | `/ptah:spec [ticket]` | Grills you about the feature, looking facts up in the code, then writes the spec. Pass a ticket id or URL to start from it. | `SPEC.md` |
-| `/ptah:slice` | Splits a large spec into vertical slices, with you (optional) | `SLICES.md` |
+| `/ptah:slice` | Splits a large spec into vertical slices, with you (optional) | `slices/<nn>-<slug>/SLICE.md` |
 | `/ptah:plan` | Writes the technical plan | `PLAN.md` |
 | `/ptah:implement` | Writes the code from the plan | code + `IMPLEMENTATION-SUMMARY.md` |
 | `/ptah:review` | Reviews the code in a fresh context | `REVIEW.md` |

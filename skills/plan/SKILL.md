@@ -21,7 +21,7 @@ If `.ptah/specs/<feature-name>/SPEC.md` is empty or missing, stop and tell the u
 
 > "No spec found for `<spec-id>`."
 
-If the spec has `SLICES.md`, pick the slice per **Picking the slice** in `../../guides/slices.md`. If the slice has no folder yet, create it per **Slice folder** there. The work folder is per **Work folder** there.
+If the spec has a `slices/` folder, pick the slice per **Picking the slice** in `../../guides/slices.md`. The work folder is per **Work folder** there.
 
 ---
 

@@ -24,10 +24,10 @@ Read, in this order:
 
 - `<folder>/LOGS.md` — session history. On a slice, the logs **Which logs to read** in `slices.md` names, as one timeline. If the last command entry is `/plan paused`, the change entries after it are the user's answers to your earlier questions — treat them as decided. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
 - `<folder>/SPEC.md` — the user stories, use cases and acceptance criteria
-- On a slice: `<folder>/SLICES.md` — this slice's **Delivers**, **Criteria** and **Blocked by**. Then, for each slice in its **Blocked by**, its `PLAN.md` and `IMPLEMENTATION-SUMMARY.md`: plan from what was actually built and accepted, not from what was planned.
+- On a slice: `<slice-folder>/SLICE.md` — this slice's **Delivers**, **Criteria** and **Blocked by**. Then, for each slice in its **Blocked by**, its `PLAN.md` and `IMPLEMENTATION-SUMMARY.md`: plan from what was actually built and accepted, not from what was planned.
 - `<folder>/refs/` — screenshots, mockups, schema snippets
 
-If `SPEC.md` is empty or missing, or on a slice `SLICES.md` is, return `error`.
+If `SPEC.md` is empty or missing, or on a slice `SLICE.md` is, return `error`.
 
 Then find the project's standards per `<plugin-root>/guides/project-standards.md`.
 

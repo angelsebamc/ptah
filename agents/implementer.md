@@ -31,7 +31,7 @@ Read, in this order:
 - `<work folder>/LOGS.md` — session history. On a slice, the logs **Which logs to read** in `slices.md` names, as one timeline. Every change entry after the last `/plan completed` is decided — the user's answers to `PLAN.md`'s open questions, and to your earlier questions after an `/implement paused`, including approved deviations. An entry named by a later `Corrects:` is superseded: go by the correction, not the entry.
 - `<work folder>/PLAN.md` — what to build. On a slice, also every section of another slice's plan it links to.
 - `<folder>/SPEC.md` — user stories, use cases and acceptance criteria
-- On a slice: `<folder>/SLICES.md` — this slice's **Delivers** and **Criteria**
+- On a slice: `<work folder>/SLICE.md` — this slice's **Delivers** and **Criteria**
 - `<folder>/refs/` — screenshots, mockups, schema snippets
 - `<work folder>/IMPLEMENTATION-SUMMARY.md`, if it exists — the summary of an earlier run, for the template's **Changes after implementation**
 
