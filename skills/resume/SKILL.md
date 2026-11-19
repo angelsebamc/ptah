@@ -68,10 +68,10 @@ Where you are: <one-line synthesis>
 Base it on the last command entry's `Next step:`, in one sentence. Examples:
 
 - `"Implementation finished. Next step: /ptah:review k3f9."`
-- `"Code review done with 2 blockers, 1 major. Next step: /ptah:fix k3f9."`
+- `"Code review done with 3 defects. Next step: /ptah:fix k3f9."`
 - `"Spec written. Next step: /ptah:plan k3f9."`
 
-If the `Next step:` starts with `none`, say nothing is open and name the optional command, if any, per **Next step** in `../../guides/vocabulary.md`. E.g. `"Review clean, nothing open. Optional: /ptah:fix k3f9 N1,N2."`
+If the `Next step:` starts with `none`, say nothing is open and name the optional command, if any, per **Next step** in `../../guides/vocabulary.md`. E.g. `"Review clean, nothing open. Optional: /ptah:fix k3f9."`
 
 If the last command entry has `Manual steps:`, name them before the next command, e.g. `"Implementation finished. Restart the local API, then /ptah:review k3f9."`
 

@@ -93,27 +93,31 @@ The suffix of a claim about deploying or running the change.
 
 Values used by `review` and `fix`.
 
-### Finding severity
+### Review axis
 
-| Value | Code | Meaning | `fix` default |
-|---|---|---|---|
-| `blocker` | `B<n>` | Bug, crash, security risk, data loss | always in scope |
-| `major` | `M<n>` | Logic issue, missing edge case, test gap | always in scope |
-| `minor` | `N<n>` | Naming, readability, small improvements | in scope only with `include_minor` |
-| `suggestion` | `S<n>` | Alternative approach, future consideration | only when named by code |
+| Value | Code letter | Checks |
+|---|---|---|
+| `spec` | `P` | The code does what `SPEC.md` says: acceptance criteria, behaviour, out of scope |
+| `standards` | `S` | The code follows the project's documented standards and recorded knowledge, and has no code smells |
+| `correctness` | `C` | The code works: logic, edge cases, failure paths, security, data integrity, performance, tests |
+
+### Finding kind
+
+| Value | Meaning |
+|---|---|
+| `defect` | Objectively wrong: an acceptance criterion isn't met, a bug, a broken documented standard. Always carries its citation. |
+| `judgement` | The reviewer's opinion: a smell, a better design |
 
 #### Finding codes
 
-Every finding carries a code: the severity's letter plus a number, e.g. `B1`, `M2`, `S1`. Numbering restarts at 1 for each severity, in the order findings appear in the review. Codes are how `fix` and the user refer to findings — to steer a fix, skip one, or pull in an out-of-scope minor or suggestion.
+Every finding carries a code: its axis's code letter plus a number, e.g. `P1`, `S2`, `C1`. Numbering restarts at 1 for each axis, in the order findings appear in the review. Codes are how `fix` and the user refer to findings — to steer a fix, skip one, or fix only some.
 
 ### Review verdict
 
 | Value | Meaning | Next step |
 |---|---|---|
-| `fix-needed` | At least one blocker or major finding | `/ptah:fix <id>` |
-| `approved` | No blockers or major findings | `none — review clean`, plus `; optional: /ptah:fix <id> <codes>` when there are minors |
-
-`<codes>` are the minors' codes, `N1` through `N<n>` from the `Minor:` count, comma-separated with no spaces: `N1,N2,N3`.
+| `fix-needed` | At least one defect | `/ptah:fix <id>` |
+| `approved` | No defects | `none — review clean`, plus `; optional: /ptah:fix <id>` when there are judgements |
 
 ### Fix next step
 

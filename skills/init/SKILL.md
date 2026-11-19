@@ -1,6 +1,6 @@
 ---
 name: init
-description: 'Creates the project''s Ptah config at .ptah/ptah.yml: fix defaults and the ticket server. Optionally keeps .ptah/ out of git for this developer only.'
+description: 'Creates the project''s Ptah config at .ptah/ptah.yml: fix defaults, whether implement runs the review, and the ticket server. Optionally keeps .ptah/ out of git for this developer only.'
 disable-model-invocation: true
 ---
 
@@ -28,8 +28,8 @@ For each question, show the current value when set. An empty reply keeps it. Whe
 
    List each value in **Fix mode** in `../../guides/vocabulary.md` with its behavior, and mark `plan` as recommended.
 
-2. **Include minor**
-   > "Should `/ptah:fix` also fix minor findings? (yes / no — recommended no)"
+2. **Review after implement**
+   > "Should `/ptah:implement` run `/ptah:review` once the implementation is complete? Each review runs three subagents. (yes / no — recommended no)"
 
 3. **Ticket server**
    > "Do you pull tickets from a tracker through an MCP server (e.g. Linear, JIRA, GitHub)? If so, which one? (e.g. `linear` — or `no`)"
@@ -61,15 +61,16 @@ Write `.ptah/ptah.yml`, creating `.ptah/` if it doesn't exist:
 
 ```yaml
 commands:
+  implement:
+    review: <true | false>
   fix:
     mode: <auto | plan | interactive>
-    include_minor: <true | false>
 
 tickets:
   server: <server>
 ```
 
-- Change only `commands.fix.mode`, `commands.fix.include_minor`, and `tickets.server`. Leave every other key as it was.
+- Change only `commands.implement.review`, `commands.fix.mode`, and `tickets.server`. Leave every other key as it was.
 - Omit `tickets` if there's no ticket server.
 
 ## Step 4 — Apply the git choice
@@ -87,7 +88,8 @@ Only if question 4 was asked and the answer changes the current state.
 ```
 /init completed
 Artifact: `.ptah/ptah.yml`
-fix: mode <mode>, include_minor <true | false>
+implement: review <true | false>
+fix: mode <mode>
 ticket server: <server> | none
 git: .ptah/ excluded locally | ignored by <source> | tracked
 Next: /ptah:spec, or /ptah:spec <ticket-id>

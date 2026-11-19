@@ -4,9 +4,10 @@
 
 ```yaml
 commands:
+  implement:
+    review: false
   fix:
     mode: plan
-    include_minor: false
 
 tickets:
   server: claude_ai_Linear
@@ -19,7 +20,7 @@ tickets:
 | Key | Required | Written by | Read by | Meaning |
 |-----|----------|------------|---------|---------|
 | `commands.fix.mode` | yes | `/ptah:init` | `/ptah:fix` | Fix mode, one of the fix modes in [`vocabulary`](./vocabulary.md). A flag overrides it for one run. |
-| `commands.fix.include_minor` | yes | `/ptah:init` | `/ptah:fix` | Whether `/ptah:fix` also fixes minor findings. |
+| `commands.implement.review` | no | `/ptah:init` | `/ptah:implement` | Whether `/ptah:implement` runs `/ptah:review` once the implementation is complete. Unset means `false`. |
 | `tickets.server` | no | `/ptah:init` | `/ptah:spec` | Full name of the MCP server that `/ptah:spec <ticket-id>` fetches tickets from. Unset, `/ptah:spec <ticket-id>` stops and asks for `/ptah:init`. |
 
 A command changes only the keys it writes and leaves every other key exactly as it was.
@@ -32,6 +33,6 @@ A command that checks the config reads `.ptah/ptah.yml` and stops if the file is
 
 > "Ptah isn't set up for this project. Run `/ptah:init` first."
 
-If `commands.fix.mode` is set to anything other than a fix mode in [`vocabulary`](./vocabulary.md), or `commands.fix.include_minor` isn't `true` or `false`, stop:
+If `commands.fix.mode` is set to anything other than a fix mode in [`vocabulary`](./vocabulary.md), or `commands.implement.review` is set to anything other than `true` or `false`, stop:
 
 > "Invalid `<key>` value `<value>` in `.ptah/ptah.yml`. Run `/ptah:init` to fix it."

@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # /fix
 
-Read review findings and fix all blocker and major issues. Record what was changed next to the findings.
+Read review findings and fix them. Record what was changed next to the findings.
 
 `RULES.md` is `../../RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
@@ -16,16 +16,16 @@ Read review findings and fix all blocker and major issues. Record what was chang
 The command takes one source — an optional positional spec identifier (see `../../guides/spec-identifiers.md`) — then optional finding codes and flags.
 
 - If the first positional is shaped like a finding code, or a comma-separated list of them, the spec identifier was omitted and every positional is a finding code. Otherwise the first positional is the spec identifier and every positional after it is a finding code.
-- Codes are separated by commas, spaces, or both — `n1,n2`, `n1 n2`, and `n1, n2` are the same. Match codes case-insensitively everywhere, and drop duplicates.
+- Codes are separated by commas, spaces, or both — `c1,c2`, `c1 c2`, and `c1, c2` are the same. Match codes case-insensitively everywhere, and drop duplicates.
 - `-a`, `-p`, `-i` pick the mode for this run: `auto`, `plan`, `interactive`, per **Fix mode** in `../../guides/vocabulary.md`.
 
 Examples:
-- `/fix k3f9 S1 -p` — also fixes suggestion S1, in plan mode
-- `/fix n1,n2` — the spec comes from the branch or this session; also fixes minors N1 and N2
+- `/fix k3f9 C2 -p` — fixes only C2, in plan mode
+- `/fix p1,s2` — the spec comes from the branch or this session; fixes only P1 and S2
 
-A positional after the spec identifier that isn't shaped like a code (`B`, `M`, `N`, or `S` followed by digits) stops the command:
+A positional after the spec identifier that isn't shaped like a code (`P`, `S`, or `C` followed by digits) stops the command:
 
-> "`<arg>` isn't a finding code. Codes look like `B1`, `M2`, `N1`, `S3`."
+> "`<arg>` isn't a finding code. Codes look like `P1`, `S2`, `C3`."
 
 More than one of `-a`, `-p`, `-i` stops the command:
 
@@ -46,7 +46,8 @@ Determine the effective mode and scope for this run. Precedence is **flag > `com
 Check the config per **Required keys** in `../../guides/config.md`.
 
 ### Compute in-scope findings
-- In scope: each severity's `fix` default in **Finding severity** in `../../guides/vocabulary.md` (`include_minor` is `commands.fix.include_minor`), plus every finding the user names by code, as an argument or in a directive. Codes add to that scope, never narrow it.
+- In scope: every finding in `REVIEW.md`, defects and judgements alike. When the arguments name codes, only those findings.
+- A finding with `Same as: <code>` is fixed together with the finding it names: either one in scope brings in the other. Every count this command shows or logs leaves it out when the finding it names is of the same kind, so each problem counts once.
 - Everything else is deferred and listed under **Deferred**
 
 ---
@@ -65,7 +66,7 @@ If `REVIEW.md` is empty or missing, stop:
 
 > "No review found for `<spec-id>`. Run `/ptah:review <id>` first."
 
-Check every code from the command arguments against the findings being fixed. A code that isn't there stops the command:
+Check every code from the command arguments against the findings in `REVIEW.md`. A code that isn't there stops the command:
 
 > "`<code>` isn't a finding in `REVIEW.md` for `<id>`. Findings: `<codes>`."
 
@@ -79,20 +80,22 @@ Then find the project's standards per `../../guides/project-standards.md`, readi
 
 Apply a finding's `Fix:` at its own `file:line` and at every location on its `Also at:` line.
 
+A finding with `Same as: <code>` gets no change of its own: the finding it names is fixed once, at the locations of both, with the named finding's `Fix:` line even when the two disagree, since the earlier axis outranks the later.
+
 When a fix removes one failure mode but creates another, flag the trade where the templates below show it. It doesn't stop the run, even in `auto`.
 
-While applying, post at most one short progress line per finding, such as `M1 done, running tests for M2…`, with no explanations.
+While applying, post at most one short progress line per finding, such as `C1 done, running tests for C2…`, with no explanations.
 
 ### Directives by code
 
-In `plan` and `interactive` modes, the user can steer individual findings by code in a free-form reply, several per message — e.g. "B2: use the existing validator instead. ignore M2. N3 is already fixed."
+In `plan` and `interactive` modes, the user can steer individual findings by code in a free-form reply, several per message — e.g. "C2: use the existing validator instead. ignore S1. P3 is already fixed."
 
 | Directive | Effect |
 |---|---|
 | A different approach for a code | Replaces the finding's `Fix:` line. Recorded as user-directed. |
 | Ignore / skip | Finding moves to **Skipped** — reason: ignored by user, plus any reason given. |
 | Already fixed | Finding moves to **Skipped** — reason: already fixed (per user). Not re-verified. |
-| Drop instances — e.g. "N5: leave `api/b.ts:40`" | Those locations aren't fixed. The rest of the finding is applied and noted as dropped by user. |
+| Drop instances — e.g. "S5: leave `api/b.ts:40`" | Those locations aren't fixed. The rest of the finding is applied and noted as dropped by user. |
 
 - A code that doesn't exist in the findings being fixed → stop and ask.
 - A directive that's ambiguous about what to do → stop and ask.
@@ -106,11 +109,11 @@ Before touching any code, present a fix plan:
 ```
 Fix plan — <id>
 
-B1 — <title>
+P1 — <title>
    Change: <one-line summary of intended change>
    Files:  <comma-separated list of files to be modified>
 
-M1 — <title> (+<n> instances)
+C1 — <title> (+<n> instances)
    Change: <one-line summary> — trades <old failure mode> for <new>
    Files:  <files>
 
@@ -119,9 +122,9 @@ M1 — <title> (+<n> instances)
 Deferred: <out-of-scope codes, or "none">
 
 Mode: plan
-Total: <count per in-scope severity, e.g. 2 blockers, 1 major, 1 suggestion>
+Total: <count per kind, e.g. 2 defects, 1 judgement>
 
-Apply all of these? Reply "yes", or steer by code — e.g. "B2: do X instead, skip M1".
+Apply all of these? Reply "yes", or steer by code — e.g. "C2: do X instead, skip S1".
 ```
 
 - **"yes" (or similar)** → apply the plan as shown.
@@ -164,23 +167,22 @@ Append a **Fix Summary** to the findings file `REVIEW.md`.
 <auto | plan | interactive>
 
 ### Fixed
-- [x] B1 — <title> — <brief note on how it was fixed>
-- [x] B2 — <title> — <brief note> (user-directed: <the approach given>)
-- [x] M1 — <title> — <brief note> (trades <old failure mode> for <new>)
-- [x] M2 — <title> — <brief note> (dropped by user: <file:line>, …)
-- [x] M4 — <title> — <brief note> (per <file>:<line>: <the standard>)
-- [x] N1 — <title> — <brief note> (only if in scope this run; "(named by the user)" if pulled in by code)
-- [x] S2 — <title> — <brief note> (named by the user)
+- [x] P1 — <title> — <brief note on how it was fixed>
+- [x] C1 — <title> — <brief note> (trades <old failure mode> for <new>)
+- [x] C2 — <title> — <brief note> (user-directed: <the approach given>)
+- [x] S2 — <title> — <brief note> (dropped by user: <file:line>, …)
+- [x] C4 — <title> — <brief note> (per <file>:<line>: <the standard>)
+- [x] S3 — <title> — fixed with C1
 
 ### Skipped
-- [ ] M3 — <title> — ignored by user<: reason, if given>
-- [ ] N3 — <title> — already fixed (per user)
-- [ ] B3 — <title> — blocked by a hook: <the hook's message>
+- [ ] S1 — <title> — ignored by user<: reason, if given>
+- [ ] P3 — <title> — already fixed (per user)
+- [ ] C3 — <title> — blocked by a hook: <the hook's message>
 <"None" if every in-scope finding was applied.>
 
 ### Deferred
-- [ ] N2 — <title> — deferred: not in scope this run
-- [ ] S1 — <title> — deferred: suggestion, not auto-fixed
+- [ ] P2 — <title> — deferred: not named this run
+<"None" if no codes were given.>
 
 ### New issues found during fix
 <Any new issues discovered while fixing. "None" if clean.>

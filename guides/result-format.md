@@ -30,11 +30,11 @@ Returned as the subagent's final message
 
 1. **Nothing outside the blocks.** No preamble before `===RESULT===`, nothing after `===END===`.
 2. **`Status:` is always the first bullet.**
-3. **The fields after it are the `LOGS.md` fields for the entry that status produces** — `completed`, `paused`, or `failed` (see the mapping in `vocabulary.md` and the per-command fields below). Same names, same order, minus `Next step:`, which the dispatcher adds. Everything else is copied verbatim.
+3. **The fields after it are the `LOGS.md` fields for the entry that status produces** — `completed`, `paused`, or `failed` (see the mapping in `vocabulary.md` and the per-command fields below). Same names, same order, minus `Next step:`, which the dispatcher adds. Everything else is copied verbatim. The one exception is the `reviewer`'s `complete` fields, which cover one axis: `/review` combines the three results into one entry.
 4. **One line per value.** No value spans lines. Lists inside a value are comma-separated.
 5. **Every fixed value comes from `vocabulary.md`**, exactly as written there.
 6. **`###` sections appear only when they apply** — never written empty. `### Questions` appears only with `needs-input`.
-7. **Artifact blocks are named after the file they become** (`===PLAN.md===`) and appear only with `complete`. Their content is raw markdown, written verbatim.
+7. **Artifact blocks are named after the file they become** (`===PLAN.md===`) and appear only with `complete`. Their content is raw markdown, written verbatim. The one exception is the `reviewer`'s `===FINDINGS===`, which becomes its axis's section of `REVIEW.md`.
 8. **`===END===` closes every result.**
 
 ### Malformed results
@@ -49,11 +49,11 @@ The dispatcher never guesses or patches a malformed result. It treats it exactly
 |---|---|---|---|
 | `architect` | Approach, Key decisions, Open questions, Concerns | Blocked on, Progress, Files touched | `===PLAN.md===` |
 | `implementer` | Summary, Files created, Files modified, Deviations from plan, Known issues | Blocked on, Progress, Files touched | `===IMPLEMENTATION-SUMMARY.md===` |
-| `reviewer` | Blockers, Major, Minor, Suggestions, Acceptance criteria, Verdict | — | `===REVIEW.md===` |
+| `reviewer` | Axis, Defects, Judgements, Acceptance criteria (`spec` axis only) | — | `===FINDINGS===` |
 
 `error` always carries exactly one field: `Reason: <one line>`.
 
-Field formats are defined in [`logs-format.md`](./logs-format.md) under each command.
+Field formats are defined in [`logs-format.md`](./logs-format.md) under each command. The `reviewer`'s `Axis` is a review axis from `vocabulary.md`, and its `Defects` and `Judgements` are counts.
 
 ### Example
 

@@ -29,12 +29,12 @@ Run these inside Claude Code, in your project:
 
 | Command | What it does | Writes |
 |---------|--------------|--------|
-| `/ptah:init` | One-time setup: fix defaults and your ticket server (optional) | `.ptah/ptah.yml` |
+| `/ptah:init` | One-time setup: fix defaults, whether `/ptah:implement` runs the review, and your ticket server (optional) | `.ptah/ptah.yml` |
 | `/ptah:spec [ticket]` | Grills you about the feature, looking facts up in the code, then writes the spec. Pass a ticket id or URL to start from it. | `SPEC.md` |
 | `/ptah:plan` | Writes the technical plan | `PLAN.md` |
 | `/ptah:implement` | Writes the code from the plan | code + `IMPLEMENTATION-SUMMARY.md` |
-| `/ptah:review` | Reviews the code in a fresh context | `REVIEW.md` |
-| `/ptah:fix` | Fixes the review findings, then run `/ptah:review` again (optional after an `approved` review) | Fix Summary in `REVIEW.md` |
+| `/ptah:review` | Reviews the code on three axes in parallel, each in a fresh context: spec, standards, correctness. Findings are defects or judgements; the review is `approved` when there are no defects. | `REVIEW.md` |
+| `/ptah:fix` | Fixes every review finding, or only the codes you name, then run `/ptah:review` again (optional after an `approved` review, which only leaves judgements to fix) | Fix Summary in `REVIEW.md` |
 | `/ptah:resume` | Shows where a spec stands | nothing |
 
 When a review comes back `approved`, the work is ready for a PR.
@@ -46,7 +46,7 @@ Everything that happens is logged in the spec's `LOGS.md`. Starting a new sessio
 ## Principles
 
 - **Every step leaves a file.** The ticket, `SPEC.md`, `PLAN.md`, the code with `IMPLEMENTATION-SUMMARY.md`, and `REVIEW.md` are the audit trail, tied together by `LOGS.md`. Steps share nothing but the spec folder and the code, so you can read exactly what each one worked from.
-- **One job per command.** `implement` doesn't review or open PRs; `review` never touches code.
-- **You decide when to move on.** No command runs the next one; each ends by naming it.
-- **Reviews start fresh.** The reviewer sees only the spec folder and the code, never the conversation that wrote it, so it can't inherit the reasons the code was written that way.
+- **Commands are building blocks, not a pipeline.** Run any one, in any order, as often as you need. Each checks that what it needs exists.
+- **A command runs another only when your config allows it.** `/ptah:implement` runs `/ptah:review` when `.ptah/ptah.yml` says so; otherwise every command ends by naming the next one.
+- **Reviews start fresh.** The reviewers see only `SPEC.md` and the code, never the plan, the implementer's summary, or the conversation that wrote it, so they can't inherit the reasons the code was written that way.
 - **Fail loudly.** A command stops when something it needs is missing (the previous step's file, the ticket, the ticket server, a valid result from its agent) instead of guessing past it.

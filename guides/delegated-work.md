@@ -1,6 +1,6 @@
 # Delegated work
 
-- **The prompt is the folder path and the plugin root, nothing else.** The subagent reads `SPEC.md`, `PLAN.md`, `LOGS.md`, `refs/`. The dispatcher never summarizes the conversation or explains anything on the user's behalf.
+- **The prompt is the folder path and the plugin root, nothing else** — plus, for the reviewer, its axis and the base branch. The subagent reads what it needs from the spec folder itself. The dispatcher never summarizes the conversation or explains anything on the user's behalf.
 - **The plugin root** is the absolute path of `../..`, resolved from the dispatching skill's directory. Nothing else tells the subagent where Ptah is installed.
 
 Subagents can't talk to the user, so **Stop and ask** in [`RULES.md`](../RULES.md) becomes a loop:
