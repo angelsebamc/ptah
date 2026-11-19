@@ -51,14 +51,14 @@ This guide defines the schema. The discipline (when to log, when not to) lives i
 | Counts | digits only, e.g. `3` |
 | `Open questions`, `Concerns` | a count, or `none` |
 | `Acceptance criteria` | `<X> of <Y> met` |
+| `Spec`, `Standards`, `Correctness` | `<d> defects, <j> judgements`, counts of that axis's findings |
 | `Deviations from plan` | `no`, or `yes — see change entries above` |
 | `Known issues`, `New issues found` | `no`, or `yes — <note>` |
 | `Files touched` | comma-separated paths, or `none` |
 | `Source` | a ticket id, or `none` |
 | `Mode` | a fix mode from `vocabulary.md` |
 | `Verdict` | a verdict from `vocabulary.md` that is valid for the command |
-| `Minor fixed` | a count, or `skipped — not in scope` |
-| `Suggestions fixed`, `Skipped by user` | a count, or `none` |
+| `Skipped by user`, `Deferred` | a count, or `none` |
 | `Manual steps` | comma-separated, each item one action the user takes before the next command, such as restarting a local service or renaming a file before handing it on |
 
 ---
@@ -79,7 +79,7 @@ Written by `/plan` and `/implement` when their subagent returns `needs-input`. T
 - Reason (one line)
 - Next step (`re-run /ptah:<command> <id>`, or what to fix first)
 
-Written when a subagent returns `error` or a malformed result. No artifact is written for a failed run.
+Written when a subagent returns `error` or a malformed result. No artifact is written for a failed run. For `/review`, the Reason names each axis that failed.
 
 ---
 
@@ -109,21 +109,19 @@ Any `completed` entry may add `Manual steps:` right before `Next step:`. Leave i
 - Next step
 
 ### `/review completed`
-- Blockers (count)
-- Major (count)
-- Minor (count)
-- Suggestions (count)
+- Spec (`<d> defects, <j> judgements`)
+- Standards (`<d> defects, <j> judgements`)
+- Correctness (`<d> defects, <j> judgements`)
 - Acceptance criteria (`X of Y met`)
 - Verdict (`fix-needed` or `approved`)
 - Next step (per **Review verdict** in `vocabulary.md`)
 
 ### `/fix completed`
 - Mode (`auto`, `plan`, or `interactive`)
-- Blockers fixed (count)
-- Major issues fixed (count)
-- Minor fixed (count, or `skipped — not in scope`)
-- Suggestions fixed (count, or `none`)
+- Defects fixed (count)
+- Judgements fixed (count)
 - Skipped by user (count, or `none` — includes findings marked already fixed)
+- Deferred (count, or `none` — findings left out by the codes given)
 - New issues found (`yes — <note>` or `no`)
 - Next step (per **Fix next step** in `vocabulary.md`)
 

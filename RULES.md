@@ -30,7 +30,7 @@ When the user makes a change themselves in a tool, give the target state as chec
 
 ## Wait for the user
 
-Never continue into the next command's work. Hand off and wait for the user to run it.
+Never continue into the next command's work unless `.ptah/ptah.yml` allows that command to run it (see [`config`](./guides/config.md)). Otherwise hand off and wait for the user to run it.
 
 ---
 
@@ -72,7 +72,7 @@ Routine work creates noise — do not log it:
 
 ## Reports and vocabulary
 
-Every fixed value in Ptah — command statuses, result statuses, change types and triggers, severities, verdicts, fix modes — is defined once, in [`vocabulary`](./guides/vocabulary.md). Commands use those values exactly; a value that isn't on its list is an error, never something to coerce.
+Every fixed value in Ptah — command statuses, result statuses, change types and triggers, review axes, finding kinds, verdicts, fix modes — is defined once, in [`vocabulary`](./guides/vocabulary.md). Commands use those values exactly; a value that isn't on its list is an error, never something to coerce.
 
 Every final report follows [`the result format`](./guides/result-format.md), in markdown.
 
@@ -89,7 +89,7 @@ Two roots, never mixed.
 | Location | Purpose |
 |----------|---------|
 | `RULES.md` | This file |
-| `guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md`, `spec-identifiers.md`, `delegated-work.md`, `project-standards.md`, `project-hooks.md` |
+| `guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md`, `spec-identifiers.md`, `delegated-work.md`, `project-standards.md`, `project-hooks.md`, `code-smells.md` |
 | `skills/<command>/` | One skill per command, invoked as `/ptah:<command>` |
 | `agents/` | Subagents, dispatched as `ptah:architect`, `ptah:implementer`, `ptah:reviewer`. See [`delegated work`](./guides/delegated-work.md) |
 

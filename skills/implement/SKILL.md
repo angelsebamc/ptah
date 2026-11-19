@@ -38,6 +38,6 @@ Plugin root: <plugin-root>
 
 Per **Handling the result** in `../../guides/delegated-work.md`:
 
-- **`complete`** — write the `===IMPLEMENTATION-SUMMARY.md===` block to `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md`. `Next step: /ptah:review <id>`.
+- **`complete`** — write the `===IMPLEMENTATION-SUMMARY.md===` block to `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md`. `Next step: /ptah:review <id>`. Then read `commands.implement.review` per `../../guides/config.md`; a missing `.ptah/ptah.yml` means `false`. When it's `true`, invoke the `ptah:review` skill for `<id>` once the `LOGS.md` entry is written, and hand off once, after the review: this command's hand-off without its `Next:` line, then the review's hand-off.
 - **`needs-input`** — if an answered question is one of `PLAN.md`'s **Open questions**, remove it per **Artifact ownership** in `RULES.md`.
 - **`error` / malformed** — when handing off, add that code may have changed on disk.
