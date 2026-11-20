@@ -21,7 +21,7 @@ tickets:
 |-----|----------|------------|---------|---------|
 | `commands.fix.mode` | yes | `/ptah:init` | `/ptah:fix` | Fix mode, one of the fix modes in [`vocabulary`](./vocabulary.md). A flag overrides it for one run. |
 | `commands.implement.review` | no | `/ptah:init` | `/ptah:implement` | Whether `/ptah:implement` runs `/ptah:review` once the implementation is complete. Unset means `false`. |
-| `tickets.server` | no | `/ptah:init` | `/ptah:spec` | Full name of the MCP server that `/ptah:spec <ticket-id>` fetches tickets from. Unset, `/ptah:spec <ticket-id>` stops and asks for `/ptah:init`. |
+| `tickets.server` | no | `/ptah:init` | `/ptah:spec`, `/ptah:review` | Full name of the MCP server that `/ptah:spec <ticket-id>` and `/ptah:review` without a Ptah spec fetch tickets from. Unset, `/ptah:spec <ticket-id>` stops and asks for `/ptah:init`, and `/ptah:review` handles it per its Step 3. |
 
 A command changes only the keys it writes and leaves every other key exactly as it was.
 
