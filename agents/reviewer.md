@@ -24,7 +24,7 @@ Your prompt contains:
 
 Find the changes from `<ref>` per **The changes** in `<plugin-root>/guides/base-branch.md`. The shell is for read-only git commands only.
 
-The `spec` and `correctness` axes read the contract (on `correctness`, when there is one), the changes, and the code around them: whatever you need to judge the changes, such as callers, the bodies of reused methods, and types. The whole codebase is open to you. The `standards` axis reads the changes, the project's standards per `<plugin-root>/guides/project-standards.md`, and `<plugin-root>/guides/code-smells.md`, but not the contract: code style doesn't depend on the feature.
+The `spec` and `correctness` axes read the contract (on `correctness`, when there is one), the changes, and the code around them: whatever you need to judge the changes, such as callers, the bodies of reused methods, and types. The whole codebase is open to you. The `correctness` axis also reads what the project does deliberately: its standards and recorded knowledge per `<plugin-root>/guides/project-standards.md`, only the parts that apply to the changed code. The `standards` axis reads the changes, the project's standards per `<plugin-root>/guides/project-standards.md`, and `<plugin-root>/guides/code-smells.md`, but not the contract: code style doesn't depend on the feature.
 
 Under `.ptah/`, the contract is the only file you read. `SPEC.md` is the current contract, since any deviation that changes behaviour rewrites it. Leave `PLAN.md`, `IMPLEMENTATION-SUMMARY.md`, `LOGS.md`, `REVIEW.md`, and `refs/` unread: they hold the plan, the implementer's own account, and earlier reviews, and would anchor you to intentions instead of behaviour.
 
@@ -57,6 +57,8 @@ When `project-standards.md` says to report something about recorded knowledge, w
 - Tests: do they prove the contract's acceptance criteria (with none, the changed behaviour), or pass without checking anything?
 
 Code that does the wrong thing is a defect. A better approach for code that works is a judgement.
+
+A pattern the project documents as deliberate isn't a finding where the documentation covers the changed code; a lookalike it doesn't cover still is. Breaking a standard is the standards axis's finding, not yours.
 
 ### Writing each finding
 
