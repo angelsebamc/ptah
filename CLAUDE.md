@@ -17,6 +17,10 @@ The principles in `README.md` → **Principles** bind every edit. Building the p
 - **Skill or subagent.** A new command dispatches a subagent when it must be isolated from the conversation (the reviewer), or when it explores heavily enough to fill the main context (the architect, the implementer). It runs as a skill in the main session when it needs the conversation or the user (questions, approvals, things that never reached `LOGS.md`), or when it mostly reads a few files in the spec folder.
 - **Judgment for the agent, determinism for tooling.** Deterministic values (spec codes, `LOGS.md` entry ids and timestamps) come from shell commands pinned in the prompts, never from the model.
 - **Project-agnostic.** No project names, ticket prefixes, or machine paths in prompts. Project-specific values belong in `.ptah/ptah.yml` or the target project's own `CLAUDE.md`.
+- **Same process, not same output.** Write prompts in prose: say what each step is for and its edge cases, and let the model pick its own commands and wording. Keep exact only what tooling or the user depends on: artifact section headings other commands read, the result format, `LOGS.md` entries, `vocabulary.md` values, pinned shell commands, stop messages, and the order of rules where order decides behavior. Questions and summary messages say what to get across, not their words. Lists stay only for inventories.
+- **Completion criteria.** Every step ends on a condition that tells done from not done, demanding enough that the agent does the legwork (e.g. "every finding appears exactly once").
+- **Leading words and the positive.** Anchor a behavior in one word the model already knows and repeat the word, not the sentence. Say what to do; keep a "never" only as a hard guardrail next to the positive target.
+- **Cut no-ops.** A sentence that doesn't change what the model would do by default is deleted whole.
 
 ## Claude Code constraints
 

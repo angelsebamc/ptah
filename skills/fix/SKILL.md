@@ -7,158 +7,84 @@ disable-model-invocation: true
 
 # /fix
 
-Read review findings and fix them. Record what was changed next to the findings.
+Fix the findings in a spec's `REVIEW.md` and record what changed next to them.
 
 `RULES.md` is `../../RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
 ## Step 1 — Parse command arguments
 
-The command takes one source — an optional positional spec identifier (see `../../guides/spec-identifiers.md`) — then optional finding codes and flags.
+The arguments are an optional spec identifier (see `../../guides/spec-identifiers.md`), then optional finding codes, then an optional mode flag. A finding code is `P`, `S`, or `C` followed by digits. If the first positional is shaped like a code, or a comma-separated list of codes, the spec identifier was omitted and every positional is a code; otherwise the first positional is the spec identifier and the rest are codes. Commas, spaces, or both separate codes. Match codes case-insensitively everywhere, and drop duplicates.
 
-- If the first positional is shaped like a finding code, or a comma-separated list of them, the spec identifier was omitted and every positional is a finding code. Otherwise the first positional is the spec identifier and every positional after it is a finding code.
-- Codes are separated by commas, spaces, or both — `c1,c2`, `c1 c2`, and `c1, c2` are the same. Match codes case-insensitively everywhere, and drop duplicates.
-- `-a`, `-p`, `-i` pick the mode for this run: `auto`, `plan`, `interactive`, per **Fix mode** in `../../guides/vocabulary.md`.
+`-a`, `-p`, `-i` pick this run's mode: `auto`, `plan`, `interactive`, per **Fix mode** in `../../guides/vocabulary.md`.
 
 Examples:
 - `/fix k3f9 C2 -p` — fixes only C2, in plan mode
 - `/fix p1,s2` — the spec comes from the branch or this session; fixes only P1 and S2
 
-A positional after the spec identifier that isn't shaped like a code (`P`, `S`, or `C` followed by digits) stops the command:
+Stop on any of these, with its message:
 
-> "`<arg>` isn't a finding code. Codes look like `P1`, `S2`, `C3`."
-
-More than one of `-a`, `-p`, `-i` stops the command:
-
-> "Conflicting flags: `<flag1>` and `<flag2>`. Pick one."
-
-**Unknown flags** produce an error and stop:
-
-> "Unknown flag `-x`. Supported flags: `-a (auto)`, `-p (plan)`, `-i (interactive)`."
+- A positional after the spec identifier that isn't shaped like a code: "`<arg>` isn't a finding code. Codes look like `P1`, `S2`, `C3`."
+- More than one mode flag: "Conflicting flags: `<flag1>` and `<flag2>`. Pick one."
+- Any other flag: "Unknown flag `-x`. Supported flags: `-a (auto)`, `-p (plan)`, `-i (interactive)`."
 
 ---
 
-## Step 2 — Resolve mode and scope
+## Step 2 — Resolve the spec, mode and scope
 
-Determine the effective mode and scope for this run. Precedence is **flag > `commands.fix.mode`**.
+Check the config per **Required keys** in `../../guides/config.md`, then resolve `<spec-id>` per `../../guides/spec-identifiers.md`. The mode is the flag if Step 1 found one, otherwise `commands.fix.mode`.
 
-### Load Ptah config
+Read `REVIEW.md`, `PLAN.md` and `IMPLEMENTATION-SUMMARY.md` in `.ptah/specs/<feature-name>/`. If `REVIEW.md` is empty or missing, stop: "No review found for `<spec-id>`. Run `/ptah:review <id>` first." If a code from the arguments isn't a finding in `REVIEW.md`, stop: "`<code>` isn't a finding in `REVIEW.md` for `<id>`. Findings: `<codes>`."
 
-Check the config per **Required keys** in `../../guides/config.md`.
+The **scope** is every finding in `REVIEW.md`, defects and judgements alike, or only the named codes when the arguments name any. A finding with `Same as: <code>` travels with the finding it names: either one in scope brings in the other. Every finding outside the scope is **deferred**. In every count this command shows or logs, leave out a `Same as:` finding when the finding it names is of the same kind, so each problem counts once.
 
-### Compute in-scope findings
-- In scope: every finding in `REVIEW.md`, defects and judgements alike. When the arguments name codes, only those findings.
-- A finding with `Same as: <code>` is fixed together with the finding it names: either one in scope brings in the other. Every count this command shows or logs leaves it out when the finding it names is of the same kind, so each problem counts once.
-- Everything else is deferred and listed under **Deferred**
+Find the project's standards per `../../guides/project-standards.md`, reading only the parts that apply to the findings in scope. Follow them while fixing.
 
----
-
-## Step 3 — Resolve the spec and read context
-
-Resolve `<spec-id>` per `../../guides/spec-identifiers.md`.
-
-Read:
-
-- `.ptah/specs/<feature-name>/REVIEW.md` — the findings to fix
-- `.ptah/specs/<feature-name>/PLAN.md` — the technical plan
-- `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md` — what was built
-
-If `REVIEW.md` is empty or missing, stop:
-
-> "No review found for `<spec-id>`. Run `/ptah:review <id>` first."
-
-Check every code from the command arguments against the findings in `REVIEW.md`. A code that isn't there stops the command:
-
-> "`<code>` isn't a finding in `REVIEW.md` for `<id>`. Findings: `<codes>`."
-
-Then find the project's standards per `../../guides/project-standards.md`, reading only the parts that apply to the findings being fixed. Follow them, and cite a standard that shaped a fix on that finding's Fix Summary line.
+The step is done when the mode is set and every finding in `REVIEW.md` is either in scope or deferred.
 
 ---
 
-## Step 4 — Apply fixes (mode-specific)
+## Step 3 — Apply the fixes
 
 ### Applying a finding
 
-Apply a finding's `Fix:` at its own `file:line` and at every location on its `Also at:` line.
+Apply a finding's `Fix:` at its own `file:line` and at every location on its `Also at:` line. A `Same as:` finding gets no change of its own: the finding it names is fixed once, at the locations of both, using the named finding's `Fix:` even when the two disagree, since the earlier axis outranks the later.
 
-A finding with `Same as: <code>` gets no change of its own: the finding it names is fixed once, at the locations of both, with the named finding's `Fix:` line even when the two disagree, since the earlier axis outranks the later.
+Stay surgical: change only what the findings in scope document, with no refactoring of unrelated code and no improving what isn't broken. A fix that removes one failure mode but creates another is a trade: say so in the plan, the interactive prompt and the Fix Summary, and keep going, even in `auto`. While applying, post at most one short progress line per finding, such as `C1 done, running tests for C2…`, with no explanations.
 
-When a fix removes one failure mode but creates another, flag the trade where the templates below show it. It doesn't stop the run, even in `auto`.
+Each of these is a **Stop and ask** from `RULES.md`, in every mode including `auto`:
 
-While applying, post at most one short progress line per finding, such as `C1 done, running tests for C2…`, with no explanations.
+- A fix needs a design change.
+- A fix adds a dependency `PLAN.md` doesn't list.
+- A project standard conflicts with a finding's `Fix:` line.
 
 ### Directives by code
 
-In `plan` and `interactive` modes, the user can steer individual findings by code in a free-form reply, several per message — e.g. "C2: use the existing validator instead. ignore S1. P3 is already fixed."
+In `plan` and `interactive`, the user can steer findings by code in a free-form reply, several per message, e.g. "C2: use the existing validator instead. ignore S1. P3 is already fixed."
 
 | Directive | Effect |
 |---|---|
 | A different approach for a code | Replaces the finding's `Fix:` line. Recorded as user-directed. |
-| Ignore / skip | Finding moves to **Skipped** — reason: ignored by user, plus any reason given. |
-| Already fixed | Finding moves to **Skipped** — reason: already fixed (per user). Not re-verified. |
-| Drop instances — e.g. "S5: leave `api/b.ts:40`" | Those locations aren't fixed. The rest of the finding is applied and noted as dropped by user. |
+| Ignore / skip | Finding moves to **Skipped**: ignored by user, plus any reason given. |
+| Already fixed | Finding moves to **Skipped**: already fixed (per user). Not re-verified. |
+| Drop instances, e.g. "S5: leave `api/b.ts:40`" | Those locations aren't fixed. The rest of the finding is applied and noted as dropped by user. |
 
-- A code that doesn't exist in the findings being fixed → stop and ask.
-- A directive that's ambiguous about what to do → stop and ask.
+A directive for a code that isn't in scope, or one that's ambiguous about what to do, is a stop and ask.
 
-### `auto` mode
-Apply every in-scope fix without asking. Only the rules in Step 5 interrupt it.
+### By mode
 
-### `plan` mode
-Before touching any code, present a fix plan:
+**`auto`**: apply every finding in scope without asking. Only the stop-and-ask cases above interrupt it.
 
-```
-Fix plan — <id>
+**`plan`**: before touching any code, show a fix plan headed with the spec id. For each finding in scope, give its code and title, a one-line summary of the intended change (with any trade), and the files it will modify; when its `Also at:` isn't `none`, add the number of extra instances. Then list the deferred codes (or none), the mode, and the total per kind (e.g. 2 defects, 1 judgement), and ask whether to apply it all, inviting a "yes" or steering by code. A "yes" applies the plan as shown. A reply of directives applies the plan with them folded in: it is itself the confirmation, so re-ask only if something needs clarifying. A plain decline is a stop and ask about what to do differently.
 
-P1 — <title>
-   Change: <one-line summary of intended change>
-   Files:  <comma-separated list of files to be modified>
+**`interactive`**: work through the findings in scope one at a time. For each, state its code, title and `file:line`, describe the intended change in a line or two with its number of `Also at:` instances and any trade, and ask whether to apply it, skip it, or take a different approach. Wait for the reply; any directive by code applies, including ones for findings later in the list. Apply, and note the result briefly.
 
-C1 — <title> (+<n> instances)
-   Change: <one-line summary> — trades <old failure mode> for <new>
-   Files:  <files>
-
-(+<n> instances only when the finding's `Also at:` isn't "none")
-
-Deferred: <out-of-scope codes, or "none">
-
-Mode: plan
-Total: <count per kind, e.g. 2 defects, 1 judgement>
-
-Apply all of these? Reply "yes", or steer by code — e.g. "C2: do X instead, skip S1".
-```
-
-- **"yes" (or similar)** → apply the plan as shown.
-- **Directives** → apply the plan with the directives folded in. A reply made of directives is itself the confirmation; don't re-prompt unless something needs clarifying.
-- **A plain decline** → stop and ask what to do differently.
-
-### `interactive` mode
-Work through in-scope findings one at a time. For each:
-
-1. State the finding (code, title, `file:line`)
-2. Describe the intended change in one or two lines, with the number of `Also at:` instances and any traded failure mode
-3. Ask: "Apply this fix? (yes / skip / or tell me a different approach)"
-4. Wait for the reply — any directive by code applies, including ones for findings later in the list
-5. Apply, briefly note the result
+The step is done when every finding in scope is fixed or skipped.
 
 ---
 
-## Step 5 — Rules while fixing
+## Step 4 — Record the fixes
 
-In every mode, change only what the findings being fixed document: don't refactor unrelated code or improve what isn't broken.
-
-Each of these is a **Stop and ask** from `RULES.md`, even in `auto`:
-
-- A fix needs a design change
-- A fix adds a dependency `PLAN.md` doesn't list
-- A project standard conflicts with a finding's `Fix:` line
-- A hook blocks a tool call and complying needs a person. Handle every hook per `../../guides/project-hooks.md`
-
----
-
-## Step 6 — Record the fixes
-
-### 6a. Fix Summary
-Append a **Fix Summary** to the findings file `REVIEW.md`.
+Append a Fix Summary to `REVIEW.md`, in this format:
 
 ```markdown
 ## Fix Summary — <date>
@@ -177,7 +103,6 @@ Append a **Fix Summary** to the findings file `REVIEW.md`.
 ### Skipped
 - [ ] S1 — <title> — ignored by user<: reason, if given>
 - [ ] P3 — <title> — already fixed (per user)
-- [ ] C3 — <title> — blocked by a hook: <the hook's message>
 <"None" if every in-scope finding was applied.>
 
 ### Deferred
@@ -188,28 +113,14 @@ Append a **Fix Summary** to the findings file `REVIEW.md`.
 <Any new issues discovered while fixing. "None" if clean.>
 ```
 
-Every finding of the fixed pass appears exactly once — under Fixed, Skipped, or Deferred.
-
-### 6b. Living artifacts and summary
+Cite a standard on the line of each fix it shaped. Every finding in `REVIEW.md` appears exactly once, under Fixed, Skipped, or Deferred.
 
 Update `SPEC.md`, `PLAN.md` and `IMPLEMENTATION-SUMMARY.md` per **Artifact ownership** in `RULES.md`.
-
-### 6c. LOGS.md entry
 
 Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `../../guides/logs-format.md`, with `Next step:` per **Fix next step** in `../../guides/vocabulary.md`.
 
 ---
 
-## Step 7 — Hand off to user
+## Step 5 — Hand off
 
-Hand off per `../../guides/result-format.md`.
-
-```
-/fix <id> completed
-Artifact: `.ptah/specs/<feature-name>/REVIEW.md` (fix summary appended)
-Mode: <mode> — fixed: <codes> · skipped: <codes, or "none"> · deferred: <codes, or "none">
-New issues found: <"no", or "yes — <note>">
-Manual steps:
-- <step>
-Next: <the entry's Next step:>
-```
+Hand off per `../../guides/result-format.md`, with `.ptah/specs/<feature-name>/REVIEW.md` (fix summary appended) as the artifact. The key facts are the mode, the fixed, skipped and deferred codes (`none` where empty), and whether new issues were found, with a note if so. List the entry's manual steps, and end on its `Next step:`.

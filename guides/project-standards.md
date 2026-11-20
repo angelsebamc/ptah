@@ -1,15 +1,13 @@
 # Project standards
 
-Find the target project's standards: every file in it that documents how code should be written or how the product should behave — docs, and the instructions the project gives any coding agent (`CLAUDE.md`, `AGENTS.md`, rules, skills, including the skills of the plugins the project enables). Read the parts relevant to the feature, and cite a standard as `<file>:<line>`. Invoke a skill that applies; read it as a file when it can't be invoked, and follow it only as far as your own job allows.
-
-The project's hook config is a standard too: `.claude/settings.json`, `.claude/settings.local.json`, the hooks of the plugins the project enables, and `hooks` in the frontmatter of the project's skills and agents. When a hook's matcher covers a tool call the feature needs, read its script to learn what it blocks.
+The target project's standards are every file in it that documents how code should be written or how the product should behave: docs, and the instructions it gives any coding agent (`CLAUDE.md`, `AGENTS.md`, rules, skills, including the skills of the plugins the project enables). Find them, read the parts relevant to the feature, and cite a standard as `<file>:<line>`. Invoke a skill that applies, or read it as a file when it can't be invoked, and follow it only as far as your own job allows.
 
 ## Recorded knowledge
 
-The project may also record what it learned the hard way: post-mortems, lessons files, KB entries, known traps, non-obvious facts. It may keep that in files or in a server. Read only the files; never query an MCP server for it, the ticket server included. If the project points to knowledge kept in a server, the architect reports it in **Concerns** and the Standards reviewer in a note above its findings.
+The project may also record what it learned the hard way: post-mortems, lessons files, KB entries, known traps, non-obvious facts. The project points to it when an instruction file or skill above names where it lives or indexes it. Use every source it points to, and look for docs that hold it only when it points nowhere.
 
-The project points to recorded knowledge when an instruction file or skill above names where it lives or indexes it. Use every source it points to. A path it points to that doesn't exist is reported the same way. Look for docs that hold it only when the project points nowhere.
+Read recorded knowledge from files only; never query an MCP server for it, the ticket server included. Knowledge the project keeps in a server, and a path it points to that doesn't exist, get reported instead: the architect reports them in **Concerns**, the Standards reviewer in a note above its findings.
 
 Search those files for the paths, components and features the change touches, and read only the matches.
 
-Recorded knowledge is evidence, not a standard: the code an entry describes may since have changed. Before acting on an entry, check that it still applies to the current code, and cite it as `<file>:<line>`.
+Recorded knowledge is evidence, not a standard: the code an entry describes may have changed since. Before acting on an entry, check that it still applies to the current code, and cite it as `<file>:<line>`.

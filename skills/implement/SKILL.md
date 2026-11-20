@@ -36,8 +36,8 @@ Plugin root: <plugin-root>
 
 ## Step 3 — Handle the result
 
-Per **Handling the result** in `../../guides/delegated-work.md`:
+Handle the result per **Handling the result** in `../../guides/delegated-work.md`, with these additions:
 
-- **`complete`** — write the `===IMPLEMENTATION-SUMMARY.md===` block to `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md`. `Next step: /ptah:review <id>`. Then read `commands.implement.review` per `../../guides/config.md`; a missing `.ptah/ptah.yml` means `false`. When it's `true`, invoke the `ptah:review` skill for `<id>` once the `LOGS.md` entry is written, and hand off once, after the review: this command's hand-off without its `Next:` line, then the review's hand-off.
-- **`needs-input`** — if an answered question is one of `PLAN.md`'s **Open questions**, remove it per **Artifact ownership** in `RULES.md`.
-- **`error` / malformed** — when handing off, add that code may have changed on disk.
+- **`complete`**: the artifact goes to `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md` and `Next step:` is `/ptah:review <id>`. Then read `commands.implement.review` per `../../guides/config.md`, where a missing `.ptah/ptah.yml` means `false`. When it's `true`, invoke the `ptah:review` skill for `<id>` once the `LOGS.md` entry is written, and hand off once, after the review: this command's hand-off without its `Next:` line, then the review's.
+- **`needs-input`**: when an answered question is one of `PLAN.md`'s **Open questions**, remove it per **Artifact ownership** in `RULES.md`.
+- **`error` or malformed**: the hand-off adds that code may have changed on disk.

@@ -10,17 +10,11 @@ Review the code on the axes its review target needs — spec, standards, correct
 
 `RULES.md` is `../../RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
-`/review` is a thin dispatcher: the review happens in isolated `reviewer` subagents, one per axis. See `../../guides/delegated-work.md`.
+`/review` is a thin dispatcher: the review happens in isolated `reviewer` subagents, one per axis, per `../../guides/delegated-work.md`.
 
 ## Step 1 — Parse command arguments
 
-Raw arguments: `$ARGUMENTS`, trimmed.
-
-- `--base <ref>`, anywhere in the arguments → `<base-ref>` = `<ref>`. Remove both tokens.
-- What's left is empty, or one token: `<spec-id>`.
-- Anything else, including `--base` with no ref → show the examples below and stop.
-
-Examples:
+The raw arguments are `$ARGUMENTS`, trimmed. A `--base <ref>` pair anywhere in them sets `<base-ref>` to `<ref>`; take both tokens out. What's left is either empty or one token, `<spec-id>`. Anything else, including a `--base` with no ref after it, is a usage error: show these examples and stop.
 - `/ptah:review`: the spec, ticket or branch the current branch names
 - `/ptah:review k3f9`: the spec `k3f9`
 - `/ptah:review PROJ-45`: the spec for `PROJ-45`, or with no Ptah spec, the current branch against ticket `PROJ-45`
@@ -98,7 +92,7 @@ Then resolve `<base>` and its `<source>` per **Resolving the base** in `../../gu
 
 ## Step 5 — Dispatch the reviewers
 
-Invoke the `ptah:reviewer` subagent once for each of the target's axes from Step 2, all in one message, in the foreground. Each prompt must contain **only** these lines, with `<plugin-root>` per `../../guides/delegated-work.md`:
+Invoke the `ptah:reviewer` subagent once for each of the target's axes from Step 2, all in one message, in the foreground. Each prompt is **only** these lines, with `<plugin-root>` per `../../guides/delegated-work.md` and `<first line>` from the target:
 
 ```
 <first line>
@@ -117,9 +111,9 @@ Base: <base>
 
 ## Step 6 — Check the results
 
-Check each result against every rule in `../../guides/result-format.md`. A result is also malformed if its `Axis:` isn't the axis it was dispatched with, if it has any status other than `complete` or `error`, or if its codes don't use its axis's letter.
+Check each result against every rule in `../../guides/result-format.md`. A reviewer's result is also malformed if its `Axis:` isn't the axis it was dispatched with, its status is anything but `complete` or `error`, or its codes don't use its axis's letter.
 
-If any result is `error` or malformed, write no `REVIEW.md`. On `spec`, append `/review failed` per `../../guides/logs-format.md`, with a `Reason:` that names each axis that failed and why. Hand off as failed, naming the same. If a result was malformed, offer to show the raw response. A review missing an axis would look complete when it isn't.
+The review goes on only when every axis returned a well-formed `complete`. A review missing an axis would look complete when it isn't, so if any result is `error` or malformed, write no `REVIEW.md`. On `spec`, append `/review failed` per `../../guides/logs-format.md`, with a `Reason:` that names each failed axis and why. Hand off as failed, naming the same, and if a result was malformed, offer to show the raw response.
 
 ---
 
@@ -156,10 +150,15 @@ Reviewed against: <`SPEC.md` | ticket [<ticket-id>](<ticket-url>), saved in `TIC
 <`fix-needed` — <n> defects | `approved` — no defects>
 ````
 
-- **On `branch`**, leave out the Summary's Spec line and the **Acceptance criteria check**, and the Spec section reads: "No spec available: the spec axis was skipped."
-- **Findings** go in as each axis returned them, never re-ranked across axes. The one change allowed: when two findings on different axes describe the same problem at the same code, keep both and add `Same as: <code>` as the last line of the one on the later axis (spec, then standards, then correctness), naming the earlier one, so it gets fixed once.
-- **Acceptance criteria check**: list every acceptance criterion in `SPEC.md`, or in `TICKET.md` on `ticket`, in order. A criterion named on a spec finding's `Criterion:` line takes that line's status and the finding's code; every other criterion is met. If the number met doesn't match the spec axis's `Acceptance criteria:` field, treat the spec result as malformed and go back to Step 6's failure. A ticket with no acceptance criteria gets the single line "The ticket lists no acceptance criteria."
-- **Verdict** is per **Review verdict** in `../../guides/vocabulary.md`, from the defects across all the axes. Its `<n>` leaves out a defect whose `Same as:` names another defect. The Summary's per-axis counts still include it.
+On `branch`, leave out the Summary's Spec line and the **Acceptance criteria check**, and the Spec section reads: "No spec available: the spec axis was skipped."
+
+**Findings** go in as each axis returned them, never re-ranked across axes. The one change allowed is for a duplicate: when two findings on different axes describe the same problem at the same code, keep both and add `Same as: <code>` as the last line of the one on the later axis (spec, then standards, then correctness), naming the earlier one, so it gets fixed once.
+
+**Acceptance criteria check** lists every acceptance criterion in `SPEC.md`, or in `TICKET.md` on `ticket`, in order. A criterion named on a spec finding's `Criterion:` line takes that line's status and the finding's code; every other criterion is met. If the number met doesn't match the spec axis's `Acceptance criteria:` field, the spec result is malformed: go back to Step 6's failure. A ticket with no acceptance criteria gets the single line "The ticket lists no acceptance criteria."
+
+**Verdict** is per **Review verdict** in `../../guides/vocabulary.md`, from the defects across all the axes. Its `<n>` leaves out a defect whose `Same as:` names another defect; the Summary's per-axis counts still include it.
+
+`REVIEW.md` is done when every finding from every axis appears exactly once, in the order its axis returned it, and the counts and verdict agree with them.
 
 ---
 
@@ -167,4 +166,4 @@ Reviewed against: <`SPEC.md` | ticket [<ticket-id>](<ticket-url>), saved in `TIC
 
 On `spec`, append `/review completed` per `../../guides/logs-format.md`: each axis's counts from its result, `Acceptance criteria:` from the spec axis, the verdict, and `Next step:` per **Review verdict** in `../../guides/vocabulary.md`.
 
-Hand off per `../../guides/result-format.md`, with the base among the key facts, and on `ticket` also `Ticket: <ticket-id>`. On `ticket` or `branch`, `/ptah:fix` doesn't apply, so `Next:` is `fix the defects, then /ptah:review` on `fix-needed` and `none — review clean` on `approved`.
+Hand off per `../../guides/result-format.md`, with the base among the key facts, plus `Ticket: <ticket-id>` on `ticket`. On `ticket` or `branch` there's no spec for `/ptah:fix` to work from, so `Next:` is `fix the defects, then /ptah:review` on `fix-needed` and `none — review clean` on `approved`.
