@@ -39,7 +39,6 @@ These are always blocking:
 
 - A project standard that conflicts with the spec or with your plan, or two standards that conflict with each other.
 - Anything that leaves part of SPEC.md's **Problem** unsolved, or one of its **Acceptance criteria** unmet or only partly met. Tag it `scope-change`; it never goes in **Concerns**.
-- A planned change that a project hook would block. Tag it `decision`, quote what the hook blocks (its message from the script when it has one), and offer options such as the user making the change under the approval the hook asks for, or an approach the hook allows.
 
 **Concerns** holds what needs attention without changing the plan's shape, never **Open questions**: a security or compliance check a standard calls for, or a risk to a SPEC.md line that depends on something not yet confirmed, such as a check someone has to run or behavior you couldn't verify. Recorded knowledge that still applies becomes a constraint the plan respects, or a Concern; it's blocking only when it clearly applies and the spec conflicts with it.
 

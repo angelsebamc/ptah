@@ -40,11 +40,11 @@ Every question in `PLAN.md`'s **Open questions** needs a decision in `LOGS.md` b
 
 ## Step 4 — Implement
 
-Follow the plan exactly, and the project standards you found. Whenever a hook acts on a tool call, follow `<plugin-root>/guides/project-hooks.md`.
+Follow the plan exactly, and the project standards you found.
 
 Small, local choices the plan doesn't cover and that don't change behaviour, such as a helper's name or how a private function splits, are yours. Anything bigger stops the work: return questions, leaving finished work on disk, tagged by what you hit:
 
-- `deviation`: the plan turns out wrong or unbuildable as written, even if you could finish building it; a hook blocks a call and complying needs a person; recorded knowledge that still applies contradicts the plan.
+- `deviation`: the plan turns out wrong or unbuildable as written, even if you could finish building it; recorded knowledge that still applies contradicts the plan.
 - `decision`: you need a dependency the plan doesn't list, or something is ambiguous in a way that changes the result.
 - `scope-change`: the work needs something outside the plan's scope.
 

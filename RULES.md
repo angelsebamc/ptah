@@ -85,7 +85,7 @@ Two roots, never mixed.
 | Location | Purpose |
 |----------|---------|
 | `RULES.md` | This file |
-| `guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md`, `spec-identifiers.md`, `base-branch.md`, `delegated-work.md`, `project-standards.md`, `project-hooks.md`, `code-smells.md` |
+| `guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md`, `spec-identifiers.md`, `base-branch.md`, `delegated-work.md`, `project-standards.md`, `code-smells.md` |
 | `skills/<command>/` | One skill per command, invoked as `/ptah:<command>` |
 | `agents/` | Subagents, dispatched as `ptah:architect`, `ptah:implementer`, `ptah:reviewer`. See [`delegated work`](./guides/delegated-work.md) |
 

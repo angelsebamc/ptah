@@ -56,7 +56,6 @@ Each of these is a **Stop and ask** from `RULES.md`, in every mode including `au
 - A fix needs a design change.
 - A fix adds a dependency `PLAN.md` doesn't list.
 - A project standard conflicts with a finding's `Fix:` line.
-- A hook blocks a tool call and complying needs a person. Handle every hook per `../../guides/project-hooks.md`.
 
 ### Directives by code
 
@@ -104,7 +103,6 @@ Append a Fix Summary to `REVIEW.md`, in this format:
 ### Skipped
 - [ ] S1 — <title> — ignored by user<: reason, if given>
 - [ ] P3 — <title> — already fixed (per user)
-- [ ] C3 — <title> — blocked by a hook: <the hook's message>
 <"None" if every in-scope finding was applied.>
 
 ### Deferred
