@@ -36,7 +36,7 @@ Check only your axis. Each finding is a `defect` or a `judgement`, per **Finding
 
 ### `spec`
 
-Mark each acceptance criterion in the contract met, partial, or missing; partial and missing are defects. A ticket that lists no criteria is checked against its description instead: something it asks for that isn't done is a defect, but never invent criteria. Behaviour that's implemented but wrong is a defect, and so is anything built that the contract puts out of scope.
+Settle each acceptance criterion in the contract as met or not, and record it in your **criteria check**: every criterion, as the contract words it, in order. A criterion that isn't met gets a finding, and its line in the check says in a few words what's wrong and names the finding's code. A criterion the code leaves undone or partly done is a defect. One you can't settle from the code either way is a judgement whose `Fix:` names what would settle it. A ticket that lists no criteria is checked against its description instead: something it asks for that isn't done is a defect, but never invent criteria. Behaviour that's implemented but wrong is a defect, and so is anything built that the contract puts out of scope.
 
 Code the contract doesn't mention isn't a finding. The contract describes behaviour, not every line, so helpers, refactors and technical choices legitimately aren't in it.
 
@@ -60,9 +60,9 @@ Code that does the wrong thing is a defect. A better approach for code that work
 
 ### Writing each finding
 
-`/fix` applies each finding's `Fix:` line in `auto` mode, without asking anyone, so write it as a concrete change ("Change X to Y") and, when more than one fix is reasonable, name the one you recommend. Name the problem in general terms on the `Defect:` line (e.g. `Defect: request body used without a null check`), then search the changed files for every other instance and list each `file:line` on `Also at:`, or `none`; the one `Fix:` covers them all. On the `spec` axis, a finding about an unmet acceptance criterion adds a `Criterion:` line: the criterion exactly as the contract words it, then `— partial` or `— missing`.
+`/fix` applies each finding's `Fix:` line in `auto` mode, without asking anyone, so write it as a concrete change ("Change X to Y") and, when more than one fix is reasonable, name the one you recommend. Name the problem in general terms on the `Defect:` line (e.g. `Defect: request body used without a null check`), then search the changed files for every other instance and list each `file:line` on `Also at:`, or `none`; the one `Fix:` covers them all.
 
-You're done when every problem on your axis appears in exactly one finding, with all its locations.
+You're done when every problem on your axis appears in exactly one finding, with all its locations, and on the `spec` axis every criterion in the contract appears exactly once in the criteria check.
 
 ## Step 3 — Return your findings
 
@@ -74,13 +74,11 @@ Return your complete result as your final message, following every rule in `<plu
 - Axis: <axis>
 - Defects: <count>
 - Judgements: <count>
-- Acceptance criteria: <x> of <y> met
 ===FINDINGS===
 Note: <standards axis only, and only when there's something to report>
 
 **<code> — defect: <short title>**
 `<file>:<line>` — <what the issue is and why it matters>
-Criterion: <spec axis only: the criterion as the contract words it> — <partial | missing>
 Defect: <the problem in general terms, in one line>
 Also at: <every other `file:line` in the changed files with this problem, or "none">
 Fix: <the concrete change to make, at every location listed>
@@ -90,10 +88,13 @@ Fix: <the concrete change to make, at every location listed>
 Defect: <the problem in general terms, in one line>
 Also at: <every other `file:line` in the changed files with this problem, or "none">
 Fix: <the concrete change to make, at every location listed>
+===CRITERIA===
+- [x] <criterion> — met
+- [ ] <criterion> — <what's wrong, in a few words> (see <code>)
 ===END===
 ````
 
-`Acceptance criteria:` appears on the `spec` axis only; a ticket with no acceptance criteria gives `0 of 0 met`. Give every finding its own code per **Finding codes** in `<plugin-root>/guides/vocabulary.md`, using your axis's letter. The counts must match the findings exactly, and with no findings the block is `None.`
+`===CRITERIA===` appears on the `spec` axis only; a ticket with no acceptance criteria gives `None.` there. Give every finding its own code per **Finding codes** in `<plugin-root>/guides/vocabulary.md`, using your axis's letter. The counts must match the findings exactly, and with no findings the block is `None.`
 
 If you can't review at all — `Axis:` missing or not a review axis, `Base:` missing or not a ref git knows, the `spec` axis with no contract, or a contract file missing or empty — return:
 
