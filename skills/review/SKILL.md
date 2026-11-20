@@ -143,8 +143,7 @@ Reviewed against: <`SPEC.md` | ticket [<ticket-id>](<ticket-url>), saved in `TIC
 <the correctness axis's ===FINDINGS=== block>
 
 ## Acceptance criteria check
-- [x] <criterion> — met
-- [ ] <criterion> — <partial | missing> (see <code>)
+<the spec axis's ===CRITERIA=== block>
 
 ## Verdict
 <`fix-needed` — <n> defects | `approved` — no defects>
@@ -154,7 +153,7 @@ On `branch`, leave out the Summary's Spec line and the **Acceptance criteria che
 
 **Findings** go in as each axis returned them, never re-ranked across axes. The one change allowed is for a duplicate: when two findings on different axes describe the same problem at the same code, keep both and add `Same as: <code>` as the last line of the one on the later axis (spec, then standards, then correctness), naming the earlier one, so it gets fixed once.
 
-**Acceptance criteria check** lists every acceptance criterion in `SPEC.md`, or in `TICKET.md` on `ticket`, in order. A criterion named on a spec finding's `Criterion:` line takes that line's status and the finding's code; every other criterion is met. If the number met doesn't match the spec axis's `Acceptance criteria:` field, the spec result is malformed: go back to Step 6's failure. A ticket with no acceptance criteria gets the single line "The ticket lists no acceptance criteria."
+**Acceptance criteria check** is the spec reviewer's own, copied as it returned it. If it leaves out a criterion of `SPEC.md`, or of `TICKET.md` on `ticket`, the spec result is malformed: go back to Step 6's failure. A ticket with no acceptance criteria gets the single line "The ticket lists no acceptance criteria."
 
 **Verdict** is per **Review verdict** in `../../guides/vocabulary.md`, from the defects across all the axes. Its `<n>` leaves out a defect whose `Same as:` names another defect; the Summary's per-axis counts still include it.
 
@@ -164,6 +163,6 @@ On `branch`, leave out the Summary's Spec line and the **Acceptance criteria che
 
 ## Step 8 — Log and hand off
 
-On `spec`, append `/review completed` per `../../guides/logs-format.md`: each axis's counts from its result, `Acceptance criteria:` from the spec axis, the verdict, and `Next step:` per **Review verdict** in `../../guides/vocabulary.md`.
+On `spec`, append `/review completed` per `../../guides/logs-format.md`: each axis's counts from its result, `Acceptance criteria:` counted from the criteria check, the verdict, and `Next step:` per **Review verdict** in `../../guides/vocabulary.md`.
 
 Hand off per `../../guides/result-format.md`, with the base among the key facts, plus `Ticket: <ticket-id>` on `ticket`. On `ticket` or `branch` there's no spec for `/ptah:fix` to work from, so `Next:` is `fix the defects, then /ptah:review` on `fix-needed` and `none — review clean` on `approved`.

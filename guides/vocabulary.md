@@ -105,7 +105,7 @@ Values used by `review` and `fix`.
 
 | Value | Meaning |
 |---|---|
-| `defect` | Objectively wrong: an acceptance criterion isn't met, a bug, a broken documented standard. Always carries its citation. |
+| `defect` | Objectively wrong: an acceptance criterion the code leaves undone, a bug, a broken documented standard. Always carries its citation. |
 | `judgement` | The reviewer's opinion: a smell, a better design |
 
 #### Finding codes

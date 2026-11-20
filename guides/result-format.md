@@ -28,18 +28,17 @@ The subagent's final message:
 
 ### Rules
 
-1. **Nothing outside the blocks.** No preamble before `===RESULT===`, nothing after `===END===`.
+1. **The final message is the result.** Another command reads it, not a person, so it opens on `===RESULT===` and closes on `===END===`. Leave out anything a project rule asks you to add to a response, such as a footer listing the rules you followed.
 2. **`Status:` is always the first bullet.**
 3. **The fields after it are the `LOGS.md` fields for the entry that status produces** — `completed`, `paused`, or `failed` (see the mapping in `vocabulary.md` and the per-command fields below). Same names, same order, minus `Next step:`, which the dispatcher adds. Everything else is copied verbatim. The one exception is the `reviewer`'s `complete` fields, which cover one axis: `/review` combines the three results into one entry.
 4. **One line per value.** No value spans lines. Lists inside a value are comma-separated.
 5. **Fixed values are exact** — each written as `vocabulary.md` spells it.
 6. **`###` sections appear only when they apply** — never written empty. `### Questions` appears only with `needs-input`.
-7. **Artifact blocks are named after the file they become** (`===PLAN.md===`) and appear only with `complete`. Their content is raw markdown, written verbatim. The one exception is the `reviewer`'s `===FINDINGS===`, which becomes its axis's section of `REVIEW.md`.
-8. **`===END===` closes every result.**
+7. **Artifact blocks are named after the file they become** (`===PLAN.md===`) and appear only with `complete`. Their content is raw markdown, written verbatim. The exceptions are the `reviewer`'s `===FINDINGS===`, which becomes its axis's section of `REVIEW.md`, and `===CRITERIA===`, which becomes its **Acceptance criteria check**.
 
 ### Malformed results
 
-A result is malformed if any rule above is broken: text outside the blocks, `Status:` missing or not first, a required field missing, a value outside its vocabulary, a missing artifact block on `complete`, a question without a valid **question tag**, or no `===END===`.
+The dispatcher reads the result from `===RESULT===` to the first `===END===` and ignores anything before or after it. A result is malformed when that content is wrong: `Status:` missing, a required field missing, a value outside its vocabulary, a missing artifact block on `complete`, a question without a valid **question tag**, or no `===END===`, which means the result was cut off. `Status:` written after another bullet doesn't make it malformed.
 
 The dispatcher never guesses or patches a malformed result. It treats it exactly like `Status: error`: logs a `failed` entry with `Reason: malformed result — <what was wrong>`, writes no artifact.
 
@@ -49,7 +48,7 @@ The dispatcher never guesses or patches a malformed result. It treats it exactly
 |---|---|---|---|
 | `architect` | Approach, Key decisions, Open questions, Concerns | Blocked on, Progress, Files touched | `===PLAN.md===` |
 | `implementer` | Summary, Files created, Files modified, Deviations from plan, Known issues | Blocked on, Progress, Files touched | `===IMPLEMENTATION-SUMMARY.md===` |
-| `reviewer` | Axis, Defects, Judgements, Acceptance criteria (`spec` axis only) | — | `===FINDINGS===` |
+| `reviewer` | Axis, Defects, Judgements | — | `===FINDINGS===`, plus `===CRITERIA===` on the `spec` axis |
 
 `error` always carries exactly one field: `Reason: <one line>`.
 
