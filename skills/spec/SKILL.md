@@ -16,7 +16,7 @@ If the spec comes from a ticket (e.g. JIRA, Linear, GitHub), start from it throu
 Raw arguments: `$ARGUMENTS`, trimmed.
 
 - **Empty** → a spec without a ticket.
-- **A single token shaped like a ticket id** — a letter, then letters or digits, a `-`, then digits, e.g. `PROJ-1234` → a ticket spec. `<ticket-id>` = the argument, keeping its casing.
+- **A single token shaped like a ticket id**, per **Ticket ids** in `../../guides/spec-identifiers.md`, e.g. `PROJ-1234` → a ticket spec. `<ticket-id>` = the argument, keeping its casing.
 - **A single URL naming one ticket** — a token starting with `http://` or `https://` whose whole path segments and query-parameter values contain exactly one id shaped like a ticket id (case-insensitive) → a ticket spec. `<ticket-id>` = that id, keeping its casing:
   - `https://some-org.atlassian.net/jira/software/projects/PROJ/boards/12?selectedIssue=PROJ-1234` → `PROJ-1234`
   - `https://linear.app/some-org/issue/PROJ-41/some-title` → `PROJ-41`

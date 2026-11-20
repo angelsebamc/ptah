@@ -11,6 +11,12 @@ Every spec folder created by `/ptah:spec` is named one of two ways:
 
 > "Ptah names specs after the git repository. Run this command inside one."
 
+## Ticket ids
+
+A token is **shaped like a ticket id** when it is a letter, then letters or digits, a `-`, then digits, e.g. `PROJ-1234`.
+
+**A ticket id from the branch.** Take the part of `git branch --show-current` after the last `/`. If, case-insensitive, it is shaped like a ticket id, or starts with one followed by `-`, that id, uppercased, is the branch's ticket id. E.g. `user/proj-45-csv-export` gives `PROJ-45`; `csv-export` gives none.
+
 ## Resolving an identifier
 
 Every command that takes a `<spec-id>` accepts a bare code (`k3f9`), a prefixed code (`some-web-k3f9`), a ticket id (`PROJ-45`), or the full folder name. Matching is case-insensitive: `PROJ-45` and `proj-45` are the same spec. Resolve it in this order:
@@ -29,7 +35,7 @@ Commands refer to the resolved folder as `<feature-name>`.
 A command that takes a `<spec-id>` and gets none picks the spec in this order, stopping at the first that gives one:
 
 1. **The git branch.** Take the part of `git branch --show-current` after the last `/`. It names a spec when, case-insensitive, it is the spec's id — `<repo>-<code>` for a spec without a ticket, the ticket id for a ticket spec — or starts with that id followed by `-`. E.g. `user/PROJ-45-csv-export` names `PROJ-45-add-csv-export`; `PROJ-4-fix` doesn't. If more than one spec matches, stop, list them, and ask for the full folder name.
-2. **This session's last hand-off.** Take the `<id>` from the first line of the most recent Ptah hand-off in this conversation — `/<command> <id> <status>`, e.g. `/review PROJ-45 completed` — and use it as `<spec-id>`.
+2. **This session's last hand-off.** Take the `<id>` from the first line of the most recent Ptah hand-off in this conversation — `/<command> <id> <status>`, e.g. `/review PROJ-45 completed` — and use it as `<spec-id>`. Skip a hand-off that starts `/review branch`: it names no spec.
 3. **The user picks.** Ask, listing every spec in `.ptah/specs/` by its display id and the rest of its folder name — specs without a ticket first, then ticket specs — and wait for the reply:
    > "Which spec? Reply with its id.
    >

@@ -97,7 +97,7 @@ Values used by `review` and `fix`.
 
 | Value | Code letter | Checks |
 |---|---|---|
-| `spec` | `P` | The code does what `SPEC.md` says: acceptance criteria, behaviour, out of scope |
+| `spec` | `P` | The code does what the spec (`SPEC.md`, or the ticket) says: acceptance criteria, behaviour, out of scope |
 | `standards` | `S` | The code follows the project's documented standards and recorded knowledge, and has no code smells |
 | `correctness` | `C` | The code works: logic, edge cases, failure paths, security, data integrity, performance, tests |
 
