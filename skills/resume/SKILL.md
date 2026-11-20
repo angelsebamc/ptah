@@ -7,46 +7,33 @@ disable-model-invocation: true
 
 # /resume
 
-Orient the agent on a spec's current state at the start of a new session.
+Orient on a spec's current state at the start of a new session, from its `LOGS.md` alone.
 
 `RULES.md` is `../../RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
+`/resume` is read-only and reads one file. Leave every artifact, everything in `refs/`, and every source file unread, including the files `IMPLEMENTATION-SUMMARY.md` lists, and write nothing, `LOGS.md` included. The workflow command that needs artifacts, refs or code loads them itself.
+
 ## Step 1 — Locate the spec
 
-`<spec-id>` = `$ARGUMENTS[0]`, if given.
-
-Resolve `<spec-id>` per `../../guides/spec-identifiers.md`.
+Resolve `<spec-id>`, the first argument in `$ARGUMENTS` if there is one, per `../../guides/spec-identifiers.md`.
 
 ---
 
 ## Step 2 — Read the session history
 
-Apply the **Always read LOGS.md first** rule from `RULES.md`: read the full `LOGS.md` for the resolved spec folder.
+Read the spec folder's full `LOGS.md`, per **Always read LOGS.md first** in `RULES.md`.
 
-If `LOGS.md` is empty or missing, the folder wasn't produced by `/ptah:spec`. Tell the user:
+If `LOGS.md` is empty or missing, `/ptah:spec` didn't produce the folder, so stop:
 
 > "Spec `<id>` has no LOGS.md at `.ptah/specs/<folder>/`. Ptah can't resume it."
 
-Then stop.
-
-Otherwise, identify:
-- **The last entry** in the file, command or change.
-- **The last command entry** (`/<command> completed | paused | failed`) and the change entries after it. These drive `Where you are:`, even when the last entry is a change entry.
-
-### Do not
-
-- Read any artifact
-- Read anything in `refs/`
-- Read any source file, including files listed in `IMPLEMENTATION-SUMMARY.md`
-- Write or edit any file, including `LOGS.md`
-
-Artifacts, refs and code are loaded by the workflow command that needs them.
+Otherwise find two things: the **last entry** in the file, command or change, and the **last command entry** (`/<command> completed | paused | failed`) with the change entries after it. The last command entry drives `Where you are:`, even when a change entry comes after it. The step is done when you know both.
 
 ---
 
 ## Step 3 — Print the summary
 
-Print exactly two lines, with a blank line between them:
+Print exactly these two lines, with a blank line between them, and nothing else:
 
 ```
 Last entry: #<n> <timestamp> <type> — <what>
@@ -54,7 +41,7 @@ Last entry: #<n> <timestamp> <type> — <what>
 Where you are: <one-line synthesis>
 ```
 
-`#<n>` and `<timestamp>` are the last entry's heading id and timestamp, as written. Leave out `#<n>` for an entry without an id. `<type>` and `<what>` depend on the entry:
+`#<n>` and `<timestamp>` are the last entry's heading id and timestamp, as written; leave out `#<n>` for an entry without an id. `<type>` and `<what>` come from the entry:
 
 | Last entry | `<type>` | `<what>` |
 |---|---|---|
@@ -63,18 +50,9 @@ Where you are: <one-line synthesis>
 | `paused` command entry | `/<command> paused` | its `Blocked on:` |
 | `failed` command entry | `/<command> failed` | its `Reason:` |
 
-### Rules for the synthesis line
+The synthesis is one sentence built from the last command entry: what just happened and what the user runs next, e.g. "Code review done with 3 defects. Next step: /ptah:fix k3f9." What it must also carry depends on that entry:
 
-Base it on the last command entry's `Next step:`, in one sentence. Examples:
-
-- `"Implementation finished. Next step: /ptah:review k3f9."`
-- `"Code review done with 3 defects. Next step: /ptah:fix k3f9."`
-- `"Spec written. Next step: /ptah:plan k3f9."`
-
-If the `Next step:` starts with `none`, say nothing is open and name the optional command, if any, per **Next step** in `../../guides/vocabulary.md`. E.g. `"Review clean, nothing open. Optional: /ptah:fix k3f9."`
-
-If the last command entry has `Manual steps:`, name them before the next command, e.g. `"Implementation finished. Restart the local API, then /ptah:review k3f9."`
-
-If the last command entry is `paused`, name what it's blocked on and how to pick it back up. The change entries after it are the user's answers so far. An answer whose `What:` starts with `not-answered-yet:` doesn't count until a later entry answers the same question: name the question and what the user needs to do before re-running. E.g. `"Paused during /ptah:implement, blocked on: <Blocked on: value> — 2 answers logged. Re-run /ptah:implement k3f9 to continue."`
-
-If the last command entry is `failed`, give the reason and the re-run, e.g. `"/ptah:review failed: <Reason: value>. Re-run /ptah:review k3f9."` For a failed `/ptah:implement`, add that code may have changed on disk.
+- A `Next step:` that starts with `none`: say nothing is open, and name the optional command, if any, per **Next step** in `../../guides/vocabulary.md`.
+- `Manual steps:`: name them before the next command.
+- `paused`: name what it's blocked on, how many answers the change entries after it have logged, and the command to re-run to continue. An answer whose `What:` starts with `not-answered-yet:` doesn't count until a later entry answers the same question; name that question and what the user needs to do before re-running.
+- `failed`: give the reason and the command to re-run. For a failed `/ptah:implement`, add that code may have changed on disk.

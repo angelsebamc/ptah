@@ -2,7 +2,7 @@
 
 Every fixed value Ptah uses — in `LOGS.md`, in subagent results, in hand-offs, in `status` — is defined here and only here.
 
-Values are **kebab-case**, lowercase, and exact. A value that isn't on its list is an error, never something to coerce to the nearest match — same "hard failures over silent fallbacks" principle as the rest of Ptah.
+Values are **kebab-case**, lowercase, and exact. A value that isn't on its list is an error; never coerce it to the nearest match.
 
 ---
 

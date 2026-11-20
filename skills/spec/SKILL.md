@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # /spec
 
-If the spec comes from a ticket (e.g. JIRA, Linear, GitHub), start from it through the project's ticket server.
+Grill the developer until every decision the spec needs is settled, then write `SPEC.md` in a new spec folder. A ticket, when given, is the starting point.
 
 `RULES.md` is `../../RULES.md`. Read it before Step 1 unless its full text is already in your context.
 
@@ -16,11 +16,11 @@ If the spec comes from a ticket (e.g. JIRA, Linear, GitHub), start from it throu
 Raw arguments: `$ARGUMENTS`, trimmed.
 
 - **Empty** → a spec without a ticket.
-- **A single token shaped like a ticket id**, per **Ticket ids** in `../../guides/spec-identifiers.md`, e.g. `PROJ-1234` → a ticket spec. `<ticket-id>` = the argument, keeping its casing.
-- **A single URL naming one ticket** — a token starting with `http://` or `https://` whose whole path segments and query-parameter values contain exactly one id shaped like a ticket id (case-insensitive) → a ticket spec. `<ticket-id>` = that id, keeping its casing:
-  - `https://some-org.atlassian.net/jira/software/projects/PROJ/boards/12?selectedIssue=PROJ-1234` → `PROJ-1234`
-  - `https://linear.app/some-org/issue/PROJ-41/some-title` → `PROJ-41`
+- **One token shaped like a ticket id**, per **Ticket ids** in `../../guides/spec-identifiers.md` → a ticket spec, with `<ticket-id>` = the token.
+- **One `http://` or `https://` URL** whose path segments and query-parameter values hold exactly one id shaped like a ticket id (case-insensitive) → a ticket spec, with `<ticket-id>` = that id. E.g. `https://linear.app/some-org/issue/PROJ-41/some-title` gives `PROJ-41`; `https://some-org.atlassian.net/jira/software/projects/PROJ/boards/12?selectedIssue=PROJ-1234` gives `PROJ-1234`.
 - **Anything else** → show the examples below and stop.
+
+`<ticket-id>` keeps the casing it was given in.
 
 Examples:
 - `/ptah:spec`: plain feature, no external ticket. The name comes from your answers
@@ -29,37 +29,21 @@ Examples:
 
 ---
 
-## Step 2 — Check the config and fetch the ticket (if any)
+## Step 2 — Check the config and fetch the ticket
 
 Check the config per **Required keys** in `../../guides/config.md`.
 
-For a spec without a ticket, get `<repo>` now, per `../../guides/spec-identifiers.md`, so a missing git repository stops the command before the conversation.
+Without a ticket, get `<repo>` now, per `../../guides/spec-identifiers.md`, so a missing git repository stops the command before the grill instead of after it.
 
-For a ticket spec:
+With a ticket, `<server>` is `tickets.server` in `.ptah/ptah.yml`. Stop with the message that fits when:
 
-- `<server>` = `tickets.server` from `.ptah/ptah.yml`. If it's unset, stop:
-  > "No ticket server is set for this project. Run `/ptah:init` to choose one."
-- If no MCP server named `<server>` is available in this session, stop, listing the MCP servers that are available:
-  > "MCP server `<server>` isn't available. Available servers: <list>. Install or enable it, or run `/ptah:init` to choose another."
-- If a folder matching `.ptah/specs/<ticket-id>-*` (case-insensitive) already exists, stop — never create a second folder for the same ticket:
-  > "Ticket `<ticket-id>` already has a spec at `.ptah/specs/<folder>/`. Run `/ptah:resume <ticket-id>`."
+- it's unset: "No ticket server is set for this project. Run `/ptah:init` to choose one."
+- no MCP server named `<server>` is available in this session, listing the ones that are: "MCP server `<server>` isn't available. Available servers: <list>. Install or enable it, or run `/ptah:init` to choose another."
+- a folder matching `.ptah/specs/<ticket-id>-*` (case-insensitive) already exists, since a ticket gets exactly one spec folder: "Ticket `<ticket-id>` already has a spec at `.ptah/specs/<folder>/`. Run `/ptah:resume <ticket-id>`." A missing `.ptah/specs/` is no match; if the check itself fails, stop and show its error.
 
-  A missing `.ptah/specs/` means no match. If the check itself fails, stop and show its error.
+Then fetch `<ticket-id>` with `<server>`'s MCP tools. If it doesn't exist, stop: "Ticket `<ticket-id>` wasn't found on `<server>`."
 
-Otherwise, fetch the ticket with id `<ticket-id>` using that server's MCP tools.
-
-If the ticket doesn't exist, stop:
-
-> "Ticket `<ticket-id>` wasn't found on `<server>`."
-
-Report back to the user what the ticket settles:
-
-> "Loaded `<ticket-id>`: <ticket title>.
->
-> The ticket settles:
-> - <each thing it decides: what the feature is, why it matters, any acceptance criteria or flows it states>
->
-> I'll treat those as decided and ask about what it leaves open."
+Tell the user which ticket you loaded (id and title) and list what it settles: what the feature is, why it matters, and any acceptance criteria or flows it states. Say you'll treat those as decided and ask only about what it leaves open.
 
 ---
 
@@ -69,7 +53,7 @@ Grill the developer relentlessly on what the feature must do. How to build it be
 
 ### What the spec holds
 
-The grill fills this template. Write one user story per actor and need. End each acceptance criterion with the id of the story it proves. For a ticket spec, include the `Source:` line linking back to the ticket. Omit it for a spec without a ticket.
+The grill fills this template. Write one user story per actor and need, and end each acceptance criterion with the id of the story it proves. The `Source:` line is for a ticket spec only.
 
 ```markdown
 # SPEC — <feature-name>
@@ -100,17 +84,13 @@ The grill fills this template. Write one user story per actor and need. End each
 
 ### Design tree
 
-The open decisions form a **design tree**. Its branches reach every section of the spec, plus the existing features, data and APIs the feature touches; probe each flow for empty states, failures and edge cases. Ask only what changes the spec.
+The open decisions form a **design tree**. Its branches reach every section of the template plus the existing features, data and APIs the feature touches, and each flow branches into its empty states, failures and edge cases. Ask only what changes the spec. On a ticket spec, what the ticket settles is decided: ask only about what it leaves open or gets wrong against the code.
 
-### Facts are yours, decisions are the user's
-
-Look facts up per **Stop and ask** in `RULES.md`: read the files, or dispatch an Explore subagent for a wide search. A running lookup holds back only the questions that depend on it; ask the rest now.
-
-For a ticket spec, what the ticket settles is decided. Ask only about what it leaves open or gets wrong against the code.
+Facts are yours to find, decisions are the user's. Look facts up per **Stop and ask** in `RULES.md`, reading the files yourself or dispatching an Explore subagent for a wide search. A lookup still running holds back only the questions that depend on it; ask the rest now.
 
 ### Rounds
 
-Work the tree in rounds. The **frontier** is every decision whose prerequisites are settled (error flows wait on the main flow, criteria on the stories). Ask the whole frontier, then wait for the reply:
+Work the tree in rounds. The **frontier** is every decision whose prerequisites are settled: error flows wait on the main flow, criteria on the stories. Ask the whole frontier at once, then wait for the reply. Number the questions so the user can answer by number:
 
 ```
 **1. <short title>**
@@ -118,73 +98,44 @@ Work the tree in rounds. The **frontier** is every decision whose prerequisites 
 Recommended: <your answer, and why in a few words>
 ```
 
-Word each question so "yes" accepts the recommendation. Separate rounds with `---`.
-
-Each reply moves the frontier: recompute it and ask the next round.
+Word each question so "yes" accepts the recommendation, and separate rounds with `---`. Each reply moves the frontier: recompute it and ask the next round.
 
 ### Done
 
-The grill is done when the frontier is empty: every branch visited, nothing in the spec silently assumed. Then:
-
-1. Check that every story has at least one acceptance criterion and every criterion proves a story. Ask about any gap as another round.
-2. Show the user a summary of the spec, and ask them to confirm or correct it.
+The grill is done when the frontier is empty: every branch visited, nothing in the spec silently assumed, every story proved by at least one acceptance criterion and every criterion proving a story. Ask about any gap as another round. Then show the user a summary of the spec and wait until they confirm it, folding in any correction.
 
 ---
 
-## Step 4 — Create the folder structure
+## Step 4 — Create the spec folder
 
-`<id>` is the spec's display id per `../../guides/spec-identifiers.md`.
+Name the folder per `../../guides/spec-identifiers.md`: `<ticket-id>-<kebab>` for a ticket spec, `<repo>-<code>-<kebab>` otherwise.
 
-### 4a. Get the id
-- **From a ticket** — no code; go to 4b.
-- **Without a ticket** — generate `<code>` by running, in a POSIX shell:
+**`<code>`** (no ticket only) always comes from the shell, never from you. Run, in a POSIX shell:
 
-  ```sh
-  LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c 4
-  ```
-
-  or in PowerShell:
-
-  ```powershell
-  -join (1..4 | ForEach-Object { 'abcdefghijklmnopqrstuvwxyz0123456789'.ToCharArray() | Get-Random })
-  ```
-
-  If any folder in `.ptah/specs/` starts with `<repo>-<code>-`, run it again. Never make up a code or pick one yourself.
-
-### 4b. Name the feature
-- **From a ticket** — `<feature-name>` = the ticket's title.
-- **Without a ticket** — infer `<feature-name>` from the Description and Problem the grill settled: a short phrase naming what the feature does, e.g. `user login`. Don't ask the user for it.
-
-### 4c. Build the folder name
-`<kebab>` is `<feature-name>` in kebab-case, per `../../guides/spec-identifiers.md`. If `<kebab>` is longer than 50 characters, cut it at the last `-` before the 50th character.
-
-- **From a ticket** — `<folder>` = `<ticket-id>-<kebab>`
-- **Without a ticket** — `<folder>` = `<repo>-<code>-<kebab>`
-
-### 4d. Create the folder
-Create the following structure at `.ptah/specs/<folder>/`:
-
-```
-.ptah/specs/<folder>/
-  LOGS.md
-  SPEC.md
-  refs/
+```sh
+LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c 4
 ```
 
+or in PowerShell:
+
+```powershell
+-join (1..4 | ForEach-Object { 'abcdefghijklmnopqrstuvwxyz0123456789'.ToCharArray() | Get-Random })
+```
+
+If a folder in `.ptah/specs/` already starts with `<repo>-<code>-`, run it again.
+
+**`<feature-name>`** is the ticket's title. Without a ticket, infer it from the Description and Problem the grill settled, without asking: a short phrase naming what the feature does, e.g. `user login`.
+
+**`<kebab>`** is `<feature-name>` in kebab-case, per that guide. If it's longer than 50 characters, cut it at the last `-` before the 50th character.
+
+Create `.ptah/specs/<folder>/` holding `LOGS.md`, `SPEC.md`, and an empty `refs/`.
+
 ---
 
-## Step 5 — Write SPEC.md
+## Step 5 — Write, log, and hand off
 
-Write the spec the user confirmed to `SPEC.md`
-
----
-
-## Step 6 — Append to LOGS.md
+Write the spec the user confirmed to `.ptah/specs/<folder>/SPEC.md`, in the template from Step 3.
 
 Append a `/spec completed` entry to `.ptah/specs/<folder>/LOGS.md` per `../../guides/logs-format.md`.
 
----
-
-## Step 7 — Hand off to user
-
-Hand off to the user per `../../guides/result-format.md`. For a spec without a ticket, include the inferred name among the key facts, e.g. `Feature: user login`.
+Hand off per `../../guides/result-format.md`, naming the spec by its display id `<id>` per **Displaying an identifier** in `../../guides/spec-identifiers.md`. Without a ticket, include the inferred name among the key facts, e.g. `Feature: user login`.

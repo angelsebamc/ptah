@@ -36,9 +36,6 @@ Plugin root: <plugin-root>
 
 ## Step 3 — Handle the result
 
-Per **Handling the result** in `../../guides/delegated-work.md`:
+Handle the result per **Handling the result** in `../../guides/delegated-work.md`. On `complete`, the artifact goes to `.ptah/specs/<feature-name>/PLAN.md` and `Next step:` is `/ptah:implement <id>`.
 
-- **`complete`** — write the `===PLAN.md===` block to `.ptah/specs/<feature-name>/PLAN.md`. `Next step: /ptah:implement <id>`.
-  - If `Open questions` isn't `none`, after logging `/plan completed`, ask PLAN.md's **Open questions** in order. Then update `PLAN.md` to match each answer, per **Artifact ownership** in `RULES.md`.
-  - If the user defers a question, leave it in **Open questions**, log nothing for it, and move on.
-  - If `Concerns` isn't `none`, the hand-off adds a `Concerns` list of PLAN.md's **Concerns**, copied verbatim.
+When `Open questions` isn't `none`, ask PLAN.md's **Open questions** in order once `/plan completed` is logged, and update `PLAN.md` to match each answer per **Artifact ownership** in `RULES.md`. A question the user defers stays in **Open questions**, with nothing logged for it. When `Concerns` isn't `none`, the hand-off adds a `Concerns` list with PLAN.md's **Concerns** copied verbatim.

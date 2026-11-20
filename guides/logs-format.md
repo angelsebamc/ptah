@@ -1,8 +1,6 @@
 # LOGS.md format
 
-Every command appends an entry to `LOGS.md` when it completes, pauses, or fails, and **change entries** are appended in between as work happens. All entries follow the same strict schema.
-
-This guide defines the schema. The discipline (when to log, when not to) lives in [`RULES.md`](../RULES.md) under "Logging discipline". Every fixed value — statuses, change types, triggers, verdicts — is defined in [`vocabulary.md`](./vocabulary.md).
+Every command appends an entry to `LOGS.md` when it completes, pauses, or fails, and **change entries** are appended in between as work happens. This guide defines the schema every entry follows. When to log lives in [`RULES.md`](../RULES.md) under "Logging discipline", and every fixed value in [`vocabulary.md`](./vocabulary.md).
 
 ---
 
@@ -29,14 +27,13 @@ This guide defines the schema. The discipline (when to log, when not to) lives i
      if (Test-Path <log>) { @(Select-String -Path <log> -Pattern '^## ').Count + 1 } else { 1 }
      ```
 
-   - Date and time use 24-hour local time, e.g. `2026-05-08 14:32:07`
-   - Get the timestamp from the shell: `date '+%Y-%m-%d %H:%M:%S'` (POSIX) or `Get-Date -Format 'yyyy-MM-dd HH:mm:ss'` (PowerShell). Never write one from memory or copy it from an earlier entry
+   - The timestamp is 24-hour local time, e.g. `2026-05-08 14:32:07`, taken from the shell: `date '+%Y-%m-%d %H:%M:%S'` (POSIX) or `Get-Date -Format 'yyyy-MM-dd HH:mm:ss'` (PowerShell). Never write one from memory or copy it from an earlier entry
    - Get the id and the timestamp right before appending, in the same step
    - `<status>` is a **command status** from `vocabulary.md`
    - An entry written before ids has no `#<n>`; refer to it by its timestamp
 2. **Body** — unordered list (`-`), one field per line, in the order defined below
 3. **One line per value** — no value spans lines, is empty, or has leading or trailing whitespace; lists inside a value are comma-separated
-4. **Last field** — must always be `Next step:` for command entries (change entries are exempt — see below)
+4. **Last field** — `Next step:` for command entries. Change entries have no `Next step:`: they record what happened and don't move the workflow forward
 5. **Separator** — one blank line between entries, no horizontal rules
 6. **Order** — newest entries appended to the bottom (chronological), not the top
 7. **Append-only** — past entries are never edited, reordered, or deleted, even when a later step makes one look wrong. To revert or restore something an earlier entry recorded, append a `correction` change entry
@@ -70,7 +67,7 @@ These two have the same fields whichever command wrote them.
 ### `/<command> paused`
 - Blocked on (one line — what needs the user's input)
 - Progress (one line — what's finished so far, or `none`)
-- Files touched (comma-separated paths, or `none`)
+- Files touched
 - Next step (`answer the open questions, then re-run /ptah:<command> <id>`)
 
 Written by `/plan` and `/implement` when their subagent returns `needs-input`. The user's answers follow as `decision` / `deviation` / `scope-change` change entries, and a re-run picks up from there. An answer the user can't give yet starts its `What:` with the `not-answered-yet:` marker.
@@ -85,51 +82,51 @@ Written when a subagent returns `error` or a malformed result. No artifact is wr
 
 ## `completed` — per-command fields (required, in order)
 
-Any `completed` entry may add `Manual steps:` right before `Next step:`. Leave it out when there are none.
+Each value takes its shape from **Value shapes** above. Any `completed` entry may add `Manual steps:` right before `Next step:`. Leave it out when there are none.
 
 ### `/spec completed`
 - Feature
-- Source (ticket ID or `none`)
+- Source
 - Key decisions
 - Next step
 
 ### `/plan completed`
 - Approach
 - Key decisions
-- Open questions (count or `none`)
-- Concerns (count or `none`)
+- Open questions
+- Concerns
 - Next step
 
 ### `/implement completed`
 - Summary
 - Files created (count)
 - Files modified (count)
-- Deviations from plan (`yes — see change entries above` or `no`)
-- Known issues (`yes — <note>` or `no`)
+- Deviations from plan
+- Known issues
 - Next step
 
 ### `/review completed`
-- Spec (`<d> defects, <j> judgements`)
-- Standards (`<d> defects, <j> judgements`)
-- Correctness (`<d> defects, <j> judgements`)
-- Acceptance criteria (`X of Y met`)
-- Verdict (`fix-needed` or `approved`)
+- Spec
+- Standards
+- Correctness
+- Acceptance criteria
+- Verdict
 - Next step (per **Review verdict** in `vocabulary.md`)
 
 ### `/fix completed`
-- Mode (`auto`, `plan`, or `interactive`)
+- Mode
 - Defects fixed (count)
 - Judgements fixed (count)
-- Skipped by user (count, or `none` — includes findings marked already fixed)
-- Deferred (count, or `none` — findings left out by the codes given)
-- New issues found (`yes — <note>` or `no`)
+- Skipped by user (includes findings marked already fixed)
+- Deferred (findings left out by the codes given)
+- New issues found
 - Next step (per **Fix next step** in `vocabulary.md`)
 
 ---
 
 ## Change entries
 
-Between command entries, the agent appends **change entries** whenever a meaningful event happens mid-session: decisions, deviations from the plan, scope changes, blockers, or corrections. They are the canonical record of in-flow events — completion entries reference them rather than restating them.
+Between command entries, the agent appends a **change entry** for each mid-session event that matches a change type in `vocabulary.md`. Change entries are the canonical record of those events; completion entries reference them rather than restating them.
 
 Heading uses `change` instead of `/<command> <status>`:
 
@@ -143,7 +140,7 @@ Heading uses `change` instead of `/<command> <status>`:
 - Corrects: <#<n> | <timestamp> | none>
 ```
 
-All fields are required, in the order shown, except `Corrects:`, which every `correction` has and no other type does: the id of the entry it corrects (its timestamp for an entry written before ids), or `none` when it corrects something done rather than something logged. The correction restates whatever in the corrected entry still holds. `Next step:` is **not** included — change entries record what happened, they don't move the workflow forward.
+All fields are required, in the order shown, except `Corrects:`, which every `correction` has and no other type does: the id of the entry it corrects (its timestamp for an entry written before ids), or `none` when it corrects something done rather than something logged. The correction restates whatever in the corrected entry still holds.
 
 ---
 

@@ -1,23 +1,24 @@
 # Delegated work
 
-- **The prompt is the folder path and the plugin root, nothing else** — plus, for the reviewer, its axis and the base ref, and on a review without a Ptah spec the branch and the ticket file, if any, in place of the folder. The subagent reads what it needs from disk itself. The dispatcher never summarizes the conversation or explains anything on the user's behalf.
-- **The plugin root** is the absolute path of `../..`, resolved from the dispatching skill's directory. Nothing else tells the subagent where Ptah is installed.
+A dispatching skill is a thin dispatcher. The subagent's prompt is the spec folder path and the plugin root, nothing else. The reviewer also gets its axis and the base ref, and on a review without a Ptah spec it gets the branch and the ticket file, if any, in place of the folder. The subagent reads what it needs from disk, so the dispatcher never summarizes the conversation or explains anything on the user's behalf.
+
+The **plugin root** is the absolute path of `../..`, resolved from the dispatching skill's directory. It is the only way the subagent learns where Ptah is installed.
 
 Subagents can't talk to the user, so **Stop and ask** in [`RULES.md`](../RULES.md) becomes a loop:
 
-1. The subagent hits something it would normally ask about. It stops and returns its questions, each tagged with the change-entry type the answer would be (`decision`, `deviation`, `scope-change`) — result status `needs-input`.
+1. Where the subagent would ask, it stops and returns result status `needs-input` with its questions, each tagged with the change-entry type its answer would be: `decision`, `deviation`, or `scope-change`.
 2. The dispatcher logs a `/<command> paused` command entry, then asks the questions.
-3. After each answer, if it contradicts `SPEC.md` or `PLAN.md`, the dispatcher updates that file per **Artifact ownership** in `RULES.md`. Then it appends a change entry recording the answer (`Trigger: user-request`, the tagged type, `What:` the answer as a one-line decision).
+3. When an answer contradicts `SPEC.md` or `PLAN.md`, the dispatcher updates that file per **Artifact ownership** in `RULES.md`. Then, for every answer, it appends a change entry with `Trigger: user-request`, the tagged type, and `What:` the answer as a one-line decision.
 4. The dispatcher re-dispatches with the same prompt. The subagent finds the answers in `LOGS.md`, where they belong anyway.
 
-If the user can't answer a question yet because it needs something outside Ptah, such as an approval, log that answer with a `What:` starting `not-answered-yet:`, keep asking the remaining questions, and don't re-dispatch. Hand off as paused, with `Next:` naming what the user needs to do, then the command to re-run. On that re-run, before re-dispatching, ask again every question with a `not-answered-yet:` answer since the last `paused` entry and no later answer — done by the user, plan changed, or still blocked — and log the new answer.
+An answer the user can't give yet because it needs something outside Ptah, such as an approval, is logged with a `What:` starting `not-answered-yet:`. Keep asking the remaining questions, then hand off as paused instead of re-dispatching, with `Next:` naming what the user needs to do, then the command to re-run. On that re-run, before re-dispatching, ask again every question whose answer since the last `paused` entry is still only `not-answered-yet:`, and log the new answer: done by the user, plan changed, or still blocked.
 
 ## Handling the result
 
-First check the subagent's result against every rule in [`the result format`](./result-format.md).
+First check the subagent's result against every rule in [`the result format`](./result-format.md). Then act on its status:
 
-- **`complete`** — write the artifact block verbatim to the spec folder, then append `/<command> completed` per [`the logs format`](./logs-format.md), copying the result's fields and adding `Next step:`.
-- **`needs-input`** — run the loop above: append `/<command> paused` copying the result's fields verbatim, ask the `### Questions` in the order returned (reword if it reads better, but never answer, soften, or drop one, and name who does each thing: you or the agent), log each answer, then re-dispatch.
-- **`error`, or a malformed result** — write no artifact, append `/<command> failed`, and hand off as failed. If the result was malformed, offer to show the raw response.
+- **`complete`:** write the artifact block verbatim to the spec folder, then append `/<command> completed` per [`the logs format`](./logs-format.md), copying the result's fields and adding `Next step:`.
+- **`needs-input`:** run the loop above, copying the result's fields verbatim into the `/<command> paused` entry. Ask the `### Questions` in the order returned. Reword one if it reads better, but every question reaches the user whole: never answer, soften, or drop one. Each names who does each thing: you (the user) or the agent.
+- **`error`, or a malformed result:** write no artifact, append `/<command> failed`, and hand off as failed. If the result was malformed, offer to show the raw response.
 
 Then hand off per the result format.

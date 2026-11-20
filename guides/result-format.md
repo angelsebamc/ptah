@@ -5,13 +5,13 @@ Every Ptah command ends with a final report, and every report has one of two rea
 - **A dispatching command** reads a subagent's **result** and turns it into files and a `LOGS.md` entry.
 - **The user** reads a command's **hand-off**.
 
-A result maps onto its log entry field for field, and all three read the same way. Every fixed value comes from [`vocabulary.md`](./vocabulary.md).
+Every fixed value comes from [`vocabulary.md`](./vocabulary.md).
 
 ---
 
 ## Subagent result
 
-Returned as the subagent's final message
+The subagent's final message:
 
 ````
 ===RESULT===
@@ -32,7 +32,7 @@ Returned as the subagent's final message
 2. **`Status:` is always the first bullet.**
 3. **The fields after it are the `LOGS.md` fields for the entry that status produces** — `completed`, `paused`, or `failed` (see the mapping in `vocabulary.md` and the per-command fields below). Same names, same order, minus `Next step:`, which the dispatcher adds. Everything else is copied verbatim. The one exception is the `reviewer`'s `complete` fields, which cover one axis: `/review` combines the three results into one entry.
 4. **One line per value.** No value spans lines. Lists inside a value are comma-separated.
-5. **Every fixed value comes from `vocabulary.md`**, exactly as written there.
+5. **Fixed values are exact** — each written as `vocabulary.md` spells it.
 6. **`###` sections appear only when they apply** — never written empty. `### Questions` appears only with `needs-input`.
 7. **Artifact blocks are named after the file they become** (`===PLAN.md===`) and appear only with `complete`. Their content is raw markdown, written verbatim. The one exception is the `reviewer`'s `===FINDINGS===`, which becomes its axis's section of `REVIEW.md`.
 8. **`===END===` closes every result.**
@@ -41,7 +41,7 @@ Returned as the subagent's final message
 
 A result is malformed if any rule above is broken: text outside the blocks, `Status:` missing or not first, a required field missing, a value outside its vocabulary, a missing artifact block on `complete`, a question without a valid **question tag**, or no `===END===`.
 
-The dispatcher never guesses or patches a malformed result. It treats it exactly like `Status: error` — logs a `failed` entry with `Reason: malformed result — <what was wrong>`, writes no artifact.
+The dispatcher never guesses or patches a malformed result. It treats it exactly like `Status: error`: logs a `failed` entry with `Reason: malformed result — <what was wrong>`, writes no artifact.
 
 ### Per-command fields
 
@@ -68,6 +68,9 @@ Field formats are defined in [`logs-format.md`](./logs-format.md) under each com
 - [decision] Should archived accounts still count toward net worth? — the design hides them from the list but doesn't say whether the total excludes them.
 ===END===
 ````
+
+---
+
 ## Hand-off
 
 Every command's final message to the user:

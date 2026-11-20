@@ -1,6 +1,6 @@
 # Project config
 
-`.ptah/ptah.yml`, relative to the project root. `/ptah:init` creates it.
+The project config is `.ptah/ptah.yml` at the project root, created by `/ptah:init`:
 
 ```yaml
 commands:
@@ -13,8 +13,6 @@ tickets:
   server: claude_ai_Linear
 ```
 
----
-
 ## Keys
 
 | Key | Required | Written by | Read by | Meaning |
@@ -25,14 +23,12 @@ tickets:
 
 A command changes only the keys it writes and leaves every other key exactly as it was.
 
----
-
 ## Required keys
 
 A command that checks the config reads `.ptah/ptah.yml` and stops if the file is missing, isn't valid YAML, or lacks a required key:
 
 > "Ptah isn't set up for this project. Run `/ptah:init` first."
 
-If `commands.fix.mode` is set to anything other than a fix mode in [`vocabulary`](./vocabulary.md), or `commands.implement.review` is set to anything other than `true` or `false`, stop:
+It also stops if `commands.fix.mode` isn't one of the fix modes in [`vocabulary`](./vocabulary.md), or `commands.implement.review` is set to anything but `true` or `false`:
 
 > "Invalid `<key>` value `<value>` in `.ptah/ptah.yml`. Run `/ptah:init` to fix it."
