@@ -163,6 +163,6 @@ On `branch`, leave out the Summary's Spec line and the **Acceptance criteria che
 
 ## Step 8 — Log and hand off
 
-On `spec`, append `/review completed` per `../../guides/logs-format.md`: each axis's counts from its result, `Acceptance criteria:` counted from the criteria check, the verdict, and `Next step:` per **Review verdict** in `../../guides/vocabulary.md`.
+On `spec`, append `/review completed` per `../../guides/logs-format.md`: each axis's counts from its result, `Acceptance criteria:` counted from the criteria check, and the verdict.
 
-Hand off per `../../guides/result-format.md`, with the base among the key facts, plus `Ticket: <ticket-id>` on `ticket`. On `ticket` or `branch` there's no spec for `/ptah:fix` to work from, so `Next:` is `fix the defects, then /ptah:review` on `fix-needed` and `none — review clean` on `approved`.
+Hand off per `../../guides/result-format.md`, with the base among the key facts, plus `Ticket: <ticket-id>` on `ticket`. On `ticket` or `branch` there's no spec for `/ptah:fix` to work from, so a `Next:` never recommends it.

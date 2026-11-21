@@ -46,13 +46,12 @@ Where you are: <one-line synthesis>
 | Last entry | `<type>` | `<what>` |
 |---|---|---|
 | change entry | its `Type:` | its `What:` |
-| `completed` command entry | `/<command> completed` | its `Next step:` |
+| `completed` command entry | `/<command> completed` | what it produced, such as its `Summary:` or `Verdict:` |
 | `paused` command entry | `/<command> paused` | its `Blocked on:` |
 | `failed` command entry | `/<command> failed` | its `Reason:` |
 
-The synthesis is one sentence built from the last command entry: what just happened and what the user runs next, e.g. "Code review done with 3 defects. Next step: /ptah:fix k3f9." What it must also carry depends on that entry:
+The synthesis is one sentence built from the last command entry: what just happened, e.g. "Code review done with 3 defects." What it must also carry depends on that entry:
 
-- A `Next step:` that starts with `none`: say nothing is open, and name the optional command, if any, per **Next step** in `../../guides/vocabulary.md`.
-- `Manual steps:`: name them before the next command.
+- `Manual steps:`: name them.
 - `paused`: name what it's blocked on, how many answers the change entries after it have logged, and the command to re-run to continue. An answer whose `What:` starts with `not-answered-yet:` doesn't count until a later entry answers the same question; name that question and what the user needs to do before re-running.
 - `failed`: give the reason and the command to re-run. For a failed `/ptah:implement`, add that code may have changed on disk.

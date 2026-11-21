@@ -30,7 +30,7 @@ The subagent's final message:
 
 1. **The final message is the result.** Another command reads it, not a person, so it opens on `===RESULT===` and closes on `===END===`. Leave out anything a project rule asks you to add to a response, such as a footer listing the rules you followed.
 2. **`Status:` is always the first bullet.**
-3. **The fields after it are the `LOGS.md` fields for the entry that status produces** — `completed`, `paused`, or `failed` (see the mapping in `vocabulary.md` and the per-command fields below). Same names, same order, minus `Next step:`, which the dispatcher adds. Everything else is copied verbatim. The one exception is the `reviewer`'s `complete` fields, which cover one axis: `/review` combines the three results into one entry.
+3. **The fields after it are the `LOGS.md` fields for the entry that status produces** — `completed`, `paused`, or `failed` (see the mapping in `vocabulary.md` and the per-command fields below). Same names, same order, values copied verbatim. The one exception is the `reviewer`'s `complete` fields, which cover one axis: `/review` combines the three results into one entry.
 4. **One line per value.** No value spans lines. Lists inside a value are comma-separated.
 5. **Fixed values are exact** — each written as `vocabulary.md` spells it.
 6. **`###` sections appear only when they apply** — never written empty. `### Questions` appears only with `needs-input`.
@@ -78,8 +78,10 @@ Every command's final message to the user:
 /<command> <id> <status>
 Artifact: `<path to the artifact the user should review>`
 <one to three lines of key facts>
-Next: <`/<next-command> <id>`, or what the user needs to do>
+Next: <what the user needs to do>
 ```
+
+`Next:` is a recommendation, written only when the user has something to do before carrying on: answer the questions a pause is waiting on, fix what made a run fail, or check or decide something the result raised. Leave the line out otherwise. It never just names the command that usually follows, such as `/ptah:review` after `/ptah:implement`.
 
 A command's skill may name a list for its hand-off. It goes after the key facts and before `Next:`, one line per item:
 

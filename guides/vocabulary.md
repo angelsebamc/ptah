@@ -49,10 +49,6 @@ The prefix of a change entry's `What:` when it records a subagent question the u
 |---|---|
 | `not-answered-yet:` | The answer needs something outside Ptah, such as an approval |
 
-### Next step
-
-A command entry's `Next step:` that starts with `none` means nothing is open. Anything after `; optional: ` is a command the user may run, not work left to do.
-
 ---
 
 ## Subagent results
@@ -114,17 +110,10 @@ Every finding carries a code: its axis's code letter plus a number, e.g. `P1`, `
 
 ### Review verdict
 
-| Value | Meaning | Next step |
-|---|---|---|
-| `fix-needed` | At least one defect | `/ptah:fix <id>` |
-| `approved` | No defects | `none — review clean`, plus `; optional: /ptah:fix <id>` when there are judgements |
-
-### Fix next step
-
-| Fixed from | Next step |
+| Value | Meaning |
 |---|---|
-| An `approved` review, with `New issues found: no` | `none — no re-review needed; optional: /ptah:review <id>` |
-| Anything else | `/ptah:review <id>` |
+| `fix-needed` | At least one defect |
+| `approved` | No defects |
 
 ### Fix mode
 

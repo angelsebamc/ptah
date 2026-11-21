@@ -80,7 +80,7 @@ Every claim in your result about deploying or running the change, such as a manu
 - Files modified: <count>
 - Deviations from plan: <"yes — see change entries above" or "no">
 - Known issues: <"no", or "yes — <brief note>">
-- Manual steps: <comma-separated actions the user takes before the next command — leave the line out when there are none>
+- Manual steps: <comma-separated actions the user takes before continuing — leave the line out when there are none>
 
 ===IMPLEMENTATION-SUMMARY.md===
 # IMPLEMENTATION SUMMARY — <feature-name>
