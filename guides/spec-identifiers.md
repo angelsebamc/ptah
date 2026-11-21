@@ -38,7 +38,7 @@ Commands call the resolved folder `<feature-name>`.
 Take the spec from the first of these sources that gives one:
 
 1. **The git branch.** Take the part of `git branch --show-current` after the last `/`. It names a spec when, ignoring case, it is that spec's id (`<repo>-<code>` for a spec without a ticket, the ticket id for a ticket spec) or starts with that id followed by `-`. So `user/PROJ-45-csv-export` names `PROJ-45-add-csv-export`, and `PROJ-4-fix` doesn't. If it names more than one spec, stop, list them, and ask for the full folder name.
-2. **This session's last hand-off.** Use the `<id>` from the first line of the most recent Ptah hand-off in this conversation, `/<command> <id> <status>` (e.g. `/review PROJ-45 completed`). Skip a hand-off that starts `/review branch`: it names no spec.
+2. **This session's last hand-off.** Use the `<id>` from the first line of the most recent Ptah hand-off in this conversation, `/<command> <id> <status>` (e.g. `/review PROJ-45 completed`), or `/<command> <id> <n> <status>` with a slice number, which you leave out (e.g. `/review k3f9 2 completed`). Skip a hand-off that starts `/review branch`: it names no spec.
 3. **The user picks.** If `.ptah/specs/` has no specs, stop: "No specs yet. Run `/ptah:spec` to start one." Otherwise ask, listing every spec by its display id and the rest of its folder name, specs without a ticket first, then wait for the reply and use it as `<spec-id>`:
    > "Which spec? Reply with its id.
    >

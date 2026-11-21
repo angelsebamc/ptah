@@ -42,13 +42,15 @@ The **review target** is what the code is reviewed against, and it decides which
 - If the branch names a ticket, per **A ticket id from the branch** in that guide, the target is `ticket`, with `<ticket-id>` from the branch.
 - Otherwise the target is `branch`.
 
-On `spec`, if `.ptah/specs/<feature-name>/IMPLEMENTATION-SUMMARY.md` is empty or missing, stop:
+On a sliced `spec`, per `../../guides/slices.md`, the review is a **slice review** of the current slice, or the **final review** once the feature is finished.
+
+On `spec`, if `IMPLEMENTATION-SUMMARY.md` in the work folder is empty or missing, stop:
 
 > "No implementation found for `<spec-id>`. Run `/ptah:implement <id>` first."
 
-This only checks that the implementation happened. The reviewers never see `IMPLEMENTATION-SUMMARY.md`.
+The final review skips this check, since every slice is finished. This only checks that the implementation happened. The reviewers never see `IMPLEMENTATION-SUMMARY.md`.
 
-`<review-folder>` is `.ptah/specs/<feature-name>/` on `spec`, otherwise `.ptah/reviews/<branch-folder>/` per **Path conventions** in `RULES.md`.
+`<review-folder>` is the work folder on `spec`, otherwise `.ptah/reviews/<branch-folder>/` per **Path conventions** in `RULES.md`.
 
 ---
 
@@ -92,18 +94,19 @@ Then resolve `<base>` and its `<source>` per **Resolving the base** in `../../gu
 
 ## Step 5 — Dispatch the reviewers
 
-Invoke the `ptah:reviewer` subagent once for each of the target's axes from Step 2, all in one message, in the foreground. Each prompt is **only** these lines, with `<plugin-root>` per `../../guides/delegated-work.md` and `<first line>` from the target:
+Invoke the `ptah:reviewer` subagent once for each of the target's axes from Step 2, all in one message, in the foreground. Each prompt is **only** these lines, with `<plugin-root>` per `../../guides/delegated-work.md` and `<first line>` from the target, plus the `Slice:` line on a slice review:
 
 ```
 <first line>
 Plugin root: <plugin-root>
 Axis: <axis>
 Base: <base>
+Slice: <review-folder>
 ```
 
 | Target | `<first line>` |
 |---|---|
-| `spec` | `Review the Ptah spec at <review-folder>` |
+| `spec` | `Review the Ptah spec at .ptah/specs/<feature-name>/` |
 | `ticket` | `Review the branch <branch> against the ticket at <review-folder>TICKET.md` |
 | `branch` | `Review the branch <branch>, which has no spec` |
 
@@ -125,7 +128,7 @@ Write `<review-folder>REVIEW.md`, replacing any earlier one:
 # REVIEW — <feature-name on spec, otherwise branch>
 
 Compared against `<base>` (<source>).
-Reviewed against: <`SPEC.md` | ticket [<ticket-id>](<ticket-url>), saved in `TICKET.md` | no spec>
+Reviewed against: <`SPEC.md` | `SPEC.md` and slice <n>'s `SLICE.md` | ticket [<ticket-id>](<ticket-url>), saved in `TICKET.md` | no spec>
 
 ## Summary
 <2–3 sentences across the axes: is the code solid, and what's the main concern?>
@@ -153,7 +156,7 @@ On `branch`, leave out the Summary's Spec line and the **Acceptance criteria che
 
 **Findings** go in as each axis returned them, never re-ranked across axes. The one change allowed is for a duplicate: when two findings on different axes describe the same problem at the same code, keep both and add `Same as: <code>` as the last line of the one on the later axis (spec, then standards, then correctness), naming the earlier one, so it gets fixed once.
 
-**Acceptance criteria check** is the spec reviewer's own, copied as it returned it. If it leaves out a criterion of `SPEC.md`, or of `TICKET.md` on `ticket`, the spec result is malformed: go back to Step 6's failure. A ticket with no acceptance criteria gets the single line "The ticket lists no acceptance criteria."
+**Acceptance criteria check** is the spec reviewer's own, copied as it returned it. If it leaves out a criterion of `SPEC.md`, of the slice's **Criteria** on a slice review, or of `TICKET.md` on `ticket`, the spec result is malformed: go back to Step 6's failure. A ticket with no acceptance criteria gets the single line "The ticket lists no acceptance criteria."
 
 **Verdict** is per **Review verdict** in `../../guides/vocabulary.md`, from the defects across all the axes. Its `<n>` leaves out a defect whose `Same as:` names another defect; the Summary's per-axis counts still include it.
 
@@ -165,4 +168,4 @@ On `branch`, leave out the Summary's Spec line and the **Acceptance criteria che
 
 On `spec`, append `/review completed` per `../../guides/logs-format.md`: each axis's counts from its result, `Acceptance criteria:` counted from the criteria check, and the verdict.
 
-Hand off per `../../guides/result-format.md`, with the base among the key facts, plus `Ticket: <ticket-id>` on `ticket`. On `ticket` or `branch` there's no spec for `/ptah:fix` to work from, so a `Next:` never recommends it.
+Hand off per `../../guides/result-format.md`, with the base among the key facts, plus `Ticket: <ticket-id>` on `ticket`. On `ticket` or `branch` there's no spec for `/ptah:fix` to work from, so a `Next:` never recommends it. An `approved` slice review's `Next:` tells the user to check the result and commit it.

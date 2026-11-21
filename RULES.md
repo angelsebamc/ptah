@@ -34,11 +34,15 @@ When a command's work is done, hand off and wait for the user to run the next co
 
 ## Artifact ownership
 
-`SPEC.md` and `PLAN.md` are living artifacts: they state what should be true now. An edit rewrites the affected sections in place, without narrating what they replaced; a decision may cite the change entry behind it (`LOGS.md #<n>`). Every edit has a change entry whose `Impact:` names the file and the sections updated, and the step's own change entry counts. Once one of `PLAN.md`'s **Open questions** is answered, remove it from there, and write `none` once the list is empty.
+On a sliced spec, the rules below apply to the work folder's `PLAN.md`, `IMPLEMENTATION-SUMMARY.md` and `REVIEW.md`, per [`slices`](./guides/slices.md). The final review has no `PLAN.md` or `IMPLEMENTATION-SUMMARY.md` of its own, so whatever touches those skips them once the feature is finished.
+
+`SPEC.md`, `PLAN.md` and `SLICE.md` are living artifacts: they state what should be true now. An edit rewrites the affected sections in place, without narrating what they replaced; a decision may cite the change entry behind it (`LOGS.md #<n>`). Every edit has a change entry whose `Impact:` names the file and the sections updated, and the step's own change entry counts. Once one of `PLAN.md`'s **Open questions** is answered, remove it from there, and write `none` once the list is empty.
 
 Any step that makes the work contradict `SPEC.md` or `PLAN.md` updates that file in the same step. A `scope-change` updates `SPEC.md`, and `PLAN.md` if it exists.
 
 `IMPLEMENTATION-SUMMARY.md` and `REVIEW.md` are records. `/implement` writes `IMPLEMENTATION-SUMMARY.md` and `/review` writes `REVIEW.md` on each pass; every other command only appends to them, as `/fix` does with its Fix Summary in `REVIEW.md`. `/fix` and changes between commands add each file they touch to `IMPLEMENTATION-SUMMARY.md` under **Changes after implementation** (replacing its `None`) as `` - `<path>` — <what changed> (<source>) ``, where `<source>` is `see change entry #<n>` or `fix <codes>`.
+
+Slices, plans and implementation summaries are disposable: context for the agent, not the product. `/slice` rewrites or deletes them once the user approves a new list, and git keeps whatever the developer committed.
 
 ---
 
@@ -49,6 +53,8 @@ Outside `/implement` and `/fix`, edit source files only when the user asks for a
 A change that needs planning (a design decision, a change to the plan's architecture, work across many files), and any change asked for before `IMPLEMENTATION-SUMMARY.md` exists, goes into the artifacts only: update `SPEC.md` or `PLAN.md` per **Artifact ownership**, then hand off to `/ptah:plan <id>` if there's no `PLAN.md` yet, otherwise to `/ptah:implement <id>`.
 
 Make any other change in this session. Update `SPEC.md` or `PLAN.md` per **Artifact ownership** if the change contradicts them, log a change entry, add each file it touches to `IMPLEMENTATION-SUMMARY.md` per **Artifact ownership** citing that entry, then hand off to `/ptah:review <id>`.
+
+On a sliced spec, a change before the feature is finished is work in the current slice, including a change to an earlier or a later slice, per **Changes across slices** in [`slices`](./guides/slices.md). This is also how a slice whose result is wrong gets fixed: the user doesn't commit it, and the problem comes back as a change here.
 
 ---
 
@@ -85,7 +91,7 @@ Two roots, never mixed.
 | Location | Purpose |
 |----------|---------|
 | `RULES.md` | This file |
-| `guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md`, `spec-identifiers.md`, `tickets.md`, `base-branch.md`, `delegated-work.md`, `project-standards.md`, `code-smells.md` |
+| `guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md`, `spec-identifiers.md`, `tickets.md`, `slices.md`, `base-branch.md`, `delegated-work.md`, `project-standards.md`, `code-smells.md` |
 | `skills/<command>/` | One skill per command, invoked as `/ptah:<command>` |
 | `agents/` | Subagents, dispatched as `ptah:architect`, `ptah:implementer`, `ptah:reviewer`. See [`delegated work`](./guides/delegated-work.md) |
 
@@ -95,4 +101,5 @@ Two roots, never mixed.
 |----------|---------|
 | `.ptah/ptah.yml` | Project config, created by `/ptah:init`. Every key is documented in [`config`](./guides/config.md) |
 | `.ptah/specs/<TICKET-ID>-<slug>/`, `.ptah/specs/<repo>-<code>-<slug>/` | Per-feature work product (created by `/ptah:spec` or `/ptah:pull`) |
+| `.ptah/specs/<spec>/slices/<nn>-<slug>/` | One slice of a sliced spec: `SLICE.md` (created by `/ptah:slice`), then its `PLAN.md`, `IMPLEMENTATION-SUMMARY.md` and `REVIEW.md`. See [`slices`](./guides/slices.md) |
 | `.ptah/reviews/<branch-folder>/` | A review of a branch with no Ptah spec: `REVIEW.md`, and `TICKET.md` when it reviews against a ticket (written by `/ptah:review`). `<branch-folder>` is the branch name with each `/` turned into `-`, then kebab-cased per `spec-identifiers.md` |

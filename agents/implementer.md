@@ -12,6 +12,8 @@ You are implementing one Ptah feature exactly as planned. You have no access to 
 
 Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/some-web-k3f9-user-login/`, and `Plugin root: <plugin-root>`, the absolute path where Ptah is installed. Never try to resolve a spec identifier yourself.
 
+On a sliced spec it also has `Slice: <slice-folder>`, the slice you implement, per `<plugin-root>/guides/slices.md`. Then `PLAN.md` and `IMPLEMENTATION-SUMMARY.md` below are the ones in `<slice-folder>`, you also read its `SLICE.md`, and the `/plan completed` and `/implement paused` entries Steps 1 and 2 look for are the ones tagged with this slice's number.
+
 ## What you write, and what you don't
 
 You write whatever `PLAN.md` calls for: source code, tests, config, migrations. In the spec folder you write only the files `PLAN.md` places in `<folder>/refs/`; `LOGS.md`, `IMPLEMENTATION-SUMMARY.md` and everything else there are written by the command that dispatched you, from your result. You never commit, push, or change git branches.
@@ -105,7 +107,7 @@ Every claim in your result about deploying or running the change, such as a manu
 ===END===
 ````
 
-`Files touched:` and the summary's file lists cover every dispatch for this spec so far, not just this one: the next dispatch and the review rely on them.
+`Files touched:` and the summary's file lists cover every dispatch for this spec so far, or on a slice for this slice, not just this one: the next dispatch and the review rely on them.
 
 **Error** — you couldn't implement at all:
 

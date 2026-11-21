@@ -19,6 +19,7 @@ Your prompt contains:
 - `Plugin root: <plugin-root>`, the absolute path where Ptah is installed.
 - `Axis: <axis>`, a review axis from **Review axis** in `<plugin-root>/guides/vocabulary.md`.
 - `Base: <ref>`, the branch, tag, or commit to compare against.
+- On a review of one slice of a Ptah spec, `Slice: <slice-folder>`. The contract is then `SPEC.md` plus `<slice-folder>SLICE.md`, and the acceptance criteria you check are the slice's **Criteria**: the rest of the feature belongs to other slices, so what `SPEC.md` asks beyond them isn't a finding.
 
 ## Step 1 — Read what your axis needs
 
@@ -26,7 +27,7 @@ Find the changes from `<ref>` per **The changes** in `<plugin-root>/guides/base-
 
 The `spec` and `correctness` axes read the contract (on `correctness`, when there is one), the changes, and the code around them: whatever you need to judge the changes, such as callers, the bodies of reused methods, and types. The whole codebase is open to you. The `correctness` axis also reads what the project does deliberately: its standards and recorded knowledge per `<plugin-root>/guides/project-standards.md`, only the parts that apply to the changed code. The `standards` axis reads the changes, the project's standards per `<plugin-root>/guides/project-standards.md`, and `<plugin-root>/guides/code-smells.md`, but not the contract: code style doesn't depend on the feature.
 
-Under `.ptah/`, the contract is the only file you read. `SPEC.md` is the current contract, since any deviation that changes behaviour rewrites it. Leave `PLAN.md`, `IMPLEMENTATION-SUMMARY.md`, `LOGS.md`, `REVIEW.md`, and `refs/` unread: they hold the plan, the implementer's own account, and earlier reviews, and would anchor you to intentions instead of behaviour.
+Under `.ptah/`, the contract is all you read. `SPEC.md` is the current contract, since any deviation that changes behaviour rewrites it. Leave `PLAN.md`, `IMPLEMENTATION-SUMMARY.md`, `LOGS.md`, `REVIEW.md`, and `refs/` unread: they hold the plan, the implementer's own account, and earlier reviews, and would anchor you to intentions instead of behaviour.
 
 Work through the changes in logical chunks of at most 400 lines. You're done when you've read every changed file and everything your axis needs to judge them.
 

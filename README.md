@@ -33,7 +33,8 @@ Run these inside Claude Code, in your project:
 | `/ptah:grill [topic]` | Grills you about any plan, idea or decision, one round of questions at a time, until you share a design concept. Needs no spec. | nothing |
 | `/ptah:spec [ticket]` | Runs `/ptah:grill` on the feature, or picks up a grill you already ran, then writes the spec. Pass a ticket id or URL to start from it. Without one, you can file the spec on your ticket server, labeled `ready-to-develop`, instead of creating a spec folder. | `SPEC.md`, or a ticket |
 | `/ptah:pull <ticket>` | Creates the spec folder from a ticket that already holds a spec, such as one `/ptah:spec` filed. No grill. | `SPEC.md` |
-| `/ptah:plan` | Writes the technical plan | `PLAN.md` |
+| `/ptah:slice` | Optional, for a large spec: splits it into vertical slices you approve, each planned, built and reviewed on its own, in order | `slices/<nn>-<slug>/SLICE.md` |
+| `/ptah:plan` | Writes the technical plan, or the current slice's | `PLAN.md` |
 | `/ptah:implement` | Writes the code from the plan | code + `IMPLEMENTATION-SUMMARY.md` |
 | `/ptah:review [--base <ref>]` | Reviews the code on three axes in parallel, each in a fresh context: spec, standards, correctness. Findings are defects or judgements; the review is `approved` when there are no defects. Works without a Ptah spec too: against a ticket, or on standards and correctness alone. | `REVIEW.md` |
 | `/ptah:fix` | Fixes every review finding, or only the codes you name, then run `/ptah:review` again (optional after an `approved` review, which only leaves judgements to fix) | Fix Summary in `REVIEW.md` |
@@ -47,10 +48,18 @@ You can leave out the spec id: Ptah takes it from your git branch, or asks you t
 
 Everything that happens is logged in the spec's `LOGS.md`. Starting a new session? Run `/ptah:resume`.
 
+## Slices
+
+On a large feature, building everything in one run means nothing meets a real database or browser until all of it exists, and every review covers the whole diff. Run `/ptah:slice` after `/ptah:spec` to split the spec into vertical slices: each one a behavior that works end to end through every layer it needs, small enough for one `/ptah:implement` run. You approve the list before any slice is written. Small specs skip this and keep one plan.
+
+Then work one slice at a time, in order: `/ptah:plan`, `/ptah:implement`, `/ptah:review`, `/ptah:fix`, all on the current slice with no slice number to pass. Once the slice's review is `approved`, check the result and commit it yourself; Ptah never commits. The next `/ptah:plan` moves on to the next slice and needs a clean working tree. Each slice's plan builds on what the earlier slices actually built, and each slice review covers only that slice's changes, against its own criteria.
+
+When every slice is finished, `/ptah:review` reviews the whole feature against the spec. Re-running `/ptah:slice` can rework the list at any point: slices, plans and summaries are disposable, and the spec, the log and the code are what persist.
+
 ## Principles
 
 - **Every step leaves a file.** The ticket, `SPEC.md`, `PLAN.md`, the code with `IMPLEMENTATION-SUMMARY.md`, and `REVIEW.md` are the audit trail, tied together by `LOGS.md`. Steps share nothing but the spec folder and the code, so you can read exactly what each one worked from.
 - **Commands are building blocks, not a pipeline.** Run any one, in any order, as often as you need. Each checks that what it needs exists.
 - **A command runs another only when your config allows it.** `/ptah:implement` runs `/ptah:review` when `.ptah/ptah.yml` says so; otherwise each command stops when its work is done.
-- **Reviews start fresh.** The reviewers see only the spec (`SPEC.md`, or the ticket when there's no Ptah spec) and the code, never the plan, the implementer's summary, or the conversation that wrote it, so they can't inherit the reasons the code was written that way.
+- **Reviews start fresh.** The reviewers see only the spec (`SPEC.md` and, on a slice, its `SLICE.md`, or the ticket when there's no Ptah spec) and the code, never the plan, the implementer's summary, or the conversation that wrote it, so they can't inherit the reasons the code was written that way.
 - **Fail loudly.** A command stops when something it needs is missing (the previous step's file, the ticket, the ticket server, a valid result from its agent) instead of guessing past it.
