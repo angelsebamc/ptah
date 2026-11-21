@@ -27,6 +27,8 @@ Stop on any of these, with its message:
 - More than one mode flag: "Conflicting flags: `<flag1>` and `<flag2>`. Pick one."
 - Any other flag: "Unknown flag `-x`. Supported flags: `-a (auto)`, `-p (plan)`, `-i (interactive)`."
 
+The step is done when every argument is accounted for as the spec identifier, a code, or the mode flag.
+
 ---
 
 ## Step 2 — Resolve the spec, mode and scope

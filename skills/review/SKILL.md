@@ -48,9 +48,11 @@ On `spec`, if `IMPLEMENTATION-SUMMARY.md` in the work folder is empty or missing
 
 > "No implementation found for `<spec-id>`. Run `/ptah:implement <id>` first."
 
-The final review skips this check, since every slice is finished. This only checks that the implementation happened. The reviewers never see `IMPLEMENTATION-SUMMARY.md`.
+The final review skips this check, since every slice is finished. The check only confirms the implementation happened: the reviewers never see `IMPLEMENTATION-SUMMARY.md`.
 
 `<review-folder>` is the work folder on `spec`, otherwise `.ptah/reviews/<branch-folder>/` per **Path conventions** in `RULES.md`.
+
+You're done when the target, its axes and `<review-folder>` are set.
 
 ---
 
@@ -64,7 +66,7 @@ If the ticket can't be loaded, where the id came from decides what happens. An i
 - "MCP server `<server>` isn't available. Install or enable it, or run `/ptah:init` to choose another."
 - "Ticket `<ticket-id>` wasn't found on `<server>`."
 
-An id read from the branch name was only a guess, so the target becomes `branch`. Say why and go on to Step 4: "Branch `<branch>` names ticket `<ticket-id>`, but <no ticket server is set | MCP server `<server>` isn't available | it wasn't found on `<server>`>. Reviewing the branch without a spec."
+An id read from the branch name was only a guess, so the target becomes `branch`. Tell the user which ticket the branch names, why it couldn't be loaded (no ticket server set, the MCP server unavailable, or the ticket not found), and that the branch is reviewed without a spec, then go on to Step 4.
 
 Once the ticket is loaded, write `<review-folder>TICKET.md`, replacing any earlier one:
 
@@ -86,7 +88,7 @@ Copy only the criteria the ticket states. With none, the section is `None.`. Nev
 
 ## Step 4 — Resolve the base
 
-Tell the user what's being reviewed. On `spec`, **When the identifier is omitted** in `../../guides/spec-identifiers.md` already covers it. On `ticket`: "No Ptah spec for branch `<branch>`. Reviewing it against ticket `<ticket-id>`." On `branch`, unless Step 3 already said why: "No spec for branch `<branch>`. Reviewing the branch without a spec."
+Tell the user what's being reviewed. On `spec`, **When the identifier is omitted** in `../../guides/spec-identifiers.md` already covers it. On `ticket`, say the branch has no Ptah spec and is reviewed against `<ticket-id>`. On `branch`, unless Step 3 already said why, say the branch has no spec and is reviewed without one.
 
 Then resolve `<base>` and its `<source>` per **Resolving the base** in `../../guides/base-branch.md`, with `<base-ref>` as `--base` if Step 1 set it. On `ticket` or `branch`, stop if there are no changes per **The changes** in that guide: "No changes on `<branch>` against `<base>`."
 
@@ -109,6 +111,8 @@ Slice: <review-folder>
 | `spec` | `Review the Ptah spec at .ptah/specs/<feature-name>/` |
 | `ticket` | `Review the branch <branch> against the ticket at <review-folder>TICKET.md` |
 | `branch` | `Review the branch <branch>, which has no spec` |
+
+You're done when every dispatched reviewer has returned.
 
 ---
 

@@ -15,7 +15,7 @@ Orient on a spec's current state at the start of a new session, from its `LOGS.m
 
 ## Step 1 — Locate the spec
 
-Resolve `<spec-id>`, the first argument in `$ARGUMENTS` if there is one, per `../../guides/spec-identifiers.md`.
+Resolve `<spec-id>`, the first argument in `$ARGUMENTS` if there is one, per `../../guides/spec-identifiers.md`. The step is done when you have the spec folder.
 
 ---
 

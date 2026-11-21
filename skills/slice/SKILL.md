@@ -19,6 +19,8 @@ Slicing starts from a commit, because the approval may discard plans and summari
 
 > "You have uncommitted work outside `.ptah/`. Commit or discard it first, then run `/ptah:slice <id>` again."
 
+The step is done when you have the spec folder, its `SPEC.md` has content, and nothing outside `.ptah/` is uncommitted.
+
 ## Step 2 — Draft the slices
 
 Read `SPEC.md` and see what the spec folder already holds: a flat spec's root `PLAN.md`, `IMPLEMENTATION-SUMMARY.md` and `REVIEW.md`, or an earlier slicing's folders and the state `LOGS.md` gives them.
@@ -29,7 +31,7 @@ Look up in the code only the facts that shape the cut: which layers a story touc
 
 Give each slice a short title, what it **Delivers** with the user stories it covers, and its **Criteria**: testable conditions, each one a spec acceptance criterion or the part of one that this slice proves.
 
-The draft is done when every user story and acceptance criterion in `SPEC.md` is covered by at least one slice's **Delivers** or **Criteria**.
+The draft is done when every user story and acceptance criterion in `SPEC.md` is covered by at least one slice's **Delivers** or **Criteria**, and every slice is vertical (or the one preparatory refactor) and fits one `/ptah:implement` run.
 
 ## Step 3 — Get the list approved
 
@@ -41,10 +43,10 @@ Revise the list from each reply and show it again. The step is done when the use
 
 ## Step 4 — Write the slices
 
-Delete what the approved list discards, then make `slices/` match it: one `slices/<nn>-<slug>/` per slice, holding its `SLICE.md` in the format from `../../guides/slices.md`. The step is done when `slices/` holds exactly the approved slices, numbered in order, and each `SLICE.md` says what the list said.
+Delete what the approved list discards, then make `slices/` match it: one `slices/<nn>-<slug>/` per slice, holding its `SLICE.md` in the format from `../../guides/slices.md`. The step is done when nothing the list discards remains, `slices/` holds exactly the approved slices, numbered in order, and each `SLICE.md` says what the list said.
 
 ## Step 5 — Log and hand off
 
 Append `/slice completed` to `LOGS.md` per `../../guides/logs-format.md`.
 
-Hand off per `../../guides/result-format.md`, with `.ptah/specs/<feature-name>/slices/` as the artifact. Key facts: how many slices, and which are done. Add a `Slices` list, one line per slice with its number and title.
+Hand off per `../../guides/result-format.md`, with `.ptah/specs/<feature-name>/slices/` as the artifact. Key facts: how many slices, and which are done. Add a `Slices` list, one line per slice with its number and title. The step is done when the hand-off lists every slice in `slices/`.

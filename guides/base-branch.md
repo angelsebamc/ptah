@@ -12,11 +12,7 @@ Otherwise, look at the oldest entry in the current branch's reflog. If it says t
 
 Otherwise, take the nearest branch: of the local and `origin/` branches, the one whose merge-base with `HEAD` is the fewest commits behind `HEAD`. A local branch and its `origin/` copy are one candidate, named by the local one. Leave out the current branch and its remote copy, `origin/HEAD`, branches with unrelated histories, and any branch cut from this one (it holds `HEAD` plus newer commits). Source: `nearest branch`.
 
-If two candidates tie, or none qualify, ask, listing the tied ones if any:
-
-> "Which branch was `<branch>` cut from? (e.g. `main`, `develop`)"
-
-Check the reply as you would `--base`. Source: `from you`.
+If two candidates tie, or none qualify, ask the user which branch `<branch>` was cut from, offering the tied candidates if any, and check the reply as you would `--base`. Source: `from you`.
 
 Show the base and its source: "Compared against `<base>` (<source>)."
 

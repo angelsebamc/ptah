@@ -107,3 +107,5 @@ If you can't review at all — `Axis:` missing or not a review axis, `Base:` mis
 - Reason: <one line>
 ===END===
 ````
+
+You're done when your final message is that one result, complete enough that `/review` writes it into `REVIEW.md` with no fixes.
