@@ -30,7 +30,8 @@ Run these inside Claude Code, in your project:
 | Command | What it does | Writes |
 |---------|--------------|--------|
 | `/ptah:init` | One-time setup: fix defaults, whether `/ptah:implement` runs the review, and your ticket server (optional) | `.ptah/ptah.yml` |
-| `/ptah:spec [ticket]` | Grills you about the feature, looking facts up in the code, then writes the spec. Pass a ticket id or URL to start from it. | `SPEC.md` |
+| `/ptah:grill [topic]` | Grills you about any plan, idea or decision, one round of questions at a time, until you share a design concept. Needs no spec. | nothing |
+| `/ptah:spec [ticket]` | Runs `/ptah:grill` on the feature, then writes the spec. Pass a ticket id or URL to start from it. | `SPEC.md` |
 | `/ptah:plan` | Writes the technical plan | `PLAN.md` |
 | `/ptah:implement` | Writes the code from the plan | code + `IMPLEMENTATION-SUMMARY.md` |
 | `/ptah:review [--base <ref>]` | Reviews the code on three axes in parallel, each in a fresh context: spec, standards, correctness. Findings are defects or judgements; the review is `approved` when there are no defects. Works without a Ptah spec too: against a ticket, or on standards and correctness alone. | `REVIEW.md` |
