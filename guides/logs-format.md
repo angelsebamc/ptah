@@ -11,7 +11,6 @@ Every command appends an entry to `LOGS.md` when it completes, pauses, or fails,
 - <field>: <value>
 - <field>: <value>
 - ...
-- Next step: <next-command-or-action>
 ```
 
 ## Rules
@@ -33,11 +32,10 @@ Every command appends an entry to `LOGS.md` when it completes, pauses, or fails,
    - An entry written before ids has no `#<n>`; refer to it by its timestamp
 2. **Body** — unordered list (`-`), one field per line, in the order defined below
 3. **One line per value** — no value spans lines, is empty, or has leading or trailing whitespace; lists inside a value are comma-separated
-4. **Last field** — `Next step:` for command entries. Change entries have no `Next step:`: they record what happened and don't move the workflow forward
-5. **Separator** — one blank line between entries, no horizontal rules
-6. **Order** — newest entries appended to the bottom (chronological), not the top
-7. **Append-only** — past entries are never edited, reordered, or deleted, even when a later step makes one look wrong. To revert or restore something an earlier entry recorded, append a `correction` change entry
-8. **No prose** — entries are bullets only, no paragraphs
+4. **Separator** — one blank line between entries, no horizontal rules
+5. **Order** — newest entries appended to the bottom (chronological), not the top
+6. **Append-only** — past entries are never edited, reordered, or deleted, even when a later step makes one look wrong. To revert or restore something an earlier entry recorded, append a `correction` change entry
+7. **No prose** — entries are bullets only, no paragraphs
 
 ---
 
@@ -56,7 +54,7 @@ Every command appends an entry to `LOGS.md` when it completes, pauses, or fails,
 | `Mode` | a fix mode from `vocabulary.md` |
 | `Verdict` | a verdict from `vocabulary.md` that is valid for the command |
 | `Skipped by user`, `Deferred` | a count, or `none` |
-| `Manual steps` | comma-separated, each item one action the user takes before the next command, such as restarting a local service or renaming a file before handing it on |
+| `Manual steps` | comma-separated, each item one action the user takes before continuing, such as restarting a local service or renaming a file before handing it on |
 
 ---
 
@@ -68,13 +66,11 @@ These two have the same fields whichever command wrote them.
 - Blocked on (one line — what needs the user's input)
 - Progress (one line — what's finished so far, or `none`)
 - Files touched
-- Next step (`answer the open questions, then re-run /ptah:<command> <id>`)
 
 Written by `/plan` and `/implement` when their subagent returns `needs-input`. The user's answers follow as `decision` / `deviation` / `scope-change` change entries, and a re-run picks up from there. An answer the user can't give yet starts its `What:` with the `not-answered-yet:` marker.
 
 ### `/<command> failed`
 - Reason (one line)
-- Next step (`re-run /ptah:<command> <id>`, or what to fix first)
 
 Written when a subagent returns `error` or a malformed result. No artifact is written for a failed run. For `/review`, the Reason names each axis that failed.
 
@@ -82,20 +78,18 @@ Written when a subagent returns `error` or a malformed result. No artifact is wr
 
 ## `completed` — per-command fields (required, in order)
 
-Each value takes its shape from **Value shapes** above. Any `completed` entry may add `Manual steps:` right before `Next step:`. Leave it out when there are none.
+Each value takes its shape from **Value shapes** above. Any `completed` entry may add `Manual steps:` as its last field. Leave it out when there are none.
 
 ### `/spec completed`
 - Feature
 - Source
 - Key decisions
-- Next step
 
 ### `/plan completed`
 - Approach
 - Key decisions
 - Open questions
 - Concerns
-- Next step
 
 ### `/implement completed`
 - Summary
@@ -103,7 +97,6 @@ Each value takes its shape from **Value shapes** above. Any `completed` entry ma
 - Files modified (count)
 - Deviations from plan
 - Known issues
-- Next step
 
 ### `/review completed`
 - Spec
@@ -111,7 +104,6 @@ Each value takes its shape from **Value shapes** above. Any `completed` entry ma
 - Correctness
 - Acceptance criteria
 - Verdict
-- Next step (per **Review verdict** in `vocabulary.md`)
 
 ### `/fix completed`
 - Mode
@@ -120,7 +112,6 @@ Each value takes its shape from **Value shapes** above. Any `completed` entry ma
 - Skipped by user (includes findings marked already fixed)
 - Deferred (findings left out by the codes given)
 - New issues found
-- Next step (per **Fix next step** in `vocabulary.md`)
 
 ---
 
@@ -151,20 +142,17 @@ All fields are required, in the order shown, except `Corrects:`, which every `co
 - Feature: account creation with excluded from net worth toggle
 - Source: PROJ-42
 - Key decisions: toggle defaults to false
-- Next step: /ptah:plan PROJ-42
 
 ## #2 — 2026-04-23 11:47:03 — /plan completed
 - Approach: new boolean field on accounts table + UI toggle in form
 - Key decisions: reuse existing form component
 - Open questions: none
 - Concerns: none
-- Next step: /ptah:implement PROJ-42
 
 ## #3 — 2026-04-23 14:22:18 — /implement paused
 - Blocked on: whether archived accounts count toward net worth
 - Progress: form component and schema change written
 - Files touched: src/accounts/AccountForm.tsx, db/schema/0042_archived.sql
-- Next step: answer the open questions, then re-run /ptah:implement PROJ-42
 
 ## #4 — 2026-04-23 14:25:40 — change
 - Trigger: user-request
@@ -179,7 +167,6 @@ All fields are required, in the order shown, except `Corrects:`, which every `co
 - Files modified: 4
 - Deviations from plan: yes — see change entries above
 - Known issues: no
-- Next step: /ptah:review PROJ-42
 
 ## #6 — 2026-04-23 16:40:12 — change
 - Trigger: user-request

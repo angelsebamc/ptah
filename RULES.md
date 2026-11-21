@@ -6,7 +6,7 @@ Cross-cutting rules that apply to every Ptah command.
 
 ## Always read LOGS.md first
 
-Before any work on a feature, read `LOGS.md` in its spec folder, even when you only mean to look at one file. It is the single source of truth for current state: what's done, what was decided, what's next. An entry named by a later `Corrects:` is superseded, so go by the correction.
+Before any work on a feature, read `LOGS.md` in its spec folder, even when you only mean to look at one file. It is the single source of truth for current state: what's done and what was decided. An entry named by a later `Corrects:` is superseded, so go by the correction.
 
 ---
 

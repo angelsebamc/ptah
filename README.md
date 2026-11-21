@@ -49,6 +49,6 @@ Everything that happens is logged in the spec's `LOGS.md`. Starting a new sessio
 
 - **Every step leaves a file.** The ticket, `SPEC.md`, `PLAN.md`, the code with `IMPLEMENTATION-SUMMARY.md`, and `REVIEW.md` are the audit trail, tied together by `LOGS.md`. Steps share nothing but the spec folder and the code, so you can read exactly what each one worked from.
 - **Commands are building blocks, not a pipeline.** Run any one, in any order, as often as you need. Each checks that what it needs exists.
-- **A command runs another only when your config allows it.** `/ptah:implement` runs `/ptah:review` when `.ptah/ptah.yml` says so; otherwise every command ends by naming the next one.
+- **A command runs another only when your config allows it.** `/ptah:implement` runs `/ptah:review` when `.ptah/ptah.yml` says so; otherwise each command stops when its work is done.
 - **Reviews start fresh.** The reviewers see only the spec (`SPEC.md`, or the ticket when there's no Ptah spec) and the code, never the plan, the implementer's summary, or the conversation that wrote it, so they can't inherit the reasons the code was written that way.
 - **Fail loudly.** A command stops when something it needs is missing (the previous step's file, the ticket, the ticket server, a valid result from its agent) instead of guessing past it.

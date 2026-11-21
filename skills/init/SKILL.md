@@ -68,7 +68,6 @@ implement: review <true | false>
 fix: mode <mode>
 ticket server: <server> | none
 git: .ptah/ excluded locally | ignored by <source> | tracked
-Next: /ptah:spec, or /ptah:spec <ticket-id>
 ```
 
 The `git:` line shows the state after Step 4, and is left out when question 4 was skipped because the project isn't a git repository.

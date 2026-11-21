@@ -70,7 +70,7 @@ If `git status --porcelain` shows uncommitted changes, don't offer: stay on the 
 
 ## Displaying an identifier
 
-Output shown to the user (hand-offs, `Next:` lines, `/ptah:resume`'s summary) names a spec only by its **display id**, written `<id>`:
+Output shown to the user (hand-offs and `/ptah:resume`'s summary) names a spec only by its **display id**, written `<id>`:
 
 - A spec without a ticket, whose folder starts with `<repo>-<code>-`, shows only its code, e.g. `/ptah:plan k3f9`.
 - A ticket spec shows its ticket id as written in the folder name, everything up to and including the first run of digits, e.g. `/ptah:plan PROJ-45`.

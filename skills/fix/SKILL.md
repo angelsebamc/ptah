@@ -117,10 +117,10 @@ Cite a standard on the line of each fix it shaped. Every finding in `REVIEW.md` 
 
 Update `SPEC.md`, `PLAN.md` and `IMPLEMENTATION-SUMMARY.md` per **Artifact ownership** in `RULES.md`.
 
-Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `../../guides/logs-format.md`, with `Next step:` per **Fix next step** in `../../guides/vocabulary.md`.
+Append `/fix completed` to `.ptah/specs/<feature-name>/LOGS.md` per `../../guides/logs-format.md`.
 
 ---
 
 ## Step 5 — Hand off
 
-Hand off per `../../guides/result-format.md`, with `.ptah/specs/<feature-name>/REVIEW.md` (fix summary appended) as the artifact. The key facts are the mode, the fixed, skipped and deferred codes (`none` where empty), and whether new issues were found, with a note if so. List the entry's manual steps, and end on its `Next step:`.
+Hand off per `../../guides/result-format.md`, with `.ptah/specs/<feature-name>/REVIEW.md` (fix summary appended) as the artifact. The key facts are the mode, the fixed, skipped and deferred codes (`none` where empty), and whether new issues were found, with a note if so.

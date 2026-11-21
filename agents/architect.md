@@ -76,7 +76,7 @@ Every claim about deploying or running the change, anywhere in your result (a ma
 - Key decisions: <one line — notable choices or tradeoffs>
 - Open questions: <count, or "none">
 - Concerns: <count, or "none">
-- Manual steps: <comma-separated actions the user takes before the next command — leave the line out when there are none>
+- Manual steps: <comma-separated actions the user takes before continuing — leave the line out when there are none>
 
 ===PLAN.md===
 # PLAN — <feature-name>
