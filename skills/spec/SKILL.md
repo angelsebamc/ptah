@@ -82,27 +82,11 @@ The grill fills this template. Write one user story per actor and need, and end 
 <what the feature deliberately leaves out>
 ```
 
-### Design tree
+### Running the grill
 
-The open decisions form a **design tree**. Its branches reach every section of the template plus the existing features, data and APIs the feature touches, and each flow branches into its empty states, failures and edge cases. Ask only what changes the spec. On a ticket spec, what the ticket settles is decided: ask only about what it leaves open or gets wrong against the code.
+Run the `ptah:grill` skill on the feature, with the spec as the design concept it settles. Its design tree reaches every section of the template plus the existing features, data and APIs the feature touches; its frontier holds error flows back until the main flow is settled, and criteria until the stories are. On a ticket spec, what the ticket settles is decided: ask only about what it leaves open or gets wrong against the code. Decisions the user already confirmed earlier in this conversation are settled the same way.
 
-Facts are yours to find, decisions are the user's. Look facts up per **Stop and ask** in `RULES.md`, reading the files yourself or dispatching an Explore subagent for a wide search. A lookup still running holds back only the questions that depend on it; ask the rest now.
-
-### Rounds
-
-Work the tree in rounds. The **frontier** is every decision whose prerequisites are settled: error flows wait on the main flow, criteria on the stories. Ask the whole frontier at once, then wait for the reply. Number the questions so the user can answer by number:
-
-```
-**1. <short title>**
-<the question, with options when there are a few clear ones>
-Recommended: <your answer, and why in a few words>
-```
-
-Word each question so "yes" accepts the recommendation, and separate rounds with `---`. Each reply moves the frontier: recompute it and ask the next round.
-
-### Done
-
-The grill is done when the frontier is empty: every branch visited, nothing in the spec silently assumed, every story proved by at least one acceptance criterion and every criterion proving a story. Ask about any gap as another round. Then show the user a summary of the spec and wait until they confirm it, folding in any correction.
+On top of the grill's own done check, every story is proved by at least one acceptance criterion and every criterion proves a story. The summary the user confirms is a summary of the spec.
 
 ---
 
