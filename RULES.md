@@ -85,7 +85,7 @@ Two roots, never mixed.
 | Location | Purpose |
 |----------|---------|
 | `RULES.md` | This file |
-| `guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md`, `spec-identifiers.md`, `base-branch.md`, `delegated-work.md`, `project-standards.md`, `code-smells.md` |
+| `guides/` | `vocabulary.md`, `result-format.md`, `logs-format.md`, `config.md`, `spec-identifiers.md`, `tickets.md`, `base-branch.md`, `delegated-work.md`, `project-standards.md`, `code-smells.md` |
 | `skills/<command>/` | One skill per command, invoked as `/ptah:<command>` |
 | `agents/` | Subagents, dispatched as `ptah:architect`, `ptah:implementer`, `ptah:reviewer`. See [`delegated work`](./guides/delegated-work.md) |
 
@@ -94,5 +94,5 @@ Two roots, never mixed.
 | Location | Purpose |
 |----------|---------|
 | `.ptah/ptah.yml` | Project config, created by `/ptah:init`. Every key is documented in [`config`](./guides/config.md) |
-| `.ptah/specs/<TICKET-ID>-<slug>/`, `.ptah/specs/<repo>-<code>-<slug>/` | Per-feature work product (created by `/ptah:spec`) |
+| `.ptah/specs/<TICKET-ID>-<slug>/`, `.ptah/specs/<repo>-<code>-<slug>/` | Per-feature work product (created by `/ptah:spec` or `/ptah:pull`) |
 | `.ptah/reviews/<branch-folder>/` | A review of a branch with no Ptah spec: `REVIEW.md`, and `TICKET.md` when it reviews against a ticket (written by `/ptah:review`). `<branch-folder>` is the branch name with each `/` turned into `-`, then kebab-cased per `spec-identifiers.md` |
