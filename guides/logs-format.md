@@ -85,6 +85,10 @@ Each value takes its shape from **Value shapes** above. Any `completed` entry ma
 - Source
 - Key decisions
 
+### `/pull completed`
+- Feature
+- Source
+
 ### `/plan completed`
 - Approach
 - Key decisions

@@ -1,11 +1,13 @@
 # Spec identifiers
 
-`/ptah:spec` names every spec folder one of two ways:
+Ptah names every spec folder one of two ways:
 
 - **From a ticket:** `<TICKET-ID>-<slug>`, e.g. `PROJ-45-add-csv-export`. The ticket id keeps its original casing and `<slug>` comes from the ticket title. Ticket specs take no code.
 - **Without a ticket:** `<repo>-<code>-<slug>`, e.g. `some-web-k3f9-user-login`. `<code>` is 4 random lowercase letters and digits that `/ptah:spec` generates, and `<slug>` comes from the name it infers from the spec conversation.
 
 **Kebab-case** means lowercase, with spaces and underscores turned into `-` and other punctuation removed.
+
+`<slug>` is that name in kebab-case. If it's longer than 50 characters, cut it at the last `-` before the 50th character.
 
 `<repo>` is the name of the project's git root folder (the last path segment of `git rev-parse --show-toplevel`) in kebab-case. Outside a git repository, stop:
 
@@ -14,6 +16,8 @@
 ## Ticket ids
 
 A token is **shaped like a ticket id** when it is a letter, then letters or digits, a `-`, then digits, e.g. `PROJ-1234`.
+
+**A ticket id from a URL.** An `http://` or `https://` URL gives a ticket id when its path segments and query-parameter values hold exactly one id shaped like a ticket id (case-insensitive). E.g. `https://linear.app/some-org/issue/PROJ-41/some-title` gives `PROJ-41`; `https://some-org.atlassian.net/jira/software/projects/PROJ/boards/12?selectedIssue=PROJ-1234` gives `PROJ-1234`.
 
 **A ticket id from the branch.** Take the part of `git branch --show-current` after the last `/`. If, ignoring case, it is shaped like a ticket id or starts with one followed by `-`, that id uppercased is the branch's ticket id: `user/proj-45-csv-export` gives `PROJ-45`, and `csv-export` gives none.
 

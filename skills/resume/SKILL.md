@@ -23,7 +23,7 @@ Resolve `<spec-id>`, the first argument in `$ARGUMENTS` if there is one, per `..
 
 Read the spec folder's full `LOGS.md`, per **Always read LOGS.md first** in `RULES.md`.
 
-If `LOGS.md` is empty or missing, `/ptah:spec` didn't produce the folder, so stop:
+If `LOGS.md` is empty or missing, neither `/ptah:spec` nor `/ptah:pull` produced the folder, so stop:
 
 > "Spec `<id>` has no LOGS.md at `.ptah/specs/<folder>/`. Ptah can't resume it."
 
