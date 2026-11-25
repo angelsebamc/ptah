@@ -1,6 +1,6 @@
 ---
 name: spec
-description: 'Starts a new Ptah feature spec: settles it by grilling the developer in rounds of questions (or from a grill earlier in the conversation), looking facts up in the codebase instead of asking, optionally starting from a ticket fetched through the project''s ticket server. Writes SPEC.md in a new spec folder (<TICKET-ID>-<slug> from a ticket, <repo>-<code>-<slug> otherwise), or files the spec as a ticket on the ticket server'
+description: 'Starts a new Ptah feature spec, optionally from a ticket: grills the developer in rounds of questions, then writes SPEC.md in a new spec folder or files the spec as a ticket on the ticket server.'
 argument-hint: '[<ticket-id> | <ticket-url>]'
 disable-model-invocation: true
 ---

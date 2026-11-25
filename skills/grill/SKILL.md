@@ -1,6 +1,6 @@
 ---
 name: grill
-description: 'Grills the user in rounds of questions until you share a design concept of a plan, idea, or decision. Writes nothing. Use when the user asks to be grilled or to stress-test their thinking.'
+description: 'Grills the user in rounds of questions until you and the user share a design concept of a plan, idea, or decision. Writes nothing. Use when the user asks to be grilled or to stress-test their thinking.'
 argument-hint: '[<topic>]'
 ---
 

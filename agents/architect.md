@@ -1,6 +1,6 @@
 ---
 name: architect
-description: Produces the technical plan for a Ptah spec. Returns PLAN.md (or clarifying questions) as text
+description: Produces the technical plan for a Ptah spec. Returns PLAN.md (or clarifying questions) as text. Invoked internally by /plan.
 tools: Read, Grep, Glob, Bash, Skill
 ---
 
