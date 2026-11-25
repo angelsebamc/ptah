@@ -1,6 +1,6 @@
 ---
 name: review
-description: 'Reviews code on three axes (spec, standards, correctness) through isolated, read-only reviewer subagents in parallel, and writes REVIEW.md with coded defects and judgements and a verdict. Reviews against the Ptah spec; with no Ptah spec, against the branch''s ticket, or the branch alone on standards and correctness. Use only when the user asks to review a Ptah spec, a ticket''s branch, or the current branch, or when /ptah:implement runs it because commands.implement.review is true: each run costs up to three subagents.'
+description: 'Reviews code on three axes (spec, standards, correctness), one reviewer subagent per axis, and writes REVIEW.md. Use only when the user asks to review a Ptah spec, a ticket''s branch, or the current branch: each run costs up to three subagents.'
 argument-hint: '[<spec-id> | <ticket-id>] [--base <ref>]'
 ---
 

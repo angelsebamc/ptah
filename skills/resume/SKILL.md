@@ -1,6 +1,6 @@
 ---
 name: resume
-description: 'Orients on one Ptah spec by reading its LOGS.md and showing the last entry and where the work stands.'
+description: 'Shows where a Ptah spec stands and the last entry in its LOGS.md.'
 argument-hint: '[<spec-id>]'
 disable-model-invocation: true
 ---

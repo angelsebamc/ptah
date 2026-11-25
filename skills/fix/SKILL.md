@@ -1,6 +1,6 @@
 ---
 name: fix
-description: 'Applies findings from a Ptah REVIEW.md in auto, plan, or interactive mode, lets the user steer or pull in findings by code, and appends a Fix Summary.'
+description: 'Applies the findings in a Ptah REVIEW.md, or only the codes you name, in auto, plan, or interactive mode, and appends a Fix Summary.'
 argument-hint: '[<spec-id>] [codes…] [-a | -p | -i]'
 disable-model-invocation: true
 ---

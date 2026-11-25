@@ -1,6 +1,6 @@
 ---
 name: pull
-description: 'Creates a Ptah spec folder from a ticket that already holds a spec, such as one /ptah:spec filed on the ticket server: fetches the ticket through the project''s ticket server and writes its description to SPEC.md, without a grill'
+description: 'Creates a Ptah spec folder from a ticket that already holds a spec, such as one /ptah:spec filed, writing its description to SPEC.md without a grill.'
 argument-hint: '<ticket-id> | <ticket-url>'
 disable-model-invocation: true
 ---
