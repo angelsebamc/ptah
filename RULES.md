@@ -42,8 +42,6 @@ Any step that makes the work contradict `SPEC.md` or `PLAN.md` updates that file
 
 `IMPLEMENTATION-SUMMARY.md` and `REVIEW.md` are records. `/implement` writes `IMPLEMENTATION-SUMMARY.md` and `/review` writes `REVIEW.md` on each pass; every other command only appends to them, as `/fix` does with its Fix Summary in `REVIEW.md`. `/fix` and changes between commands add each file they touch to `IMPLEMENTATION-SUMMARY.md` under **Changes after implementation** (replacing its `None`) as `` - `<path>` — <what changed> (<source>) ``, where `<source>` is `see change entry #<n>` or `fix <codes>`.
 
-Slices, plans and implementation summaries are disposable: context for the agent, not the product. `/slice` rewrites or deletes them once the user approves a new list, and git keeps whatever the developer committed.
-
 ---
 
 ## Changes between commands
@@ -54,7 +52,7 @@ A change that needs planning (a design decision, a change to the plan's architec
 
 Make any other change in this session. Update `SPEC.md` or `PLAN.md` per **Artifact ownership** if the change contradicts them, log a change entry, add each file it touches to `IMPLEMENTATION-SUMMARY.md` per **Artifact ownership** citing that entry, then hand off to `/ptah:review <id>`.
 
-On a sliced spec, a change before the feature is finished is work in the current slice, including a change to an earlier or a later slice, per **Changes across slices** in [`slices`](./guides/slices.md). This is also how a slice whose result is wrong gets fixed: the user doesn't commit it, and the problem comes back as a change here.
+On a sliced spec, a change before the feature is finished is work in the current slice, including a change to an earlier or a later slice, per **Changes across slices** in [`slices`](./guides/slices.md).
 
 ---
 

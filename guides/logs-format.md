@@ -36,7 +36,7 @@ Every command appends an entry to `LOGS.md` when it completes, pauses, or fails,
 5. **Order** — newest entries appended to the bottom (chronological), not the top
 6. **Append-only** — past entries are never edited, reordered, or deleted, even when a later step makes one look wrong. To revert or restore something an earlier entry recorded, append a `correction` change entry
 7. **No prose** — entries are bullets only, no paragraphs
-8. **Slice** — on a sliced spec, per [`slices.md`](./slices.md), an entry that belongs to a slice has `Slice: <n>` as its first field, before the fields defined below. The entries that belong to no slice leave it out: `/spec`, `/slice`, the final review, its fixes, and changes made once the feature is finished
+8. **Slice** — on a sliced spec, per [`slices.md`](./slices.md), an entry that belongs to a slice has `Slice: <n>` as its first field. The entries that belong to no slice leave it out: `/spec`, `/slice`, the final review, its fixes, and changes made once the feature is finished
 
 ---
 
@@ -57,6 +57,7 @@ Every command appends an entry to `LOGS.md` when it completes, pauses, or fails,
 | `Skipped by user`, `Deferred` | a count, or `none` |
 | `Manual steps` | comma-separated, each item one action the user takes before continuing, such as restarting a local service or renaming a file before handing it on |
 | `Slice` | a slice number, digits only |
+| `Slices` | a count |
 | `Done` | comma-separated slice numbers, or `none` |
 | `Base commit` | the full commit id from `git rev-parse HEAD` |
 
@@ -94,8 +95,8 @@ Each value takes its shape from **Value shapes** above. Any `completed` entry ma
 - Source
 
 ### `/slice completed`
-- Slices (count)
-- Done (the slices committed code already delivers, as agreed in the approval list)
+- Slices
+- Done
 
 ### `/plan completed`
 - Approach

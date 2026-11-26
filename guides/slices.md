@@ -8,7 +8,7 @@ A spec is **sliced** when its folder holds a `slices/` folder. Otherwise it's **
 
 ```
 .ptah/specs/<spec>/
-├── SPEC.md                    one contract per ticket
+├── SPEC.md                    one contract per spec
 ├── LOGS.md                    the only log
 ├── REVIEW.md                  the final review of the whole feature
 └── slices/
@@ -57,6 +57,6 @@ A design decision lives in the plan of the first slice that needs it. Later slic
 
 ## Changes across slices
 
-A change to an earlier, finished slice is work in the current slice: its entry carries the current slice's number, its `Impact:` names the earlier slice, and the earlier slice's `SLICE.md` or `PLAN.md` is updated if the change contradicts them. It's reviewed and committed with the current slice.
+A change to an earlier, finished slice is work in the current slice: its `Impact:` names the earlier slice, and the earlier slice's `SLICE.md` or `PLAN.md` is updated if the change contradicts them.
 
 A change that affects a later slice updates that slice's `SLICE.md` in the same step. When a change adds a user story no slice covers, the hand-off recommends running `/ptah:slice` again.

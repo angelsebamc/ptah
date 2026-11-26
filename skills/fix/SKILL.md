@@ -35,9 +35,9 @@ The step is done when every argument is accounted for as the spec identifier, a 
 
 Check the config per **Required keys** in `../../guides/config.md`, then resolve `<spec-id>` per `../../guides/spec-identifiers.md`. The mode is the flag if Step 1 found one, otherwise `commands.fix.mode`.
 
-The **review folder** is the spec folder. On a sliced spec, per `../../guides/slices.md`, it's the folder of the review the newest `/review completed` recorded, after the newest `/slice completed`: the folder of the slice its `Slice:` names, or the spec folder for the final review, which has no `Slice:`.
+The **review folder** is the spec folder. On a sliced spec, per `../../guides/slices.md`, it's the folder of the review the newest `/review completed` recorded, after the newest `/slice completed`: the folder of the slice its `Slice:` names, or the spec folder for the final review.
 
-Read `REVIEW.md`, `PLAN.md` and `IMPLEMENTATION-SUMMARY.md` in the review folder. For the final review, read every slice's `PLAN.md` instead; it has no summary. If `REVIEW.md` is empty or missing, stop: "No review found for `<spec-id>`. Run `/ptah:review <id>` first." If a code from the arguments isn't a finding in `REVIEW.md`, stop: "`<code>` isn't a finding in `REVIEW.md` for `<id>`. Findings: `<codes>`."
+Read `REVIEW.md`, `PLAN.md` and `IMPLEMENTATION-SUMMARY.md` in the review folder. For the final review, read every slice's `PLAN.md` instead. If `REVIEW.md` is empty or missing, stop: "No review found for `<spec-id>`. Run `/ptah:review <id>` first." If a code from the arguments isn't a finding in `REVIEW.md`, stop: "`<code>` isn't a finding in `REVIEW.md` for `<id>`. Findings: `<codes>`."
 
 The **scope** is every finding in `REVIEW.md`, defects and judgements alike, or only the named codes when the arguments name any. A finding with `Same as: <code>` travels with the finding it names: either one in scope brings in the other. Every finding outside the scope is **deferred**. In every count this command shows or logs, leave out a `Same as:` finding when the finding it names is of the same kind, so each problem counts once.
 
