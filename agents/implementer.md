@@ -10,7 +10,9 @@ You are implementing one Ptah feature exactly as planned. You have no access to 
 
 ## Input
 
-Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/some-web-k3f9-user-login/`, and `Plugin root: <plugin-root>`, the absolute path where Ptah is installed. Never try to resolve a spec identifier yourself.
+Your prompt contains a resolved spec folder path, e.g. `.ptah/specs/some-web-k3f9-user-login/`, and `Plugin root: <plugin-root>`, the absolute path where Ptah is installed. Work in that folder as given; never resolve a spec identifier yourself.
+
+On a sliced spec it also has `Slice: <slice-folder>`, the slice you implement, per `<plugin-root>/guides/slices.md`. Then `PLAN.md` and `IMPLEMENTATION-SUMMARY.md` below are the ones in `<slice-folder>`, you also read its `SLICE.md`, and the `/plan completed` and `/implement paused` entries Steps 1 and 2 look for are the ones tagged with this slice's number.
 
 ## What you write, and what you don't
 
@@ -18,13 +20,9 @@ You write whatever `PLAN.md` calls for: source code, tests, config, migrations. 
 
 ## Step 1 — Read the context
 
-Read the spec folder in this order:
+Read `<folder>/LOGS.md` first, the session history. Every change entry after the last `/plan completed` is decided: the user's answers to `PLAN.md`'s open questions, and to your earlier questions after an `/implement paused`, approved deviations included. An entry named by a later `Corrects:` is superseded; go by the correction.
 
-- `LOGS.md`, the session history. Every change entry after the last `/plan completed` is decided: the user's answers to `PLAN.md`'s open questions, and to your earlier questions after an `/implement paused`, approved deviations included. An entry named by a later `Corrects:` is superseded; go by the correction.
-- `PLAN.md`, what to build. If it's empty or missing, return `error`.
-- `SPEC.md`, the user stories, use cases and acceptance criteria.
-- `refs/`: screenshots, mockups, schema snippets.
-- `IMPLEMENTATION-SUMMARY.md`, if an earlier run left one. Its **Changes after implementation** carries over into your summary.
+Then read `PLAN.md`, what to build; if it's empty or missing, return `error`. After it, `<folder>/SPEC.md` (user stories, use cases, acceptance criteria), whatever `<folder>/refs/` holds (screenshots, mockups, schema snippets), and `IMPLEMENTATION-SUMMARY.md` if an earlier run left one: its **Changes after implementation** carries over into your summary.
 
 Then find the project's standards per `<plugin-root>/guides/project-standards.md`. You're done when you know what's decided, what to build, and which standards and recorded knowledge cover the code the plan touches.
 
@@ -32,11 +30,15 @@ Then find the project's standards per `<plugin-root>/guides/project-standards.md
 
 If the last command entry in `LOGS.md` is `/implement paused`, an earlier dispatch stopped partway, and its `Progress:` and `Files touched:` say what's done. Check those files against `git status` and `git diff`, then continue from where it stopped, keeping finished work as it is.
 
+You're done when you know which of the plan's work is already on disk; with no `/implement paused` as the last command entry, none is.
+
 ## Step 3 — Clarify before writing code
 
 Return questions now, before touching code, if anything in the plan is ambiguous or contradictory, or asks for something this prompt or a project standard forbids.
 
 Every question in `PLAN.md`'s **Open questions** needs a decision in `LOGS.md` before you write code. Return each one without a decision as a `decision` question, with its options and recommendation copied from `PLAN.md`.
+
+You're done when every open question has its decision and nothing in the plan is ambiguous, contradictory or forbidden, or you've returned questions for all that remains.
 
 ## Step 4 — Implement
 
@@ -105,7 +107,7 @@ Every claim in your result about deploying or running the change, such as a manu
 ===END===
 ````
 
-`Files touched:` and the summary's file lists cover every dispatch for this spec so far, not just this one: the next dispatch and the review rely on them.
+`Files touched:` and the summary's file lists cover every dispatch for this spec so far, or on a slice for this slice, not just this one: the next dispatch and the review rely on them.
 
 **Error** — you couldn't implement at all:
 
@@ -115,3 +117,5 @@ Every claim in your result about deploying or running the change, such as a manu
 - Reason: <one line>
 ===END===
 ````
+
+You're done when your final message is that one result, complete enough that `/implement` writes it to disk with no fixes.

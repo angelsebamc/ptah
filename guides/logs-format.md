@@ -36,6 +36,7 @@ Every command appends an entry to `LOGS.md` when it completes, pauses, or fails,
 5. **Order** — newest entries appended to the bottom (chronological), not the top
 6. **Append-only** — past entries are never edited, reordered, or deleted, even when a later step makes one look wrong. To revert or restore something an earlier entry recorded, append a `correction` change entry
 7. **No prose** — entries are bullets only, no paragraphs
+8. **Slice** — on a sliced spec, per [`slices.md`](./slices.md), an entry that belongs to a slice has `Slice: <n>` as its first field. The entries that belong to no slice leave it out: `/spec`, `/slice`, the final review, its fixes, and changes made once the feature is finished
 
 ---
 
@@ -55,6 +56,10 @@ Every command appends an entry to `LOGS.md` when it completes, pauses, or fails,
 | `Verdict` | a verdict from `vocabulary.md` that is valid for the command |
 | `Skipped by user`, `Deferred` | a count, or `none` |
 | `Manual steps` | comma-separated, each item one action the user takes before continuing, such as restarting a local service or renaming a file before handing it on |
+| `Slice` | a slice number, digits only |
+| `Slices` | a count |
+| `Done` | comma-separated slice numbers, or `none` |
+| `Base commit` | the full commit id from `git rev-parse HEAD` |
 
 ---
 
@@ -89,11 +94,16 @@ Each value takes its shape from **Value shapes** above. Any `completed` entry ma
 - Feature
 - Source
 
+### `/slice completed`
+- Slices
+- Done
+
 ### `/plan completed`
 - Approach
 - Key decisions
 - Open questions
 - Concerns
+- Base commit (a slice's first `/plan completed` only)
 
 ### `/implement completed`
 - Summary
@@ -135,7 +145,7 @@ Heading uses `change` instead of `/<command> <status>`:
 - Corrects: <#<n> | <timestamp> | none>
 ```
 
-All fields are required, in the order shown, except `Corrects:`, which every `correction` has and no other type does: the id of the entry it corrects (its timestamp for an entry written before ids), or `none` when it corrects something done rather than something logged. The correction restates whatever in the corrected entry still holds.
+All fields are required, in the order shown, after any `Slice:`, except `Corrects:`, which every `correction` has and no other type does: the id of the entry it corrects (its timestamp for an entry written before ids), or `none` when it corrects something done rather than something logged. The correction restates whatever in the corrected entry still holds.
 
 ---
 

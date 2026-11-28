@@ -1,6 +1,6 @@
 # Delegated work
 
-A dispatching skill is a thin dispatcher. The subagent's prompt is the spec folder path and the plugin root, nothing else. The reviewer also gets its axis and the base ref, and on a review without a Ptah spec it gets the branch and the ticket file, if any, in place of the folder. The subagent reads what it needs from disk, so the dispatcher never summarizes the conversation or explains anything on the user's behalf.
+A dispatching skill is a thin dispatcher. The subagent's prompt is the spec folder path and the plugin root, nothing else, plus a `Slice:` line with the slice folder when the work is one slice of a sliced spec, per [`slices.md`](./slices.md). The reviewer also gets its axis and the base ref, and on a review without a Ptah spec it gets the branch and the ticket file, if any, in place of the folder. The subagent reads what it needs from disk, so the dispatcher never summarizes the conversation or explains anything on the user's behalf.
 
 The **plugin root** is the absolute path of `../..`, resolved from the dispatching skill's directory. It is the only way the subagent learns where Ptah is installed.
 
@@ -17,7 +17,7 @@ An answer the user can't give yet because it needs something outside Ptah, such 
 
 First check the subagent's result against every rule in [`the result format`](./result-format.md). Then act on its status:
 
-- **`complete`:** write the artifact block verbatim to the spec folder, then append `/<command> completed` per [`the logs format`](./logs-format.md), copying the result's fields.
+- **`complete`:** write the artifact block verbatim to the work folder per **Slice state** in [`slices.md`](./slices.md) (the spec folder on a flat spec), then append `/<command> completed` per [`the logs format`](./logs-format.md), copying the result's fields.
 - **`needs-input`:** run the loop above, copying the result's fields verbatim into the `/<command> paused` entry. Ask the `### Questions` in the order returned. Reword one if it reads better, but every question reaches the user whole: never answer, soften, or drop one. Each names who does each thing: you (the user) or the agent.
 - **`error`, or a malformed result:** write no artifact, append `/<command> failed`, and hand off as failed. If the result was malformed, offer to show the raw response.
 

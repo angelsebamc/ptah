@@ -15,7 +15,7 @@ Orient on a spec's current state at the start of a new session, from its `LOGS.m
 
 ## Step 1 — Locate the spec
 
-Resolve `<spec-id>`, the first argument in `$ARGUMENTS` if there is one, per `../../guides/spec-identifiers.md`.
+Resolve `<spec-id>`, the first argument in `$ARGUMENTS` if there is one, per `../../guides/spec-identifiers.md`. The step is done when you have the spec folder.
 
 ---
 
@@ -50,7 +50,7 @@ Where you are: <one-line synthesis>
 | `paused` command entry | `/<command> paused` | its `Blocked on:` |
 | `failed` command entry | `/<command> failed` | its `Reason:` |
 
-The synthesis is one sentence built from the last command entry: what just happened, e.g. "Code review done with 3 defects." What it must also carry depends on that entry:
+The synthesis is one sentence built from the last command entry: what just happened, e.g. "Code review done with 3 defects." On a sliced spec it opens with the current slice and the total, per `../../guides/slices.md`, the total being the newest `/slice completed`'s `Slices:`, e.g. "Slice 2 of 4, implemented, not yet reviewed." Once the feature is finished it says so instead, e.g. "All 4 slices finished, final review done with 1 defect." What it must also carry depends on that entry:
 
 - `Manual steps:`: name them.
 - `paused`: name what it's blocked on, how many answers the change entries after it have logged, and the command to re-run to continue. An answer whose `What:` starts with `not-answered-yet:` doesn't count until a later entry answers the same question; name that question and what the user needs to do before re-running.

@@ -30,7 +30,7 @@ The subagent's final message:
 
 1. **The final message is the result.** Another command reads it, not a person, so it opens on `===RESULT===` and closes on `===END===`. Leave out anything a project rule asks you to add to a response, such as a footer listing the rules you followed.
 2. **`Status:` is always the first bullet.**
-3. **The fields after it are the `LOGS.md` fields for the entry that status produces** — `completed`, `paused`, or `failed` (see the mapping in `vocabulary.md` and the per-command fields below). Same names, same order, values copied verbatim. The one exception is the `reviewer`'s `complete` fields, which cover one axis: `/review` combines the three results into one entry.
+3. **The fields after it are the `LOGS.md` fields for the entry that status produces** — `completed`, `paused`, or `failed` (see the mapping in `vocabulary.md` and the per-command fields below). Same names, same order, values copied verbatim. The exceptions are the `reviewer`'s `complete` fields, which cover one axis: `/review` combines the three results into one entry; and `Slice:` and `Base commit:`, which the dispatcher adds to the entry itself.
 4. **One line per value.** No value spans lines. Lists inside a value are comma-separated.
 5. **Fixed values are exact** — each written as `vocabulary.md` spells it.
 6. **`###` sections appear only when they apply** — never written empty. `### Questions` appears only with `needs-input`.
@@ -90,6 +90,6 @@ A command's skill may name a list for its hand-off. It goes after the key facts 
 - <item>
 ```
 
-A `/review` with no Ptah spec has no `<id>`: its first line is `/review branch <branch> <status>`.
+A `/review` with no Ptah spec has no `<id>`: its first line is `/review branch <branch> <status>`. When the command's `LOGS.md` entry has `Slice: <n>`, the slice number follows the id, so the user knows where they are: `/review k3f9 2 completed`.
 
 When the command's `completed` entry has `Manual steps:`, the hand-off lists them in the same form under `Manual steps`, last before `Next:`.
