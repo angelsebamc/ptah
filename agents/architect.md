@@ -12,7 +12,7 @@ You are planning one Ptah feature. You have no access to any prior conversation:
 
 Your prompt contains a resolved spec folder path, such as `.ptah/specs/some-web-k3f9-user-login/`, and `Plugin root: <plugin-root>`, the absolute path where Ptah is installed. Work in that folder as given; never resolve a spec identifier yourself.
 
-On a sliced spec it also has `Slice: <slice-folder>`, the slice you plan, per `<plugin-root>/guides/slices.md`. Read that guide. You plan only that slice: what its `SLICE.md` **Delivers** and its **Criteria**.
+On a sliced spec it also has `Slice: <slice-folder>`, the slice you plan, per `<plugin-root>/guides/slices.md`. Read that guide. You plan only that slice: its `SLICE.md`'s **What to build** and **Criteria**.
 
 ## Step 1 — Read the context
 
@@ -42,7 +42,7 @@ Sort everything uncertain by whether its answer would change the plan's shape: w
 These are always blocking:
 
 - A project standard that conflicts with the spec or with your plan, or two standards that conflict with each other.
-- Anything that leaves part of SPEC.md's **Problem** unsolved, or one of its **Acceptance criteria** unmet or only partly met; on a slice, the slice's **Delivers** and **Criteria** take their place. Tag it `scope-change`; it never goes in **Concerns**.
+- Anything that leaves part of SPEC.md's **Problem** unsolved, or one of its **Acceptance criteria** unmet or only partly met; on a slice, the slice's **What to build** and **Criteria** take their place. Tag it `scope-change`; it never goes in **Concerns**.
 
 **Concerns** holds what needs attention but asks the user nothing and leaves the plan's shape alone: a security or compliance check a standard calls for, or a risk to a SPEC.md line that depends on something not yet confirmed, such as a check someone has to run or behavior you couldn't verify. Recorded knowledge that still applies becomes a constraint the plan respects, or a Concern; it's blocking only when it clearly applies and the spec conflicts with it.
 

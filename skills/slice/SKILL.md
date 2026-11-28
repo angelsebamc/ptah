@@ -25,17 +25,17 @@ The step is done when you have the spec folder, its `SPEC.md` has content, and n
 
 Read `SPEC.md` and see what the spec folder already holds: a flat spec's root `PLAN.md`, `IMPLEMENTATION-SUMMARY.md` and `REVIEW.md`, or an earlier slicing's folders and the state `LOGS.md` gives them.
 
-A slice is a product cut: a behaviour that works end to end and can be checked, taken from the spec's user stories and use cases. Make each one **vertical**: a thin path through every layer it needs (data, backend, UI), so the first slice puts the core rules in front of a real database and screen. Slicing by layer delays integration until the last slice, so never do it. The one exception is a preparatory refactor slice that makes later slices easy. Each slice fits in one `/ptah:implement` run, one fresh context. Order the slices so the riskiest rules come first.
+A slice is a product cut: a behaviour that works end to end and can be checked, taken from the spec's user stories and use cases. Make each one **vertical**: a thin path through every layer it needs (data, backend, UI), so the first slice puts the core rules in front of a real database and screen. Slicing by layer delays integration until the last slice, so never do it. The one exception is a preparatory refactor slice that makes later slices easy. Each slice fits in one `/ptah:implement` run, one fresh context.
 
 Look up in the code only the facts that shape the cut: which layers a story touches, and what already exists. How to build a slice belongs to `/ptah:plan`.
 
-Give each slice a short title, what it **Delivers** with the user stories it covers, and its **Criteria**: testable conditions, each one a spec acceptance criterion or the part of one that this slice proves.
+Give each slice a short title, **What to build** with the user stories it covers, and its **Criteria**: testable conditions, each one a spec acceptance criterion or the part of one that this slice proves. Write each slice **self-contained**, per the slices guide. Order the slices so each comes after every slice it builds on; among the slices free to go next, the riskiest rules come first.
 
-The draft is done when every user story and acceptance criterion in `SPEC.md` is covered by at least one slice's **Delivers** or **Criteria**, and every slice is vertical (or the one preparatory refactor) and fits one `/ptah:implement` run.
+The draft is done when every user story and acceptance criterion in `SPEC.md` is covered by at least one slice's **What to build** or **Criteria**, every slice is vertical (or the one preparatory refactor), fits one `/ptah:implement` run and is self-contained, and no slice builds on a later one.
 
 ## Step 3 — Get the list approved
 
-Show the numbered list: each slice's title, what it delivers, and its criteria. Name any user story or acceptance criterion the slices leave uncovered. Ask whether any slice is too big or too small, and whether to merge or split any.
+Show the numbered list: each slice's title, what it builds, and its criteria. Name any user story or acceptance criterion the slices leave uncovered. Ask whether any slice is too big or too small, and whether to merge or split any.
 
 When the spec folder already holds work, the list also says what the approval discards: existing slice folders with the plans, summaries and reviews in them, or on a flat spec the root `PLAN.md`, `IMPLEMENTATION-SUMMARY.md` and `REVIEW.md`. An existing slice that comes through unchanged can keep its folder, renamed if it's renumbered. Propose which new slices the committed code already delivers. The user agrees on them as part of the list, and they become `Done:`.
 

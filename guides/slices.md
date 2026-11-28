@@ -27,13 +27,15 @@ Each slice folder is `slices/<nn>-<slug>/`: `<nn>` is the slice's number in two 
 ```markdown
 # SLICE <n> — <title>
 
-## Delivers
+## What to build
 <the behaviour that works end to end once the slice is done>
 Covers: <the user stories it covers, e.g. US1, US3 (create only)>
 
 ## Criteria
 - <a testable condition the slice meets>
 ```
+
+A slice is **self-contained**: an agent plans and builds it from `SPEC.md`, its own `SLICE.md` and what earlier slices built, never from another slice's `SLICE.md`. **What to build** is a paragraph in the domain's words, not a list of layers or files: what a user or developer can do or check once the slice is done, and what it relies on from earlier slices.
 
 ## Slice state
 
